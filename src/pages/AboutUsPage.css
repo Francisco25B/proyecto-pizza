@@ -1,0 +1,61 @@
+
+
+/* Contenedor principal para el texto de "Sobre Nosotros" */
+.about-us-container {
+    position: relative; /* Establecer posición relativa para que los pseudoelementos se posicionen correctamente */
+    max-width: 600px; /* Ancho máximo del contenedor */
+    margin: 0 auto; /* Centrado horizontal en la página */
+    padding: 20px; /* Espacio interno entre el borde del contenedor y el texto */
+    border: 2px solid #dcdcdc; /* Borde gris alrededor del contenedor */
+    border-radius: 8px; /* Bordes redondeados para suavizar el cuadro */
+    background-color: #fff; /* Fondo blanco dentro del contenedor */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave para dar profundidad */
+}
+
+/* Título dentro del contenedor */
+.about-us-container h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333; /* Color oscuro para el texto del título */
+    text-align: center; /* Centrar el título */
+}
+
+/* Párrafo dentro del contenedor */
+.about-us-container p {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333; /* Color oscuro para el texto del párrafo */
+    margin-bottom: 20px; /* Espacio adicional al final del párrafo */
+}
+
+/* Estilo para el título principal fuera del contenedor */
+.AboutUsPage h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 6rem;
+    margin: 9px 0;
+    color: rgb(0, 0, 0);
+    text-align: center; /* Centrar el título principal */
+}
+
+/* Pseudoelemento para el cuadro gris a la izquierda */
+.about-us-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -430px; /* Ajusta la posición del cuadro gris a la izquierda */
+    width: 400px; /* Ancho del cuadro gris */
+    background-color: #dcdcdc; /* Color del cuadro gris */
+}
+
+/* Pseudoelemento para el cuadro gris a la derecha */
+.about-us-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: -430px; /* Ajusta la posición del cuadro gris a la derecha */
+    width: 400px; /* Ancho del cuadro gris */
+    background-color: #dcdcdc; /* Color del cuadro gris */
+}
+

@@ -1,0 +1,160 @@
+.menu {
+  text-align: center;
+}
+
+.pizza-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.pizza-item {
+  width: 300px;
+  padding: 60px;
+  margin: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+}
+
+.pizza-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pizza-image-placeholder {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ddd; /* Color de fondo gris para simular */
+  border-radius: 10px 10px 0 0; /* Borde redondeado solo arriba */
+}
+
+.pizza-image-placeholder i {
+  font-size: 48px; /* Tamaño del ícono */
+  color: #888; /* Color del ícono */
+}
+
+.pizza-details {
+  text-align: left;
+}
+
+.pizza-details h3 {
+  margin-top: 0;
+}
+
+.pizza-details p {
+  margin: 5px 0;
+}
+.menu h1 {
+  font-family: 'Great Vibes', cursive;
+  font-size: 6rem;
+  margin: 15px 0;
+  color: rgb(0, 0, 0);
+ 
+}
+.menu {
+  text-align: center;
+}
+/* Estilos del contenedor principal */
+.menu {
+  text-align: center;
+}
+
+.menu h1 {
+  font-family: 'Great Vibes', cursive;
+  font-size: 6rem;
+  margin: 15px 0;
+  color: rgb(0, 0, 0);
+}
+
+.pizza-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px; /* Espacio superior de la lista */
+}
+
+.pizza-item {
+  width: 300px;
+  padding: 50px;
+  margin: 20px; /* Ajuste para un espacio más uniforme */
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* Alinea el contenido a la derecha */
+  position: relative; /* Necesario para posicionar el círculo */
+}
+
+.pizza-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para alternar el color de fondo */
+.pizza-item:nth-child(odd) {
+  background-color: #ffb15e; /* Fondo naranja */
+  color: #333; /* Texto oscuro para contraste */
+}
+
+.pizza-item:nth-child(even) {
+  background-color: #fbe5cd; /* Fondo beige */
+  color: #333; /* Texto oscuro para contraste */
+}
+
+/* Círculo en la parte izquierda sobresaliendo cerca de la esquina superior */
+.pizza-item::before {
+  content: '';
+  position: absolute;
+  top: -20px; /* Ajusta la posición para estar cerca de la esquina superior */
+  left: -20px; /* Posiciona fuera del borde izquierdo */
+  width: 150px; /* Ancho del círculo */
+  height: 150px; /* Altura del círculo */
+  border-radius: 50%; /* Hace que el div sea un círculo */
+  background-color: #ffffff; /* Color del círculo */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra para el círculo */
+}
+
+/* Si el fondo del cuadro es naranja, el círculo es blanco */
+.pizza-item:nth-child(odd)::before {
+  background-color: white; /* Círculo blanco */
+}
+
+.pizza-image-placeholder {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ddd; /* Color de fondo gris para simular */
+  border-radius: 10px 10px 0 0; /* Borde redondeado solo arriba */
+}
+
+.pizza-image-placeholder i {
+  font-size: 48px; /* Tamaño del ícono */
+  color: #888; /* Color del ícono */
+}
+
+.pizza-details {
+  text-align: right; /* Alinea el texto a la derecha */
+  align-self: flex-end; /* Alinea el bloque de texto a la derecha */
+  width: 100%; /* Asegura que tome todo el ancho disponible */
+}
+
+.pizza-details h3 {
+  margin-top: 0;
+}
+
+.pizza-details p {
+  margin: 5px 0;
+  /* Opcional: podrías agregar margin-right si quieres más separación del borde derecho */
+}

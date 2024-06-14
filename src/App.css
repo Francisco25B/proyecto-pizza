@@ -1,0 +1,115 @@
+/* src/App.css */
+
+.App {
+  background-color: rgb(255, 255, 255); /* Color de fondo */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+html, body, #root, .App {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.App {
+  flex: 1;
+}
+
+main {
+ 
+    padding: 20px;
+    flex: 1;
+    margin-top: 30px; /* Reducir el margen superior del contenido principal */
+  
+  
+}
+header {
+  
+    margin-bottom: 20px;
+    
+  
+  
+}
+
+main {
+  padding: 20px;
+  flex: 1;
+  margin-top: 20px; /* Añadir margen superior para evitar que el contenido sea tapado por el header */
+}
+
+.home {
+  margin-top: 20px; /* Asegura que la sección home tenga un margen superior suficiente */
+}
+
+.home h1 {
+  font-family: 'Great Vibes', cursive;
+  font-size: 8rem;
+  margin: 20px 0;
+  color: rgb(0, 0, 0);
+}
+
+.home p {
+  font-family: 'Comic', cursive ;
+  font-size: 1.5rem;
+  margin: 15px 20px;
+}
+
+.menu {
+  margin-top: auto;
+}
+
+.about,
+.contact {
+  margin: 20px 0;
+}
+
+.about h2,
+.contact h2 {
+  font-size: 2rem;
+  color: mediumaquamarine;
+}
+/* Estilos para el componente ServiceHours */
+.service-hours {
+  background-color: #f9f9f9;
+  border: 2px solid #ccc;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.service-hours h2 {
+  margin-bottom: 15px;
+  font-size: 28px;
+  color: #333;
+  text-transform: uppercase;
+}
+
+.service-hours ul {
+  list-style: none;
+  padding: 0;
+}
+
+.service-hours li {
+  margin: 10px 0;
+  font-size: 20px;
+  color: #666;
+  padding: 10px;
+  border-radius: 4px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.service-hours li.highlight {
+  background-color: #ffeb3b; /* Resalta con un color amarillo claro */
+  color: #333; /* Texto oscuro para contraste */
+  font-weight: bold;
+}
+
+.service-hours li:hover {
+  background-color: #f0f0f0; /* Ligera variación en el fondo al pasar el ratón */
+  color: #000; /* Cambia el color del texto al pasar el ratón */
+}

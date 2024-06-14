@@ -1,0 +1,119 @@
+/* src/components/Header.css */
+
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.nav-links a img {
+  width: 60px; /* Define el ancho de las imágenes */
+  height: 60px; /* Define la altura de las imágenes */
+  margin-right: 5px; /* Añade un margen a la derecha de las imágenes */
+}
+
+
+.header {
+  background-color: rgb(253, 143, 25); /* Color de fondo */
+  padding: 0 0px; /* Aumenta el padding para mayor espacio en los extremos */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%; /* Ancho completo del header */
+  height: 100px; /* Ajusta la altura del header */
+  position: fixed; /* Para que el encabezado se fije en la parte superior */
+  top: 0; /* Fija el encabezado en la parte superior de la página */
+  z-index: 999; /* Asegura que el encabezado esté por encima de otros elementos */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Añade una sombra para mayor definición */
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.logo {
+  height: 80px; /* Ajusta el tamaño del logo según sea necesario */
+  margin-right: 20px;
+  margin-left: 10px;
+  z-index: 1; /* Asegura que el logo esté por encima del cuadro negro */
+}
+
+.logo-container::before {
+  margin-right: 20px;
+  margin-left: 25px;
+  content: '';
+  position: absolute;
+  top: -20px; /* Ajusta para que sobresalga por encima del header */
+  bottom: -25px; /* Ajusta para que sobresalga por debajo del header */
+  left: -20px; /* Ajusta para que sobresalga a la izquierda del header */
+  right: -20px; /* Ajusta para que sobresalga a la derecha del header */
+  background-color: rgb(255, 102, 0);
+  border-radius: 15px; /* Bordes redondeados */
+  z-index: 0; /* Asegura que el cuadro negro esté detrás del logo */
+}
+
+.nav-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centra horizontalmente los elementos */
+}
+
+.nav-links li {
+  display: flex; /* Cambia el display a flex para permitir alinear verticalmente */
+  flex-direction: column; /* Coloca los elementos en columna */
+  align-items: center; /* Centra verticalmente los elementos */
+  margin-right: 20px;
+}
+
+.nav-links li:last-child {
+  margin-right: 0;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  font-size: 1.6rem; /* Aumenta el tamaño de la fuente *
+  transition: color 0.3s ease;
+  text-align: center; /* Centra el texto horizontalmente */
+}
+
+.nav-links a:hover {
+  color: #ffcd00; /* Cambia el color al pasar el ratón para resaltar */
+}
+
+.nav-links img {
+  width: 20px; /* Define el ancho de las imágenes */
+  height: 20px; /* Define la altura de las imágenes */
+  margin-bottom: 5px; /* Añade un margen abajo de las imágenes */
+}
+
+.nav-links li {
+  font-family: 'Comic', cursive ;
+  font-size: 8rem;
+  margin: 15px 20px;
+}
+
+.icons {
+  display: flex;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px; /* Aumenta el padding de los iconos */
+  color: white;
+  font-size: 1.5rem; /* Tamaño del icono */
+}
+
+.icon-button:hover {
+  color: #ffcd00; /* Cambia el color al pasar el ratón para resaltar */
+  transition: color 0.3s ease;
+}

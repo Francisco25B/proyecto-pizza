@@ -1,0 +1,8 @@
+.footer {
+  background-color: rgb(255, 132, 0);
+  color: white;
+  padding: 10px 0;
+  position: relative; /* Cambiado de fixed a relative */
+  width: 100%;
+  text-align: center;
+}

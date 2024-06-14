@@ -1,0 +1,29 @@
+/* src/components/PizzaList.css */
+
+.pizza-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+  
+  .pizza-item {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 20px;
+    margin: 10px;
+    width: 200px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .pizza-item h3 {
+    color: #d32f2f;
+    margin: 0;
+  }
+  
+  .pizza-item .price {
+    color: #888;
+    font-weight: bold;
+  }
+  
+  
