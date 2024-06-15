@@ -9,16 +9,20 @@ function RegisterModal({ toggleRegisterModal, openLoginModal }) {
         <h2>Registrarse</h2>
         <form>
           <div className="form-group">
-            <label htmlFor="username">Usuario:</label>
-            <input type="text" id="username" name="username" required />
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">Contraseña:</label>
-            <input type="password" id="password" name="password" required />
+            <label htmlFor="fullName">Nombre Completo:</label>
+            <input type="text" id="fullName" name="fullName" required />
           </div>
           <div className="form-group">
             <label htmlFor="email">Correo Electrónico:</label>
             <input type="email" id="email" name="email" required />
+          </div>
+          <div className="form-group">
+            <label htmlFor="address">Dirección:</label>
+            <input type="text" id="address" name="addressNumber" required />
+          </div>
+          <div className="form-group">
+            <label htmlFor="placeReferences">Referencias del Lugar:</label>
+            <input type="text" id="placeReferences" name="placeReferences" required />
           </div>
           <button type="submit" className="register-button">Registrar</button>
         </form>
@@ -31,3 +35,4 @@ function RegisterModal({ toggleRegisterModal, openLoginModal }) {
 }
 
 export default RegisterModal;
+

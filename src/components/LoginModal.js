@@ -9,12 +9,12 @@ function LoginModal({ toggleLoginModal, openRegisterModal }) {
         <h2>Iniciar Sesión</h2>
         <form>
           <div className="form-group">
-            <label htmlFor="username">Usuario:</label>
-            <input type="text" id="username" name="username" required />
+            <label htmlFor="fullName">Nombre Completo:</label>
+            <input type="text" id="fullName" name="fullName" required />
           </div>
           <div className="form-group">
-            <label htmlFor="password">Contraseña:</label>
-            <input type="password" id="password" name="password" required />
+            <label htmlFor="number">Número:</label>
+            <input type="text" id="number" name="number" required />
           </div>
           <button type="submit" className="login-button">Ingresar</button>
         </form>
