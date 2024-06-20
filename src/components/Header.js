@@ -1,8 +1,11 @@
-import React from 'react';
+// Header.js
+
+import React, { useContext } from 'react';
 import './Header.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import { CartContext } from '../components/CartContext'; // Ajusta la ruta según sea necesario
 import logo from '../assets/logo.png';
 import inicioImg from '../assets/inicio.png';
 import menuImg from '../assets/menu.png';
@@ -10,6 +13,8 @@ import aboutImg from '../assets/nosotros.png';
 import contactImg from '../assets/contacto.png';
 
 function Header({ toggleLoginModal }) {
+  const { cartItems } = useContext(CartContext);
+
   return (
     <header className="header">
       <div className="logo-container">
@@ -27,9 +32,10 @@ function Header({ toggleLoginModal }) {
         <button className="icon-button" onClick={toggleLoginModal}>
           <FontAwesomeIcon icon={faUser} />
         </button>
-        <button className="icon-button">
+        <Link to="/cart" className="icon-button">
           <FontAwesomeIcon icon={faShoppingCart} />
-        </button>
+          {cartItems.length > 0 && <span className="cart-counter">{cartItems.length}</span>}
+        </Link>
       </div>
     </header>
   );

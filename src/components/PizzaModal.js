@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './PizzaModal.css';
 
-function PizzaModal({ pizza, closeModal }) {
+function PizzaModal({ pizza, closeModal, addToCart }) {
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState('Mediana');
   const [cheeseCrust, setCheeseCrust] = useState(false);
@@ -33,6 +33,18 @@ function PizzaModal({ pizza, closeModal }) {
       totalPrice += 1; // Añadir $1 al precio total si se selecciona la orilla de queso
     }
     return totalPrice * quantity; // Multiplicar por la cantidad de pizzas
+  };
+
+  const handleOrder = () => {
+    const order = {
+      pizza,
+      quantity,
+      size: selectedSize,
+      cheeseCrust,
+      totalPrice: calculateTotalPrice(),
+    };
+    addToCart(order); // Llama a la función addToCart pasada como prop desde App.js
+    closeModal();
   };
 
   return (
@@ -85,7 +97,7 @@ function PizzaModal({ pizza, closeModal }) {
               <button className="quantity-button" onClick={handleIncrement}>+</button>
             </div>
             <p><strong>Precio:</strong> ${calculateTotalPrice()}</p>
-            <button className="order-button">Ordenar</button>
+            <button className="order-button" onClick={handleOrder}>Ordenar</button>
           </div>
         </div>
       </div>

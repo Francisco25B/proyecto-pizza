@@ -8,6 +8,8 @@ import ContactPage from './pages/ContactPage';
 import ImageCarousel from './components/Carousel';
 import LoginModal from './components/LoginModal';
 import RegisterModal from './components/RegisterModal';
+
+import { CartProvider } from '../src/components/CartContext'; // Importa CartProvider si lo estás utilizando
 import './App.css';
 
 function ServiceHours() {
@@ -21,7 +23,6 @@ function ServiceHours() {
     { day: 'Domingo', hours: '2:00 PM - 10:00 PM' },
   ];
 
-  // Obtener el día actual (0-6) donde 0 es Domingo y 6 es Sábado.
   const today = new Date().getDay();
 
   return (
@@ -44,6 +45,7 @@ function ServiceHours() {
 function App() {
   const [isLoginModalVisible, setLoginModalVisible] = useState(false);
   const [isRegisterModalVisible, setRegisterModalVisible] = useState(false);
+  const [cartItems, setCartItems] = useState([]);
 
   const toggleLoginModal = () => {
     setLoginModalVisible(!isLoginModalVisible);
@@ -63,47 +65,44 @@ function App() {
     setRegisterModalVisible(true);
   };
 
+  const addToCart = (order) => {
+    setCartItems([...cartItems, order]);
+  };
+
   return (
     <Router>
-      <div className="App">
-        <Header toggleLoginModal={toggleLoginModal} />
-        <nav>
-          <ul>
-            <li><Link to="/">Inicio</Link></li>
-            <li><Link to="/about">Sobre Nosotros</Link></li>
-            <li><Link to="/menu">Menú</Link></li>
-            
-          </ul>
-          <ImageCarousel />
-        </nav>
-        <main>
-          <Routes>
-            <Route path="/" element={
-              <>
-                <section id="home" className="home">
-                  <h1>Bienvenidos a Giovannis Pizza</h1>
-                  <p>¡Las mejores pizzas!</p>
-                  <ServiceHours />
-                </section>
-              </>
-            } />
-            <Route path="/about" element={<AboutUsPage />} />
-            <Route path="/menu" element={<MenuPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-          </Routes>
-        </main>
-        {isLoginModalVisible && 
-          <LoginModal 
-            toggleLoginModal={toggleLoginModal} 
-            openRegisterModal={openRegisterModal} 
-          />}
-        {isRegisterModalVisible && 
-          <RegisterModal 
-            toggleRegisterModal={toggleRegisterModal} 
-            openLoginModal={openLoginModal} 
-          />}
-        <Footer />
-      </div>
+      <CartProvider>
+        <div className="App">
+          <Header toggleLoginModal={toggleLoginModal} />
+          <nav>
+            <ul>
+              <li><Link to="/">Inicio</Link></li>
+              <li><Link to="/about">Sobre Nosotros</Link></li>
+              <li><Link to="/menu">Menú</Link></li>
+              <li><Link to="/cart">Carrito</Link></li> {/* Agrega un enlace para la ruta /cart */}
+            </ul>
+            <ImageCarousel />
+          </nav>
+          <main>
+            <Routes>
+              <Route path="/" element={
+                <>
+                  <section id="home" className="home">
+                    <h1>Bienvenidos a Giovannis Pizza</h1>
+                    <p>¡Las mejores pizzas!</p>
+                    <ServiceHours />
+                  </section>
+                </>
+              } />
+              <Route path="/about" element={<AboutUsPage />} />
+              <Route path="/menu" element={<MenuPage addToCart={addToCart} />} /> {/* Asegúrate de pasar addToCart como prop */}
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/cart" element={<CartPage cartItems={cartItems} />} /> {/* Define la ruta para /cart y pasa cartItems como prop */}
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+      </CartProvider>
     </Router>
   );
 }

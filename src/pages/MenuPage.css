@@ -2,71 +2,6 @@
   text-align: center;
 }
 
-.pizza-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 10px;
-}
-
-.pizza-item {
-  width: 300px;
-  padding: 60px;
-  margin: 20px;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
-  display: flex;
-  flex-direction: column;
-}
-
-.pizza-item:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.pizza-image-placeholder {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #ddd; /* Color de fondo gris para simular */
-  border-radius: 10px 10px 0 0; /* Borde redondeado solo arriba */
-}
-
-.pizza-image-placeholder i {
-  font-size: 48px; /* Tamaño del ícono */
-  color: #888; /* Color del ícono */
-}
-
-.pizza-details {
-  text-align: left;
-}
-
-.pizza-details h3 {
-  margin-top: 0;
-}
-
-.pizza-details p {
-  margin: 5px 0;
-}
-.menu h1 {
-  font-family: 'Great Vibes', cursive;
-  font-size: 6rem;
-  margin: 15px 0;
-  color: rgb(0, 0, 0);
- 
-}
-.menu {
-  text-align: center;
-}
-/* Estilos del contenedor principal */
-.menu {
-  text-align: center;
-}
-
 .menu h1 {
   font-family: 'Great Vibes', cursive;
   font-size: 6rem;
@@ -82,8 +17,8 @@
 }
 
 .pizza-item {
-  width: 300px;
-  padding: 50px;
+  width: 500px; /* Reducimos el ancho para hacer los cuadros más estrechos */
+  padding: 20px;
   margin: 20px; /* Ajuste para un espacio más uniforme */
   background-color: #f9f9f9;
   border-radius: 10px;
@@ -146,15 +81,15 @@
 
 .pizza-details {
   text-align: right; /* Alinea el texto a la derecha */
-  align-self: flex-end; /* Alinea el bloque de texto a la derecha */
-  width: 100%; /* Asegura que tome todo el ancho disponible */
+  padding: 0 100px; /* Añade padding: arriba, derecha, abajo, izquierda */
+  margin-top: auto; /* Empuja el contenido hacia arriba */
 }
 
 .pizza-details h3 {
-  margin-top: 0;
+  margin-top: 10px;
 }
 
 .pizza-details p {
-  margin: 5px 0;
+  margin: 10px 0;
   /* Opcional: podrías agregar margin-right si quieres más separación del borde derecho */
 }
