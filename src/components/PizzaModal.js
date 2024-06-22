@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import './PizzaModal.css';
+import { CartContext } from './CartContext';
 
-function PizzaModal({ pizza, closeModal, addToCart }) {
+function PizzaModal({ pizza, closeModal }) {
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState('Mediana');
   const [cheeseCrust, setCheeseCrust] = useState(false);
+  const { addToCart } = useContext(CartContext);
 
   const handleIncrement = () => {
     setQuantity(quantity + 1);
@@ -37,13 +39,14 @@ function PizzaModal({ pizza, closeModal, addToCart }) {
 
   const handleOrder = () => {
     const order = {
+      orderId: Date.now(), // Genera un ID único para el pedido
       pizza,
       quantity,
       size: selectedSize,
       cheeseCrust,
       totalPrice: calculateTotalPrice(),
     };
-    addToCart(order); // Llama a la función addToCart pasada como prop desde App.js
+    addToCart(order); // Llama a la función addToCart desde el contexto
     closeModal();
   };
 

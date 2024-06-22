@@ -8,8 +8,11 @@ import ContactPage from './pages/ContactPage';
 import ImageCarousel from './components/Carousel';
 import LoginModal from './components/LoginModal';
 import RegisterModal from './components/RegisterModal';
+import CartPage from '../src/components/CartPage'; // Ajusta la ruta según la estructura de tu proyecto
 
 import { CartProvider } from '../src/components/CartContext'; // Importa CartProvider si lo estás utilizando
+
+
 import './App.css';
 
 function ServiceHours() {
@@ -79,7 +82,7 @@ function App() {
               <li><Link to="/">Inicio</Link></li>
               <li><Link to="/about">Sobre Nosotros</Link></li>
               <li><Link to="/menu">Menú</Link></li>
-              <li><Link to="/cart">Carrito</Link></li> {/* Agrega un enlace para la ruta /cart */}
+              <li><Link to="/cart">Carrito</Link></li>
             </ul>
             <ImageCarousel />
           </nav>
@@ -95,9 +98,9 @@ function App() {
                 </>
               } />
               <Route path="/about" element={<AboutUsPage />} />
-              <Route path="/menu" element={<MenuPage addToCart={addToCart} />} /> {/* Asegúrate de pasar addToCart como prop */}
+              <Route path="/menu" element={<MenuPage addToCart={addToCart} />} />
               <Route path="/contact" element={<ContactPage />} />
-              <Route path="/cart" element={<CartPage cartItems={cartItems} />} /> {/* Define la ruta para /cart y pasa cartItems como prop */}
+              <Route path="/cart" element={<CartPage cartItems={cartItems} />} />
             </Routes>
           </main>
           <Footer />
