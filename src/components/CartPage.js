@@ -1,9 +1,11 @@
+// CartPage.js
+
 import React, { useContext } from 'react';
 import { CartContext } from './CartContext'; // Ajusta la ruta según la estructura de tu proyecto
 import './CartPage.css'; // Ajusta la ruta según la estructura de tu proyecto
 
 function CartPage() {
-  const { cartItems, setCartItems, removeFromCart } = useContext(CartContext);
+  const { cartItems, setCartItems } = useContext(CartContext);
 
   const handleRemoveFromCart = (index) => {
     const newCartItems = cartItems.filter((_, i) => i !== index);

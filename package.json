@@ -1,7 +1,10 @@
 {
+ 
+  
   "name": "pizzas",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3001",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
@@ -9,8 +12,11 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.7.2",
     "dotenv": "^16.4.5",
+    "express": "^4.19.2",
     "mongodb": "^6.7.0",
+    "mysql": "^2.18.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icons": "^5.2.1",
@@ -32,6 +38,7 @@
       "react-app/jest"
     ]
   },
+  
   "browserslist": {
     "production": [
       ">0.2%",
@@ -48,3 +55,4 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   }
 }
+

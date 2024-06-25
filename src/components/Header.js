@@ -1,11 +1,9 @@
-// Header.js
-
 import React, { useContext } from 'react';
 import './Header.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-import { CartContext } from '../components/CartContext'; // Ajusta la ruta según sea necesario
+import { CartContext } from '../components/CartContext';
 import logo from '../assets/logo.png';
 import inicioImg from '../assets/inicio.png';
 import menuImg from '../assets/menu.png';

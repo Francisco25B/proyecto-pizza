@@ -7,11 +7,10 @@ import AboutUsPage from './pages/AboutUsPage';
 import ContactPage from './pages/ContactPage';
 import ImageCarousel from './components/Carousel';
 import LoginModal from './components/LoginModal';
-import RegisterModal from './components/RegisterModal';
-import CartPage from '../src/components/CartPage'; // Ajusta la ruta según la estructura de tu proyecto
+import RegisterModal from './components/RegisterModal'; // Asegúrate de importar el componente de registro
+import CartPage from './components/CartPage'; // Ajusta la ruta según la estructura de tu proyecto
 
-import { CartProvider } from '../src/components/CartContext'; // Importa CartProvider si lo estás utilizando
-
+import { CartProvider } from './components/CartContext'; // Ajusta la ruta según la estructura de tu proyecto
 
 import './App.css';
 
@@ -52,20 +51,18 @@ function App() {
 
   const toggleLoginModal = () => {
     setLoginModalVisible(!isLoginModalVisible);
+    // Si abres el modal de inicio de sesión, asegúrate de cerrar el de registro si está abierto
+    if (isRegisterModalVisible) {
+      setRegisterModalVisible(false);
+    }
   };
 
   const toggleRegisterModal = () => {
     setRegisterModalVisible(!isRegisterModalVisible);
-  };
-
-  const openLoginModal = () => {
-    setLoginModalVisible(true);
-    setRegisterModalVisible(false);
-  };
-
-  const openRegisterModal = () => {
-    setLoginModalVisible(false);
-    setRegisterModalVisible(true);
+    // Si abres el modal de registro, asegúrate de cerrar el de inicio de sesión si está abierto
+    if (isLoginModalVisible) {
+      setLoginModalVisible(false);
+    }
   };
 
   const addToCart = (order) => {
@@ -77,12 +74,13 @@ function App() {
       <CartProvider>
         <div className="App">
           <Header toggleLoginModal={toggleLoginModal} />
+          {isLoginModalVisible && <LoginModal toggleLoginModal={toggleLoginModal} openRegisterModal={toggleRegisterModal} />}
+          {isRegisterModalVisible && <RegisterModal toggleRegisterModal={toggleRegisterModal} openLoginModal={toggleLoginModal} />} {/* Asegúrate de pasar openLoginModal aquí */}
           <nav>
             <ul>
               <li><Link to="/">Inicio</Link></li>
               <li><Link to="/about">Sobre Nosotros</Link></li>
               <li><Link to="/menu">Menú</Link></li>
-              <li><Link to="/cart">Carrito</Link></li>
             </ul>
             <ImageCarousel />
           </nav>
@@ -100,7 +98,7 @@ function App() {
               <Route path="/about" element={<AboutUsPage />} />
               <Route path="/menu" element={<MenuPage addToCart={addToCart} />} />
               <Route path="/contact" element={<ContactPage />} />
-              <Route path="/cart" element={<CartPage cartItems={cartItems} />} />
+              <Route path="/cart" element={<CartPage />} />
             </Routes>
           </main>
           <Footer />
