@@ -3,31 +3,32 @@ import axios from 'axios';
 import './RegisterModal.css';
 
 function RegisterModal({ toggleRegisterModal, openLoginModal }) {
-  const [fullName, setFullName] = useState('');
+  const [nombre_completo, setNombreCompleto] = useState('');
+  const [telefono, setTelefono] = useState('');
   const [email, setEmail] = useState('');
-  const [address, setAddress] = useState('');
-  const [placeReferences, setPlaceReferences] = useState('');
+  const [direccion, setDireccion] = useState('');
+  const [especificaciones_direccion, setEspecificacionesDireccion] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Objeto con los datos del usuario a registrar
     const newUser = {
-      fullName: fullName,
-      email: email,
-      address: address,
-      placeReferences: placeReferences
+      nombre_completo,
+      telefono,
+      email,
+      direccion,
+      especificaciones_direccion,
     };
 
-    // Hacer una solicitud POST usando Axios
-    axios.post('/register_user.php', newUser)
-  .then(response => {
-    console.log(response.data);
-    // Aquí podrías mostrar un mensaje de éxito o redirigir al usuario
-  })
-  .catch(error => {
-    console.error('Error en el registro: ', error);
-  });
+    axios.post('http://localhost:3001/register_user', newUser)
+    .then(response => {
+        console.log(response.data);
+        // Aquí podrías mostrar un mensaje de éxito o redirigir al usuario
+    })
+    .catch(error => {
+        console.error('Error en el registro:', error);
+        // Aquí puedes manejar el error, mostrar un mensaje al usuario, etc.
+    });
 
   };
 
@@ -38,20 +39,24 @@ function RegisterModal({ toggleRegisterModal, openLoginModal }) {
         <h2>Registrarse</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="fullName">Nombre Completo:</label>
-            <input type="text" id="fullName" name="fullName" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
+            <label htmlFor="nombre_completo">Nombre Completo:</label>
+            <input type="text" id="nombre_completo" name="nombre_completo" value={nombre_completo} onChange={(e) => setNombreCompleto(e.target.value)} required />
+          </div>
+          <div className="form-group">
+            <label htmlFor="telefono">Número de Teléfono:</label>
+            <input type="text" id="telefono" name="telefono" value={telefono} onChange={(e) => setTelefono(e.target.value)} required />
           </div>
           <div className="form-group">
             <label htmlFor="email">Correo Electrónico:</label>
             <input type="email" id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
           </div>
           <div className="form-group">
-            <label htmlFor="address">Dirección:</label>
-            <input type="text" id="address" name="address" value={address} onChange={(e) => setAddress(e.target.value)} required />
+            <label htmlFor="direccion">Dirección:</label>
+            <input type="text" id="direccion" name="direccion" value={direccion} onChange={(e) => setDireccion(e.target.value)} required />
           </div>
           <div className="form-group">
-            <label htmlFor="placeReferences">Referencias del Lugar:</label>
-            <input type="text" id="placeReferences" name="placeReferences" value={placeReferences} onChange={(e) => setPlaceReferences(e.target.value)} required />
+            <label htmlFor="especificaciones_direccion">Referencias del Lugar:</label>
+            <input type="text" id="especificaciones_direccion" name="especificaciones_direccion" value={especificaciones_direccion} onChange={(e) => setEspecificacionesDireccion(e.target.value)} required />
           </div>
           <button type="submit" className="register-button">Registrar</button>
         </form>
