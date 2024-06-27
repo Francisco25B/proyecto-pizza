@@ -4,7 +4,7 @@ import './LoginModal.css';
 
 function LoginModal({ toggleLoginModal, openRegisterModal }) {
   const [fullName, setFullName] = useState('');
-  const [number, setNumber] = useState('');
+  const [number, setNumber] = useState(''); // Cambiar phoneNumber por number
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -14,10 +14,9 @@ function LoginModal({ toggleLoginModal, openRegisterModal }) {
       number: number
     };
 
-    axios.post('http://localhost:3002/login', userCredentials)
+    axios.post('http://localhost:3001/login', userCredentials) // Cambiar puerto a 3001
       .then(response => {
         console.log(response.data);
-        
       })
       .catch(error => {
         console.error('Error en el inicio de sesión: ', error);
@@ -49,3 +48,4 @@ function LoginModal({ toggleLoginModal, openRegisterModal }) {
 }
 
 export default LoginModal;
+
