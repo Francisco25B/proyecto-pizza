@@ -9,10 +9,10 @@ function RegisterModal({ toggleRegisterModal, openLoginModal }) {
   const [direccion, setDireccion] = useState('');
   const [especificaciones_direccion, setEspecificacionesDireccion] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-
-    const newUser = {
+    console.log(nombre_completo,telefono,email,direccion,especificaciones_direccion)
+   const newUser = {
       nombre_completo,
       telefono,
       email,
@@ -20,7 +20,7 @@ function RegisterModal({ toggleRegisterModal, openLoginModal }) {
       especificaciones_direccion,
     };
 
-    axios.post('http://localhost:3001/register_user', newUser)
+    const response=await axios.post('http://localhost:3001/register_user', newUser)
     .then(response => {
         console.log(response.data);
         // Aquí podrías mostrar un mensaje de éxito o redirigir al usuario
