@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Swal from 'sweetalert2'; // Importar SweetAlert2
 import './RegisterModal.css';
 
 function RegisterModal({ toggleRegisterModal, openLoginModal }) {
@@ -9,10 +10,10 @@ function RegisterModal({ toggleRegisterModal, openLoginModal }) {
   const [direccion, setDireccion] = useState('');
   const [especificaciones_direccion, setEspecificacionesDireccion] = useState('');
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(nombre_completo,telefono,email,direccion,especificaciones_direccion)
-   const newUser = {
+
+    const newUser = {
       nombre_completo,
       telefono,
       email,
@@ -20,16 +21,28 @@ function RegisterModal({ toggleRegisterModal, openLoginModal }) {
       especificaciones_direccion,
     };
 
-    const response=await axios.post('http://localhost:3001/register_user', newUser)
-    .then(response => {
-        console.log(response.data);
-        // Aquí podrías mostrar un mensaje de éxito o redirigir al usuario
-    })
-    .catch(error => {
-        console.error('Error en el registro:', error);
-        // Aquí puedes manejar el error, mostrar un mensaje al usuario, etc.
-    });
+    try {
+      const response = await axios.post('http://localhost:3001/register_user', newUser);
 
+      if (response.status === 200) {
+        // Mostrar SweetAlert2 de éxito
+        Swal.fire({
+          icon: 'success',
+          title: 'Usuario registrado correctamente',
+          text: '¡Ahora puedes iniciar sesión!',
+        }).then((result) => {
+          if (result.isConfirmed || result.isDismissed) {
+            openLoginModal(); // Redirigir al usuario a la página de inicio de sesión
+          }
+        });
+      } else {
+        console.error('Error en el registro:', response.data);
+        // Manejar otro tipo de error si es necesario
+      }
+    } catch (error) {
+      console.error('Error en el registro:', error);
+      // Manejar el error de la petición
+    }
   };
 
   return (
@@ -69,3 +82,5 @@ function RegisterModal({ toggleRegisterModal, openLoginModal }) {
 }
 
 export default RegisterModal;
+
+

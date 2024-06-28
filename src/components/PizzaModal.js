@@ -100,7 +100,7 @@ function PizzaModal({ pizza, closeModal }) {
               <button className="quantity-button" onClick={handleIncrement}>+</button>
             </div>
             <p><strong>Precio:</strong> ${calculateTotalPrice()}</p>
-            <button className="order-button" onClick={handleOrder}>Ordenar</button>
+            <button className="order-button" onClick={handleOrder}>Agregar al Carrito</button>
           </div>
         </div>
       </div>

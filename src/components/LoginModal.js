@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Swal from 'sweetalert2'; // Importar SweetAlert2
 import './LoginModal.css';
 
 function LoginModal({ toggleLoginModal, openRegisterModal }) {
   const [fullName, setFullName] = useState('');
-  const [number, setNumber] = useState(''); // Cambiar phoneNumber por number
+  const [number, setNumber] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -14,12 +15,24 @@ function LoginModal({ toggleLoginModal, openRegisterModal }) {
       number: number
     };
 
-    axios.post('http://localhost:3001/login', userCredentials) // Cambiar puerto a 3001
+    axios.post('http://localhost:3001/login', userCredentials)
       .then(response => {
-        console.log(response.data);
+        console.log(response.data); // Aquí puedes hacer algo con la respuesta si es necesario
+        Swal.fire({
+          icon: 'success',
+          title: 'Inicio de sesión exitoso',
+          text: '¡Usuario autenticado correctamente!',
+        }).then(() => {
+          toggleLoginModal(); // Cierra el modal de inicio de sesión
+        });
       })
       .catch(error => {
         console.error('Error en el inicio de sesión: ', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al iniciar sesión',
+          text: 'Por favor, verifica tus credenciales e intenta de nuevo.',
+        });
       });
   };
 
@@ -48,4 +61,3 @@ function LoginModal({ toggleLoginModal, openRegisterModal }) {
 }
 
 export default LoginModal;
-
