@@ -1,0 +1,109 @@
+.productos-container {
+    margin: 20px;
+  }
+  
+  .search-box {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    max-width: 300px;
+  }
+  
+  .search-box input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    width: 100%;
+    margin-right: 10px;
+  }
+  .add-button {
+    position: absolute;
+    top: 160px; /* Ajusta la posición vertical según necesites */
+    right: 1050px; /* Ajusta la posición horizontal según necesites */
+    background-color: orangered;
+    color: white;
+    border: none;
+    width: 150px; /* Diámetro del botón */
+    height: 50px; /* Diámetro del botón */
+    border-radius: 5%; /* Hace que el botón sea circular */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    cursor: pointer;
+  }
+  
+  .add-button:hover {
+    background-color: #ffaa55; /* Cambio de color en hover */
+  }
+  
+  
+  
+  .search-box button {
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  
+  .productos-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .productos-table th, .productos-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .productos-table th {
+    background-color: #2980b9;
+    color: white;
+  }
+  
+  .productos-table .pizza-image {
+    max-width: 100px;
+    height: auto;
+    border-radius: 50%;
+  }
+  
+  .productos-table .view-button {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    margin-right: 5px;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  
+  .productos-table .edit-button {
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    margin-right: 5px;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  
+  .productos-table .delete-button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    margin-right: 5px;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  
+  .productos-table .view-button:hover,
+  .productos-table .edit-button:hover,
+  .productos-table .delete-button:hover {
+    opacity: 0.8;
+  }
+  

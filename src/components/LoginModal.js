@@ -1,39 +1,32 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import Swal from 'sweetalert2'; // Importar SweetAlert2
+import { useNavigate } from 'react-router-dom';
+import { validateLogin } from '../components/controlador';
 import './LoginModal.css';
 
-function LoginModal({ toggleLoginModal, openRegisterModal }) {
+function LoginModal({ toggleLoginModal, openRegisterModal, onLoginSuccess }) {
   const [fullName, setFullName] = useState('');
   const [number, setNumber] = useState('');
+  const navigate = useNavigate(); // Cambia de useHistory a useNavigate
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const userCredentials = {
       fullName: fullName,
-      number: number
+      number: number,
     };
 
-    axios.post('http://localhost:3001/login', userCredentials)
-      .then(response => {
-        console.log(response.data); // Aquí puedes hacer algo con la respuesta si es necesario
-        Swal.fire({
-          icon: 'success',
-          title: 'Inicio de sesión exitoso',
-          text: '¡Usuario autenticado correctamente!',
-        }).then(() => {
-          toggleLoginModal(); // Cierra el modal de inicio de sesión
-        });
-      })
-      .catch(error => {
-        console.error('Error en el inicio de sesión: ', error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Error al iniciar sesión',
-          text: 'Por favor, verifica tus credenciales e intenta de nuevo.',
-        });
-      });
+    // Aquí deberías validar el login
+    validateLogin(userCredentials, (userData) => {
+      onLoginSuccess(userData); // Llama a la función de éxito al iniciar sesión
+      setFullName(''); // Limpia los campos después de iniciar sesión
+      setNumber('');
+      
+      // Redirige al usuario dependiendo del rol o cualquier lógica de redirección necesaria
+      if (userData.rol_id === 2) { // Suponiendo que el rol de administrador es 2
+        navigate('/administrador'); // Redirige a la interfaz del administrador usando navigate
+      }
+    });
   };
 
   return (
@@ -44,11 +37,25 @@ function LoginModal({ toggleLoginModal, openRegisterModal }) {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="fullName">Nombre Completo:</label>
-            <input type="text" id="fullName" name="fullName" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
+            <input
+              type="text"
+              id="fullName"
+              name="fullName"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              required
+            />
           </div>
           <div className="form-group">
             <label htmlFor="number">Número:</label>
-            <input type="text" id="number" name="number" value={number} onChange={(e) => setNumber(e.target.value)} required />
+            <input
+              type="text"
+              id="number"
+              name="number"
+              value={number}
+              onChange={(e) => setNumber(e.target.value)}
+              required
+            />
           </div>
           <button type="submit" className="login-button">Ingresar</button>
         </form>

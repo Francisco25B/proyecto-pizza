@@ -1,12 +1,12 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import './PizzaModal.css';
-import { CartContext } from './CartContext';
+import { useCart } from './CartContext'; // Importa useCart
 
 function PizzaModal({ pizza, closeModal }) {
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState('Mediana');
   const [cheeseCrust, setCheeseCrust] = useState(false);
-  const { addToCart } = useContext(CartContext);
+  const { addToCart } = useCart(); // Usa useCart para obtener addToCart
 
   const handleIncrement = () => {
     setQuantity(quantity + 1);
@@ -29,25 +29,25 @@ function PizzaModal({ pizza, closeModal }) {
   const calculateTotalPrice = () => {
     let totalPrice = pizza.price;
     if (selectedSize === 'Grande') {
-      totalPrice += 2; // Añadir $2 al precio total si la pizza es grande
+      totalPrice += 2;
     }
     if (cheeseCrust) {
-      totalPrice += 1; // Añadir $1 al precio total si se selecciona la orilla de queso
+      totalPrice += 1;
     }
-    return totalPrice * quantity; // Multiplicar por la cantidad de pizzas
+    return totalPrice * quantity;
   };
 
   const handleOrder = () => {
     const order = {
-      orderId: Date.now(), // Genera un ID único para el pedido
+      orderId: Date.now(),
       pizza,
       quantity,
       size: selectedSize,
       cheeseCrust,
       totalPrice: calculateTotalPrice(),
     };
-    addToCart(order); // Llama a la función addToCart desde el contexto
-    closeModal();
+    addToCart(order); // Llama a addToCart con los detalles del pedido
+    closeModal(); // Cierra el modal después de agregar al carrito
   };
 
   return (
@@ -83,7 +83,6 @@ function PizzaModal({ pizza, closeModal }) {
                 Grande
               </button>
             </div>
-            <p><strong>Con:</strong> {pizza.ingredients}</p>
             <div className="crust-option">
               <input
                 type="checkbox"
@@ -93,7 +92,6 @@ function PizzaModal({ pizza, closeModal }) {
               />
               <label htmlFor="cheese-crust">Orilla de Queso</label>
             </div>
-            <p><strong>Cantidad:</strong> {quantity}</p>
             <div className="quantity-control">
               <button className="quantity-button" onClick={handleDecrement}>-</button>
               <span className="quantity">{quantity}</span>
@@ -109,3 +107,4 @@ function PizzaModal({ pizza, closeModal }) {
 }
 
 export default PizzaModal;
+

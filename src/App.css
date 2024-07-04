@@ -13,6 +13,11 @@ html, body, #root, .App {
   display: flex;
   flex-direction: column;
 }
+.carousel {
+  margin-top: 100px; /* Ajusta el margen superior para separarlo del contenido superior */
+  /* Agrega un relleno para mejorar el espaciado */
+}
+
 
 .App {
   flex: 1;
@@ -20,9 +25,9 @@ html, body, #root, .App {
 
 main {
  
-    padding: 20px;
-    flex: 1;
-    margin-top: 30px; /* Reducir el margen superior del contenido principal */
+    padding: 100px;
+    flex: 10;
+    margin-top: 100px; /* Reducir el margen superior del contenido principal */
   
   
 }
@@ -37,7 +42,7 @@ header {
 main {
   padding: 20px;
   flex: 1;
-  margin-top: 20px; /* Añadir margen superior para evitar que el contenido sea tapado por el header */
+  margin-top: 30px; /* Añadir margen superior para evitar que el contenido sea tapado por el header */
 }
 
 .home {

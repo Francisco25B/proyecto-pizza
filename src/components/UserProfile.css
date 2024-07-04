@@ -1,0 +1,70 @@
+.user-profile {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-picture {
+    margin-right: 20px;
+}
+
+.profile-picture .avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+}
+
+.profile-details h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.profile-details p {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #888;
+}
+
+.profile-table {
+    margin-top: 20px;
+}
+
+.profile-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.profile-table table td {
+    padding: 12px 20px;
+    border-bottom: 1px solid #ddd;
+    font-size: 16px;
+}
+
+.profile-table table td:first-child {
+    width: 50px;
+    text-align: center;
+    color: #888;
+}
+
+.profile-table table td:last-child {
+    text-align: left;
+    font-weight: bold;
+}
+
+.profile-table table td svg {
+    font-size: 20px;
+    margin-right: 10px;
+    color: #2980b9;
+}

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import MenuPage from './pages/MenuPage';
@@ -7,51 +7,36 @@ import AboutUsPage from './pages/AboutUsPage';
 import ContactPage from './pages/ContactPage';
 import ImageCarousel from './components/Carousel';
 import LoginModal from './components/LoginModal';
-import RegisterModal from './components/RegisterModal'; // Asegúrate de importar el componente de registro
-import CartPage from './components/CartPage'; // Ajusta la ruta según la estructura de tu proyecto
-
-import { CartProvider } from './components/CartContext'; // Ajusta la ruta según la estructura de tu proyecto
-
+import RegisterModal from './components/RegisterModal';
+import CartPage from './components/CartPage';
+import ServiceHours from './components/ServiceHours';
+import AdminInterface from './pages/AdminInterface'; // Ajusta la ruta según la estructura de tu proyecto
+import { CartProvider } from './components/CartContext';
+import { AuthProvider, useAuthentication } from './components/authentication'; // Ajusta la ruta según la estructura de tu proyecto
 import './App.css';
 
-function ServiceHours() {
-  const daysOfWeek = [
-    { day: 'Lunes', hours: '2:00 PM - 10:00 PM' },
-    { day: 'Martes', hours: '2:00 PM - 10:00 PM' },
-    { day: 'Miércoles', hours: '2:00 PM - 10:00 PM' },
-    { day: 'Jueves', hours: 'Sin Servicio' },
-    { day: 'Viernes', hours: '2:00 PM - 10:00 PM' },
-    { day: 'Sábado', hours: '2:00 PM - 10:00 PM' },
-    { day: 'Domingo', hours: '2:00 PM - 10:00 PM' },
-  ];
-
-  const today = new Date().getDay();
-
+function App() {
   return (
-    <div className="service-hours">
-      <h2>Horario de Servicio</h2>
-      <ul>
-        {daysOfWeek.map((item, index) => (
-          <li 
-            key={index} 
-            className={index + 1 === today ? 'highlight' : ''}
-          >
-            {item.day}: {item.hours}
-          </li>
-        ))}
-      </ul>
-    </div>
+    <Router>
+      <AuthProvider>
+        <CartProvider>
+          <AppContent />
+        </CartProvider>
+      </AuthProvider>
+    </Router>
   );
 }
 
-function App() {
-  const [isLoginModalVisible, setLoginModalVisible] = useState(false);
-  const [isRegisterModalVisible, setRegisterModalVisible] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
+function AppContent() {
+  const { user, login, logout } = useAuthentication();
+  const [isLoginModalVisible, setLoginModalVisible] = React.useState(false);
+  const [isRegisterModalVisible, setRegisterModalVisible] = React.useState(false);
+  
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith('/administrador');
 
   const toggleLoginModal = () => {
     setLoginModalVisible(!isLoginModalVisible);
-    // Si abres el modal de inicio de sesión, asegúrate de cerrar el de registro si está abierto
     if (isRegisterModalVisible) {
       setRegisterModalVisible(false);
     }
@@ -59,52 +44,75 @@ function App() {
 
   const toggleRegisterModal = () => {
     setRegisterModalVisible(!isRegisterModalVisible);
-    // Si abres el modal de registro, asegúrate de cerrar el de inicio de sesión si está abierto
     if (isLoginModalVisible) {
       setLoginModalVisible(false);
     }
   };
 
-  const addToCart = (order) => {
-    setCartItems([...cartItems, order]);
+  const handleSuccessfulLogin = (userData) => {
+    login(userData);
+    setLoginModalVisible(false);
   };
 
   return (
-    <Router>
-      <CartProvider>
-        <div className="App">
-          <Header toggleLoginModal={toggleLoginModal} />
-          {isLoginModalVisible && <LoginModal toggleLoginModal={toggleLoginModal} openRegisterModal={toggleRegisterModal} />}
-          {isRegisterModalVisible && <RegisterModal toggleRegisterModal={toggleRegisterModal} openLoginModal={toggleLoginModal} />} {/* Asegúrate de pasar openLoginModal aquí */}
-          <nav>
-            <ul>
-              <li><Link to="/">Inicio</Link></li>
-              <li><Link to="/about">Sobre Nosotros</Link></li>
-              <li><Link to="/menu">Menú</Link></li>
-            </ul>
-            <ImageCarousel />
-          </nav>
-          <main>
-            <Routes>
-              <Route path="/" element={
-                <>
-                  <section id="home" className="home">
-                    <h1>Bienvenidos a Giovannis Pizza</h1>
-                    <p>¡Las mejores pizzas!</p>
-                    <ServiceHours />
-                  </section>
-                </>
-              } />
-              <Route path="/about" element={<AboutUsPage />} />
-              <Route path="/menu" element={<MenuPage addToCart={addToCart} />} />
-              <Route path="/contact" element={<ContactPage />} />
-              <Route path="/cart" element={<CartPage />} />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
-      </CartProvider>
-    </Router>
+    <div className={`App ${isAdminRoute ? 'admin-mode' : ''}`}>
+      {!isAdminRoute && (
+        <Header
+          toggleLoginModal={toggleLoginModal}
+          user={user}
+          handleLogout={logout}
+        />
+      )}
+      
+      {!isAdminRoute && (
+        <>
+          {user ? (
+            <div className="user-profile">
+              <p>Bienvenido, {user.nombre_completo}</p>
+              <button onClick={logout}>Cerrar Sesión</button>
+            </div>
+          ) : (
+            <>
+              {isLoginModalVisible && (
+                <LoginModal
+                  toggleLoginModal={toggleLoginModal}
+                  openRegisterModal={toggleRegisterModal}
+                  onLoginSuccess={handleSuccessfulLogin}
+                />
+              )}
+              {isRegisterModalVisible && (
+                <RegisterModal
+                  toggleRegisterModal={toggleRegisterModal}
+                  openLoginModal={toggleLoginModal}
+                />
+              )}
+            </>
+          )}
+          <ImageCarousel />
+        </>
+      )}
+
+      <main>
+        <Routes>
+          <Route path="/" element={
+            <>
+              <section id="home" className="home">
+                <h1>Bienvenidos a Giovannis Pizza</h1>
+                <p>¡Las mejores pizzas!</p>
+                <ServiceHours />
+              </section>
+            </>
+          } />
+          <Route path="/about" element={<AboutUsPage />} />
+          <Route path="/menu" element={<MenuPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/cart" element={<CartPage toggleLoginModal={toggleLoginModal} />} />
+          <Route path="/administrador/*" element={<AdminInterface />} /> {/* Ajuste aquí para manejar subrutas */}
+        </Routes>
+      </main>
+      
+      {!isAdminRoute && <Footer />}
+    </div>
   );
 }
 
