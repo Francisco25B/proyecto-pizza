@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'; // Importar SweetAlert2
 import { validateLogin } from '../components/controlador';
 import './LoginModal.css';
 
@@ -10,6 +11,15 @@ function LoginModal({ toggleLoginModal, openRegisterModal, onLoginSuccess }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (number.length !== 10) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Número inválido',
+        text: 'El número debe contener exactamente 10 dígitos.',
+      });
+      return;
+    }
 
     const userCredentials = {
       fullName: fullName,
@@ -27,6 +37,13 @@ function LoginModal({ toggleLoginModal, openRegisterModal, onLoginSuccess }) {
         navigate('/administrador'); // Redirige a la interfaz del administrador usando navigate
       }
     });
+  };
+
+  const handleNumberChange = (e) => {
+    const value = e.target.value;
+    if (value.length <= 10 && /^[0-9]*$/.test(value)) {
+      setNumber(value);
+    }
   };
 
   return (
@@ -53,7 +70,9 @@ function LoginModal({ toggleLoginModal, openRegisterModal, onLoginSuccess }) {
               id="number"
               name="number"
               value={number}
-              onChange={(e) => setNumber(e.target.value)}
+              onChange={handleNumberChange}
+              pattern="\d{10}"
+              title="Debe contener 10 dígitos numéricos"
               required
             />
           </div>

@@ -13,6 +13,15 @@ function RegisterModal({ toggleRegisterModal, openLoginModal }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (telefono.length !== 10) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Número de teléfono inválido',
+        text: 'El número de teléfono debe contener exactamente 10 dígitos.',
+      });
+      return;
+    }
+
     const newUser = {
       nombre_completo,
       telefono,
@@ -45,6 +54,13 @@ function RegisterModal({ toggleRegisterModal, openLoginModal }) {
     }
   };
 
+  const handleTelefonoChange = (e) => {
+    const value = e.target.value;
+    if (value.length <= 10 && /^[0-9]*$/.test(value)) {
+      setTelefono(value);
+    }
+  };
+
   return (
     <div className="register-modal">
       <div className="register-modal-content">
@@ -57,7 +73,7 @@ function RegisterModal({ toggleRegisterModal, openLoginModal }) {
           </div>
           <div className="form-group">
             <label htmlFor="telefono">Número de Teléfono:</label>
-            <input type="text" id="telefono" name="telefono" value={telefono} onChange={(e) => setTelefono(e.target.value)} required />
+            <input type="text" id="telefono" name="telefono" value={telefono} onChange={handleTelefonoChange} pattern="\d{10}" title="Debe contener 10 dígitos numéricos" required />
           </div>
           <div className="form-group">
             <label htmlFor="email">Correo Electrónico:</label>
@@ -82,5 +98,3 @@ function RegisterModal({ toggleRegisterModal, openLoginModal }) {
 }
 
 export default RegisterModal;
-
-
