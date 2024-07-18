@@ -4,6 +4,7 @@ import UserProfile from '../components/UserProfile';
 import AdminDashboard from './AdminDashboard';
 import Pedidos from './pedidos'; // Asegúrate de que el nombre del archivo y el componente coincidan
 import Productos from './productos'; // Asegúrate de que el nombre del archivo y el componente coincidan
+import Usuarios from './usuarios'; // Asegúrate de que el nombre del archivo y el componente coincidan
 import './AdminInterface.css';
 
 function AdminInterface() {
@@ -28,6 +29,12 @@ function AdminInterface() {
             onClick={() => setSelectedSection('dashboard')}
           >
             <i className="fa fa-tachometer-alt"></i> Dashboard
+          </li>
+          <li
+            className={selectedSection === 'usuarios' ? 'active' : ''}
+            onClick={() => setSelectedSection('usuarios')}
+          >
+            <i className="fa fa-user"></i> Usuarios
           </li>
           <li
             className={selectedSection === 'pedidos' ? 'active' : ''}
@@ -65,6 +72,7 @@ function AdminInterface() {
         <main className="admin-main">
           {selectedSection === 'profile' && <UserProfile />}
           {selectedSection === 'dashboard' && <AdminDashboard />}
+          {selectedSection === 'usuarios' && <Usuarios />} {/* Nombre del componente importado */}
           {selectedSection === 'pedidos' && <Pedidos />} {/* Nombre del componente importado */}
           {selectedSection === 'productos' && <Productos />} {/* Nombre del componente importado */}
         </main>

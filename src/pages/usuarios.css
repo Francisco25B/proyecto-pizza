@@ -1,0 +1,103 @@
+/* Estilos para la tabla de usuarios */
+.usuarios-container {
+  margin: 20px;
+}
+
+.add-button {
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.add-button:hover {
+  background-color: #219653;
+}
+
+.search-box {
+  margin-bottom: 10px;
+}
+
+.search-box input {
+  padding: 8px;
+  width: 200px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.search-box button {
+  background-color: #ccc;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.search-box button:hover {
+  background-color: #bbb;
+}
+
+.usuarios-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.usuarios-table th,
+.usuarios-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.usuarios-table th {
+  background-color: #f2f2f2;
+}
+
+.usuarios-table td {
+  vertical-align: middle;
+}
+
+.view-button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 3px;
+  margin-right: 5px;
+}
+
+.view-button:hover {
+  background-color: #2980b9;
+}
+
+.edit-button {
+  background-color: #e67e22;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 3px;
+  margin-right: 5px;
+}
+
+.edit-button:hover {
+  background-color: #d35400;
+}
+
+.delete-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.delete-button:hover {
+  background-color: #c0392b;
+}
