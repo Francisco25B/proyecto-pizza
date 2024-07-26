@@ -34,15 +34,16 @@ function RegisterModal({ toggleRegisterModal, openLoginModal }) {
       const response = await axios.post('http://localhost:3001/register_user', newUser);
 
       if (response.status === 200) {
-        // Mostrar SweetAlert2 de éxito
+        // Mostrar SweetAlert2 de éxito con temporizador
         Swal.fire({
           icon: 'success',
           title: 'Usuario registrado correctamente',
           text: '¡Ahora puedes iniciar sesión!',
-        }).then((result) => {
-          if (result.isConfirmed || result.isDismissed) {
-            openLoginModal(); // Redirigir al usuario a la página de inicio de sesión
-          }
+          timer: 2000,  // Desaparecerá automáticamente después de 2000 milisegundos (2 segundos)
+          timerProgressBar: true,  // Barra de progreso del temporizador
+          showConfirmButton: false, // Ocultar el botón de confirmación
+        }).then(() => {
+          openLoginModal(); // Redirigir al usuario a la página de inicio de sesión
         });
       } else {
         console.error('Error en el registro:', response.data);

@@ -1,4 +1,3 @@
-// controlador.js
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
@@ -14,13 +13,7 @@ export const validateLogin = (userCredentials, onSuccess) => {
       if (data && data.user && data.user.rol_id) {
         const { rol_id } = data.user;
         if (rol_id === 1 || rol_id === 2) { // Permitimos tanto usuario normal como administrador
-          Swal.fire({
-            icon: 'success',
-            title: 'Inicio de sesión exitoso',
-            text: '¡Usuario autenticado correctamente!',
-          }).then(() => {
-            onSuccess(data.user); // Actualiza el estado del usuario en App.js
-          });
+          onSuccess(data.user); // Actualiza el estado del usuario en App.js
         } else {
           throw new Error("Rol no reconocido");
         }

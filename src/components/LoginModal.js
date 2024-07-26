@@ -12,11 +12,16 @@ function LoginModal({ toggleLoginModal, openRegisterModal, onLoginSuccess }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Validar que el número tenga exactamente 10 dígitos
     if (number.length !== 10) {
       Swal.fire({
         icon: 'error',
         title: 'Número inválido',
         text: 'El número debe contener exactamente 10 dígitos.',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+        allowOutsideClick: false
       });
       return;
     }
@@ -26,22 +31,43 @@ function LoginModal({ toggleLoginModal, openRegisterModal, onLoginSuccess }) {
       number: number,
     };
 
-    // Aquí deberías validar el login
-    validateLogin(userCredentials, (userData) => {
-      onLoginSuccess(userData); // Llama a la función de éxito al iniciar sesión
-      setFullName(''); // Limpia los campos después de iniciar sesión
-      setNumber('');
-      
-      // Redirige al usuario dependiendo del rol o cualquier lógica de redirección necesaria
-      if (userData.rol_id === 2) { // Suponiendo que el rol de administrador es 2
-        navigate('/administrador'); // Redirige a la interfaz del administrador usando navigate
+    // Llamar a la función de validación de inicio de sesión
+    validateLogin(userCredentials,
+      (userData) => {
+        onLoginSuccess(userData); // Llama a la función de éxito al iniciar sesión
+        setFullName(''); // Limpiar los campos después de iniciar sesión
+        setNumber('');
+
+        // Redirigir al usuario dependiendo del rol o cualquier lógica de redirección necesaria
+        if (userData.rol_id === 2) { // Suponiendo que el rol de administrador es 2
+          navigate('/administrador'); // Redirige a la interfaz del administrador usando navigate
+        }
+
+        // Mostrar un mensaje de éxito que se cierra automáticamente después de 2 segundos
+        Swal.fire({
+          icon: 'success',
+          title: 'Sesión iniciada correctamente',
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+          allowOutsideClick: false
+        });
+      },
+      (error) => {
+        // Mostrar alerta de error si hay un problema durante el inicio de sesión
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al iniciar sesión',
+          text: 'Por favor, verifica tus credenciales e intenta de nuevo.',
+        });
       }
-    });
+    );
   };
 
   const handleNumberChange = (e) => {
     const value = e.target.value;
-    if (value.length <= 10 && /^[0-9]*$/.test(value)) {
+    // Validar que el valor ingresado sean números y no exceda los 10 dígitos
+    if (/^\d*$/.test(value) && value.length <= 10) {
       setNumber(value);
     }
   };

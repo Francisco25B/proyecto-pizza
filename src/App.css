@@ -1,71 +1,65 @@
-/* src/App.css */
-
+/* Ajustes generales para el diseño de la aplicación */
 .App {
   background-color: rgb(255, 255, 255); /* Color de fondo */
   text-align: center;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  padding: 20px; /* Añade un relleno general */
 }
+
 html, body, #root, .App {
   height: 100%;
   margin: 0;
   display: flex;
   flex-direction: column;
 }
+
+/* Estilos específicos para el carrusel */
 .carousel {
-  margin-top: 100px; /* Ajusta el margen superior para separarlo del contenido superior */
-  /* Agrega un relleno para mejorar el espaciado */
+  margin-top: 50px; /* Ajusta el margen superior del carrusel */
+  padding: 20px; /* Añade relleno alrededor del carrusel */
+  border: 2px solid #ccc; /* Borde para destacar el carrusel */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
 }
 
-
-.App {
-  flex: 1;
-}
-
+/* Ajustes para el contenido principal */
 main {
- 
-    padding: 100px;
-    flex: 10;
-    margin-top: 100px; /* Reducir el margen superior del contenido principal */
-  
-  
-}
-header {
-  
-    margin-bottom: 20px;
-    
-  
-  
-}
-
-main {
-  padding: 20px;
   flex: 1;
   margin-top: 30px; /* Añadir margen superior para evitar que el contenido sea tapado por el header */
+  padding: 20px;
 }
 
+/* Ajustes para el encabezado */
+header {
+  margin-bottom: 20px;
+}
+
+/* Estilos para la sección home */
 .home {
-  margin-top: 20px; /* Asegura que la sección home tenga un margen superior suficiente */
+  margin-top: 20px;
 }
 
 .home h1 {
   font-family: 'Great Vibes', cursive;
-  font-size: 8rem;
+  font-size: 4rem; /* Reducir el tamaño del título para que no sea demasiado grande */
   margin: 20px 0;
   color: rgb(0, 0, 0);
 }
 
 .home p {
-  font-family: 'Comic', cursive ;
-  font-size: 1.5rem;
-  margin: 15px 20px;
+  font-family: 'Comic Sans MS', cursive; /* Cambiar la fuente a Comic Sans MS */
+  font-size: 1.2rem; /* Ajustar el tamaño del texto */
+  margin: 15px 0; /* Simplificar el margen */
 }
 
+/* Estilos para el menú */
 .menu {
   margin-top: auto;
 }
 
+/* Estilos para las secciones About y Contact */
 .about,
 .contact {
   margin: 20px 0;
@@ -76,6 +70,7 @@ main {
   font-size: 2rem;
   color: mediumaquamarine;
 }
+
 /* Estilos para el componente ServiceHours */
 .service-hours {
   background-color: #f9f9f9;
@@ -89,7 +84,7 @@ main {
 
 .service-hours h2 {
   margin-bottom: 15px;
-  font-size: 28px;
+  font-size: 24px; /* Reducir el tamaño del título */
   color: #333;
   text-transform: uppercase;
 }
@@ -101,7 +96,7 @@ main {
 
 .service-hours li {
   margin: 10px 0;
-  font-size: 20px;
+  font-size: 18px; /* Reducir el tamaño del texto */
   color: #666;
   padding: 10px;
   border-radius: 4px;
@@ -117,4 +112,58 @@ main {
 .service-hours li:hover {
   background-color: #f0f0f0; /* Ligera variación en el fondo al pasar el ratón */
   color: #000; /* Cambia el color del texto al pasar el ratón */
+}
+
+/* Media Queries para dispositivos móviles */
+@media (max-width: 768px) {
+  .home h1 {
+    font-size: 2.5rem; /* Tamaño de fuente más pequeño para pantallas más pequeñas */
+  }
+
+  .home p {
+    font-size: 1rem; /* Tamaño de fuente más pequeño para pantallas más pequeñas */
+  }
+
+  .carousel {
+    padding: 10px; /* Reducir el relleno en pantallas más pequeñas */
+  }
+
+  .service-hours {
+    padding: 15px; /* Reducir el relleno en pantallas más pequeñas */
+  }
+
+  .service-hours h2 {
+    font-size: 20px; /* Reducir el tamaño del título en pantallas más pequeñas */
+  }
+
+  .service-hours li {
+    font-size: 16px; /* Reducir el tamaño del texto en pantallas más pequeñas */
+  }
+}
+
+@media (max-width: 480px) {
+  .home h1 {
+    font-size: 1.8rem; /* Tamaño de fuente más pequeño para pantallas muy pequeñas */
+  }
+
+  .home p {
+    font-size: 0.9rem; /* Tamaño de fuente más pequeño para pantallas muy pequeñas */
+  }
+
+  .carousel {
+    margin-top: 20px; /* Ajustar el margen superior en pantallas muy pequeñas */
+    padding: 5px; /* Reducir el relleno en pantallas muy pequeñas */
+  }
+
+  .service-hours {
+    padding: 10px; /* Reducir aún más el relleno en pantallas muy pequeñas */
+  }
+
+  .service-hours h2 {
+    font-size: 18px; /* Reducir el tamaño del título en pantallas muy pequeñas */
+  }
+
+  .service-hours li {
+    font-size: 14px; /* Reducir el tamaño del texto en pantallas muy pequeñas */
+  }
 }

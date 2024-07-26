@@ -10,9 +10,9 @@ import LoginModal from './components/LoginModal';
 import RegisterModal from './components/RegisterModal';
 import CartPage from './components/CartPage';
 import ServiceHours from './components/ServiceHours';
-import AdminInterface from './pages/AdminInterface'; // Ajusta la ruta según la estructura de tu proyecto
+import AdminInterface from './pages/AdminInterface';
 import { CartProvider } from './components/CartContext';
-import { AuthProvider, useAuthentication } from './components/authentication'; // Ajusta la ruta según la estructura de tu proyecto
+import { AuthProvider, useAuthentication } from './components/authentication';
 import './App.css';
 
 function App() {
@@ -66,29 +66,19 @@ function AppContent() {
       
       {!isAdminRoute && (
         <>
-          {user ? (
-            <div className="user-profile">
-              <p>Bienvenido, {user.nombre_completo}</p>
-              <button onClick={logout}>Cerrar Sesión</button>
-            </div>
-          ) : (
-            <>
-              {isLoginModalVisible && (
-                <LoginModal
-                  toggleLoginModal={toggleLoginModal}
-                  openRegisterModal={toggleRegisterModal}
-                  onLoginSuccess={handleSuccessfulLogin}
-                />
-              )}
-              {isRegisterModalVisible && (
-                <RegisterModal
-                  toggleRegisterModal={toggleRegisterModal}
-                  openLoginModal={toggleLoginModal}
-                />
-              )}
-            </>
+          {isLoginModalVisible && (
+            <LoginModal
+              toggleLoginModal={toggleLoginModal}
+              openRegisterModal={toggleRegisterModal}
+              onLoginSuccess={handleSuccessfulLogin}
+            />
           )}
-          <ImageCarousel />
+          {isRegisterModalVisible && (
+            <RegisterModal
+              toggleRegisterModal={toggleRegisterModal}
+              openLoginModal={toggleLoginModal}
+            />
+          )}
         </>
       )}
 
@@ -98,6 +88,7 @@ function AppContent() {
             <>
               <section id="home" className="home">
                 <h1>Bienvenidos a Giovannis Pizza</h1>
+                <ImageCarousel /> {/* Carrusel aquí */}
                 <p>¡Las mejores pizzas!</p>
                 <ServiceHours />
               </section>
@@ -107,7 +98,7 @@ function AppContent() {
           <Route path="/menu" element={<MenuPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/cart" element={<CartPage toggleLoginModal={toggleLoginModal} />} />
-          <Route path="/administrador/*" element={<AdminInterface />} /> {/* Ajuste aquí para manejar subrutas */}
+          <Route path="/administrador/*" element={<AdminInterface />} />
         </Routes>
       </main>
       
@@ -117,3 +108,4 @@ function AppContent() {
 }
 
 export default App;
+
