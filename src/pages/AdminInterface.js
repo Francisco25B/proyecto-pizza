@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { AdminHeader } from './AdminHeader';
 import UserProfile from '../components/UserProfile';
-import AdminDashboard from './AdminDashboard';
+// import AdminDashboard from './AdminDashboard'; // Comentado ya que el archivo no se encuentra
 import Pedidos from './pedidos'; // Asegúrate de que el nombre del archivo y el componente coincidan
 import Productos from './productos'; // Asegúrate de que el nombre del archivo y el componente coincidan
 import Usuarios from './usuarios'; // Asegúrate de que el nombre del archivo y el componente coincidan
@@ -24,12 +24,6 @@ function AdminInterface() {
         <h3 className="menu-title">Menú</h3>
         
         <ul>
-          <li
-            className={selectedSection === 'dashboard' ? 'active' : ''}
-            onClick={() => setSelectedSection('dashboard')}
-          >
-            <i className="fa fa-tachometer-alt"></i> Dashboard
-          </li>
           <li
             className={selectedSection === 'usuarios' ? 'active' : ''}
             onClick={() => setSelectedSection('usuarios')}
@@ -71,7 +65,7 @@ function AdminInterface() {
       <div className="admin-content">
         <main className="admin-main">
           {selectedSection === 'profile' && <UserProfile />}
-          {selectedSection === 'dashboard' && <AdminDashboard />}
+          {/* {selectedSection === 'dashboard' && <AdminDashboard />} */}
           {selectedSection === 'usuarios' && <Usuarios />} {/* Nombre del componente importado */}
           {selectedSection === 'pedidos' && <Pedidos />} {/* Nombre del componente importado */}
           {selectedSection === 'productos' && <Productos />} {/* Nombre del componente importado */}
