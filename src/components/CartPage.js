@@ -1,3 +1,4 @@
+// CartPage.js
 import React, { useState } from 'react';
 import { useCart } from './CartContext';
 import './CartPage.css';
@@ -6,7 +7,7 @@ import { useAuthentication } from '../components/authentication'; // Ajusta la r
 
 function CartPage({ toggleLoginModal }) {
   const { cartItems, clearCart } = useCart();
-  const { isAuthenticated, getUserRole } = useAuthentication(); // Obtén la información de autenticación
+  const { isAuthenticated, getUserRole, getUserId } = useAuthentication(); // Obtén la información de autenticación
   const [isOrderConfirmed, setIsOrderConfirmed] = useState(false); // Estado para controlar si el pedido ha sido confirmado después de iniciar sesión
 
   const handleRemoveFromCart = (index) => {
@@ -72,28 +73,43 @@ function CartPage({ toggleLoginModal }) {
   };
 
   const completeOrder = () => {
-    const userRole = getUserRole(); // Obtén el rol del usuario
-    if (userRole === 'admin') {
-      // Lógica específica para usuario administrador
+    const userId = getUserId(); // Obtén el ID del usuario
+
+    const orderDetails = cartItems.map(item => ({
+      cliente_id: userId,
+      producto_id: item.pizza.id, // Cambia para enviar el ID del producto
+      tamano: item.size,
+      cantidad: item.quantity,
+      precio: item.totalPrice
+    }));
+
+    // Enviar la orden al backend
+    fetch('http://localhost:3001/register_order', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(orderDetails)
+    })
+    .then(response => response.json())
+    .then(data => {
       Swal.fire(
         '¡Pedido realizado!',
-        'Gracias por tu compra como administrador.',
+        'Gracias por tu compra.',
         'success'
       ).then(() => {
         clearCart(); // Limpia el carrito después de hacer el pedido
         setIsOrderConfirmed(false); // Reinicia el estado de confirmación
       });
-    } else {
-      // Lógica para otros roles de usuario
+    })
+    .catch(error => {
+      console.error('Error al registrar el pedido:', error);
       Swal.fire(
-        '¡Pedido realizado!',
-        'Gracias por tu compra como usuario regular.',
-        'success'
-      ).then(() => {
-        clearCart(); // Limpia el carrito después de hacer el pedido
-        setIsOrderConfirmed(false); // Reinicia el estado de confirmación
-      });
-    }
+        'Error',
+        'Hubo un problema al registrar tu pedido. Inténtalo de nuevo.',
+        'error'
+      );
+    });
   };
 
   return (
@@ -127,3 +143,5 @@ function CartPage({ toggleLoginModal }) {
 }
 
 export default CartPage;
+
+

@@ -20,12 +20,15 @@ export const AuthProvider = ({ children }) => {
   };
 
   const getUserRole = () => {
-    // Lógica para obtener el rol del usuario, si es relevante para tu aplicación
     return user ? user.role : null;
   };
 
+  const getUserId = () => {
+    return user ? user.id : null;
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, logout, isAuthenticated, getUserRole }}>
+    <AuthContext.Provider value={{ user, login, logout, isAuthenticated, getUserRole, getUserId }}>
       {children}
     </AuthContext.Provider>
   );

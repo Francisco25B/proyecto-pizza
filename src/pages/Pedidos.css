@@ -1,69 +1,94 @@
 /* Pedidos.css */
 
 .pedidos-container {
-    margin: 20px;
-  }
-  
-  .search-box {
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    max-width: 300px;
-  }
-  
-  .search-box input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    width: 100%;
-    margin-right: 10px;
-  }
-  
-  .search-box button {
-    background-color: #2980b9;
-    color: white;
-    border: none;
-    padding: 12px 18px; /* Aumentamos el tamaño de los botones */
-    border-radius: 20px;
-    cursor: pointer;
-  }
-  
-  .pedidos-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-  
-  .pedidos-table th, .pedidos-table td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .pedidos-table th {
-    background-color: #2980b9;
-    color: white;
-  }
+  margin: 20px;
+}
 
-  .pedidos-table .view-button {
-    background-color: #27ae60;
-    color: white;
-    border: none;
-    padding: 10px 16px; /* Ajustamos el tamaño del botón de eliminar */
-    border-radius: 20px;
-    cursor: pointer;
-  }
-  
-  .pedidos-table .delete-button {
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    padding: 10px 16px; /* Ajustamos el tamaño del botón de eliminar */
-    border-radius: 20px;
-    cursor: pointer;
-  }
-  
-  .pedidos-table .delete-button:hover {
-    background-color: #c0392b;
-  }
-  
+.search-box {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  max-width: 300px;
+}
+
+.search-box input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  width: 100%;
+  margin-right: 10px;
+}
+
+.search-box button {
+  background-color: #2980b9;
+  color: white;
+  border: none;
+  padding: 12px 18px; /* Aumentamos el tamaño de los botones */
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.pedidos-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.pedidos-table th, .pedidos-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.pedidos-table th {
+  background-color: #2980b9;
+  color: white;
+}
+
+.pedidos-table .view-button {
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  padding: 10px 16px; /* Ajustamos el tamaño del botón de eliminar */
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.pedidos-table .delete-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 10px 16px; /* Ajustamos el tamaño del botón de eliminar */
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.pedidos-table .delete-button:hover {
+  background-color: #c0392b;
+}
+
+/* Agrega estilos específicos para la lista de pedidos */
+.orders-list {
+  margin-top: 10px;
+}
+
+.orders-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.orders-list li {
+  padding: 5px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.orders-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #007bff;
+}
+
+.orders-button:hover {
+  color: #0056b3;
+}
