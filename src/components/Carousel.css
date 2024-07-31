@@ -1,21 +1,14 @@
+/* src/components/Carousel.css */
+
 .carousel-container {
-  width: 100%;  /* Extiende el carrusel de extremo a extremo */
-  max-width: 100%;  /* Asegura que no haya un tamaño máximo fijo */
-  margin: 0;  /* Elimina márgenes para pegarlo al header */
+  width: 100%; /* Ajusta el ancho del contenedor del carrusel según sea necesario */
 }
 
-.carousel .slide img {
-  width: 70%;
-  height: 400px;  /* Ajusta la altura según tus necesidades */
-  object-fit: cover;
+.carousel-image {
+  margin-top: 60px;
+  width: 100%; /* Ancho del 100% del contenedor del carrusel */
+  height: auto; /* Altura automática para mantener la proporción original de la imagen */
+  object-fit: cover; /* Ajusta la imagen para llenar el contenedor sin distorsionarse */
+  max-height: 500px; /* Altura máxima para controlar la altura de las imágenes */
 }
 
-.carousel-placeholder {
-  height: 300px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: lightgray;
-  font-size: 2rem;
-  color: white;
-}

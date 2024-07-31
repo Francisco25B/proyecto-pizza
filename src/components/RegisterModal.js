@@ -39,10 +39,11 @@ function RegisterModal({ toggleRegisterModal, openLoginModal }) {
           icon: 'success',
           title: 'Usuario registrado correctamente',
           text: '¡Ahora puedes iniciar sesión!',
-        }).then((result) => {
-          if (result.isConfirmed || result.isDismissed) {
-            openLoginModal();
-          }
+          timer: 2000,  // Desaparecerá automáticamente después de 2000 milisegundos (2 segundos)
+          timerProgressBar: true,  // Barra de progreso del temporizador
+          showConfirmButton: false, // Ocultar el botón de confirmación
+        }).then(() => {
+          openLoginModal(); // Redirigir al usuario a la página de inicio de sesión
         });
       } else {
         console.error('Error en el registro:', response.data);

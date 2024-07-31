@@ -1,14 +1,18 @@
-// CartPage.js
 import React, { useState } from 'react';
-import { useCart } from './CartContext';
-import './CartPage.css';
 import Swal from 'sweetalert2';
-import { useAuthentication } from '../components/authentication'; // Ajusta la ruta según la estructura de tu proyecto
+import { useCart } from './CartContext';
+import { useAuthentication } from '../components/authentication';
+import './CartPage.css';
 
 function CartPage({ toggleLoginModal }) {
-  const { cartItems, clearCart } = useCart();
-  const { isAuthenticated, getUserRole, getUserId } = useAuthentication(); // Obtén la información de autenticación
-  const [isOrderConfirmed, setIsOrderConfirmed] = useState(false); // Estado para controlar si el pedido ha sido confirmado después de iniciar sesión
+  const { cartItems, removeFromCart, clearCart } = useCart();
+  const { isAuthenticated, getUserRole, getUserId } = useAuthentication();
+  const [isOrderConfirmed, setIsOrderConfirmed] = useState(false);
+
+  // Calcular el total del carrito
+  const calculateTotal = () => {
+    return cartItems.reduce((total, item) => total + item.totalPrice, 0).toFixed(2);
+  };
 
   const handleRemoveFromCart = (index) => {
     Swal.fire({
@@ -22,11 +26,10 @@ function CartPage({ toggleLoginModal }) {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        const newCartItems = cartItems.filter((_, i) => i !== index);
-        clearCart(newCartItems);
+        removeFromCart(index);
         Swal.fire(
           'Eliminado',
-          'La pizza ha sido eliminada del carrito.',
+          'El artículo ha sido eliminado del carrito.',
           'success'
         );
       }
@@ -45,12 +48,11 @@ function CartPage({ toggleLoginModal }) {
         confirmButtonText: 'Iniciar Sesión'
       }).then((result) => {
         if (result.isConfirmed) {
-          toggleLoginModal(); // Muestra el modal de inicio de sesión
+          toggleLoginModal();
         }
       });
     } else {
       if (!isOrderConfirmed) {
-        // Si el pedido no ha sido confirmado después de iniciar sesión, muestra el mensaje de confirmación
         Swal.fire({
           title: '¿Estás seguro?',
           text: '¿Quieres confirmar el pedido?',
@@ -62,28 +64,27 @@ function CartPage({ toggleLoginModal }) {
           cancelButtonText: 'Cancelar'
         }).then((result) => {
           if (result.isConfirmed) {
-            setIsOrderConfirmed(true); // Marca el pedido como confirmado
-            completeOrder(); // Lógica para completar el pedido
+            setIsOrderConfirmed(true);
+            completeOrder();
           }
         });
       } else {
-        completeOrder(); // Si ya se confirmó el pedido, procede directamente a completarlo
+        completeOrder();
       }
     }
   };
 
   const completeOrder = () => {
-    const userId = getUserId(); // Obtén el ID del usuario
-
+    const userId = getUserId();
+    const userRole = getUserRole();
     const orderDetails = cartItems.map(item => ({
       cliente_id: userId,
-      producto_id: item.pizza.id, // Cambia para enviar el ID del producto
+      producto_id: item.pizza.id,
       tamano: item.size,
       cantidad: item.quantity,
       precio: item.totalPrice
     }));
 
-    // Enviar la orden al backend
     fetch('http://localhost:3001/register_order', {
       method: 'POST',
       headers: {
@@ -93,13 +94,19 @@ function CartPage({ toggleLoginModal }) {
     })
     .then(response => response.json())
     .then(data => {
-      Swal.fire(
-        '¡Pedido realizado!',
-        'Gracias por tu compra.',
-        'success'
-      ).then(() => {
-        clearCart(); // Limpia el carrito después de hacer el pedido
-        setIsOrderConfirmed(false); // Reinicia el estado de confirmación
+      const message = userRole === 'admin'
+        ? 'Gracias por tu compra como administrador.'
+        : 'Gracias por tu compra como usuario regular.';
+
+      Swal.fire({
+        title: '¡Pedido realizado!',
+        text: message,
+        icon: 'success',
+        showConfirmButton: false,
+        timer: 2000
+      }).then(() => {
+        clearCart();
+        setIsOrderConfirmed(false);
       });
     })
     .catch(error => {
@@ -118,30 +125,42 @@ function CartPage({ toggleLoginModal }) {
       {cartItems.length === 0 ? (
         <p>El carrito está vacío.</p>
       ) : (
-        <ul className="cart-items">
-          {cartItems.map((item, index) => (
-            <li key={index} className="cart-item">
-              <div className="item-info">
-                <div>
-                  <p className="item-name">{item.pizza.name} - {item.size}</p>
-                  <p className="item-details">Cantidad: {item.quantity}</p>
+        <>
+          <ul className="cart-items">
+            {cartItems.map((item, index) => (
+              <li key={index} className="cart-item">
+                <div className="item-info">
+                  <div>
+                    <p className="item-name">
+                      {item.pizza.name} - {item.size}
+                    </p>
+                    <p className="item-details">Cantidad: {item.quantity}</p>
+                  </div>
+                  <div className="item-actions">
+                    <p className="item-details">
+                      Precio total: ${item.totalPrice}
+                    </p>
+                    <button
+                      className="remove-button"
+                      onClick={() => handleRemoveFromCart(index)}
+                    >
+                      Eliminar
+                    </button>
+                  </div>
                 </div>
-                <div className="item-actions">
-                  <p className="item-details">Precio total: ${item.totalPrice}</p>
-                  <button className="remove-button" onClick={() => handleRemoveFromCart(index)}>Eliminar</button>
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
-      {cartItems.length > 0 && (
-        <button className="order-button" onClick={handleOrder}>Ordenar</button>
+              </li>
+            ))}
+          </ul>
+          <div className="cart-summary">
+            <p>Total: ${calculateTotal()}</p>
+          </div>
+          <button className="order-button" onClick={handleOrder}>
+            {isOrderConfirmed ? 'Confirmar Pedido' : 'Ordenar'}
+          </button>
+        </>
       )}
     </div>
   );
 }
 
 export default CartPage;
-
-

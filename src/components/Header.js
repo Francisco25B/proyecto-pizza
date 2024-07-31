@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './Header.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faShoppingCart, faHome } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faShoppingCart, faHome, faBars } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { useCart } from './CartContext';
-import { useAuthentication } from '../components/authentication'; // Ajusta la ruta según la estructura de tu proyecto
+import { useAuthentication } from '../components/authentication'; 
 import logo from '../assets/logo.png';
 import inicioImg from '../assets/inicio.png';
 import menuImg from '../assets/menu.png';
@@ -13,14 +13,12 @@ import contactImg from '../assets/contacto.png';
 import Swal from 'sweetalert2';
 
 function Header({ toggleLoginModal }) {
-  const { cartItems, setCartItems } = useCart(); // Añade setCartItems para actualizar el carrito
-  const { isAuthenticated, login, logout } = useAuthentication(); // Obtén la información de autenticación
+  const { cartItems, setCartItems } = useCart(); 
+  const { isAuthenticated, login, logout } = useAuthentication(); 
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Efecto para manejar la actualización del carrito al iniciar sesión
   useEffect(() => {
     if (isAuthenticated()) {
-      // Lógica para recuperar el carrito del almacenamiento local o de la base de datos
       const savedCartItems = JSON.parse(localStorage.getItem('cartItems'));
       if (savedCartItems) {
         setCartItems(savedCartItems);
@@ -28,8 +26,8 @@ function Header({ toggleLoginModal }) {
     }
   }, [isAuthenticated, setCartItems]);
 
-  const handleLogout = () => {
-    Swal.fire({
+  const handleLogout = async () => {
+    const result = await Swal.fire({
       title: '¿Estás seguro?',
       text: '¿Quieres cerrar sesión?',
       icon: 'warning',
@@ -38,13 +36,20 @@ function Header({ toggleLoginModal }) {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Sí, cerrar sesión',
       cancelButtonText: 'Cancelar'
-    }).then((result) => {
-      if (result.isConfirmed) {
+    });
+
+    if (result.isConfirmed) {
+      try {
+        // Llama a la función de logout
+        await logout();
         // Limpia el carrito al cerrar sesión
         setCartItems([]);
-        logout();
+        // Opcional: redirige al usuario a la página de inicio o de login
+        window.location.href = '/'; // Redirige a la página principal o de login
+      } catch (error) {
+        Swal.fire('cerrar sesión.');
       }
-    });
+    }
   };
 
   const handleMenuToggle = () => {
@@ -56,8 +61,8 @@ function Header({ toggleLoginModal }) {
   };
 
   const handleLogin = () => {
-    login(); // Lógica para iniciar sesión
-    closeMenu(); // Cerrar menú después de iniciar sesión
+    login(); 
+    closeMenu(); 
   };
 
   return (
@@ -65,12 +70,15 @@ function Header({ toggleLoginModal }) {
       <div className="logo-container">
         <img src={logo} alt="Pizzería Chida Logo" className="logo" />
       </div>
-      <nav className="nav-links">
+      <button className="menu-toggle" onClick={handleMenuToggle}>
+        <FontAwesomeIcon icon={faBars} />
+      </button>
+      <nav className={`nav-links ${menuOpen ? 'mobile' : ''}`}>
         <ul>
-          <li><Link to="/" className="nav-link"><img src={inicioImg} alt="Inicio" /> Inicio</Link></li>
-          <li><Link to="/menu" className="nav-link"><img src={menuImg} alt="Menú" /> Menú</Link></li>
-          <li><Link to="/about" className="nav-link"><img src={aboutImg} alt="Sobre Nosotros" /> Sobre Nosotros</Link></li>
-          <li><Link to="/contact" className="nav-link"><img src={contactImg} alt="Contacto" /> Contacto</Link></li>
+          <li><Link to="/" className="nav-link" onClick={closeMenu}><img src={inicioImg} alt="Inicio" /> Inicio</Link></li>
+          <li><Link to="/menu" className="nav-link" onClick={closeMenu}><img src={menuImg} alt="Menú" /> Menú</Link></li>
+          <li><Link to="/about" className="nav-link" onClick={closeMenu}><img src={aboutImg} alt="Sobre Nosotros" /> Sobre Nosotros</Link></li>
+          <li><Link to="/contact" className="nav-link" onClick={closeMenu}><img src={contactImg} alt="Contacto" /> Contacto</Link></li>
         </ul>
       </nav>
       <div className="icons">
@@ -82,8 +90,8 @@ function Header({ toggleLoginModal }) {
               </button>
               {menuOpen && (
                 <ul className="dropdown-menu">
-                  <li><Link to="/profile" onClick={closeMenu}>Mi Perfil</Link></li>
-                  <li><button onClick={handleLogout}>Cerrar Sesión</button></li>
+                  <li><Link to="/profile" className="dropdown-link" onClick={closeMenu}>Mi Perfil</Link></li>
+                  <li><button className="dropdown-link" onClick={handleLogout}>Cerrar Sesión</button></li>
                 </ul>
               )}
             </div>
@@ -109,3 +117,6 @@ function Header({ toggleLoginModal }) {
 }
 
 export default Header;
+
+
+

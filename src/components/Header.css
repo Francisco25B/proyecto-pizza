@@ -1,5 +1,4 @@
-/* src/components/Header.css */
-
+/* Reset básico */
 body, html {
   margin: 0;
   padding: 0;
@@ -7,52 +6,43 @@ body, html {
   height: 100%;
 }
 
-.nav-links a img {
-  width: 60px; /* Define el ancho de las imágenes */
-  height: 60px; /* Define la altura de las imágenes */
-  margin-right: 5px; /* Añade un margen a la derecha de las imágenes */
-}
-
-
+/* Estilos generales para el header */
 .header {
   background-color: rgb(253, 143, 25); /* Color de fondo */
-  padding: 0 0px; /* Aumenta el padding para mayor espacio en los extremos */
+  padding: 0 10px; /* Ajustado para mayor espacio en los extremos */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%; /* Ancho completo del header */
-  height: 100px; /* Ajusta la altura del header */
-  position: fixed; /* Para que el encabezado se fije en la parte superior */
-  top: 0; /* Fija el encabezado en la parte superior de la página */
-  z-index: 999; /* Asegura que el encabezado esté por encima de otros elementos */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Añade una sombra para mayor definición */
+  width: 100%;
+  height: 100px;
+  position: fixed;
+  top: 0;
+  z-index: 999;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Logo */
 .logo-container {
   display: flex;
   align-items: center;
-  position: relative;
 }
 
 .logo {
-  height: 80px; /* Ajusta el tamaño del logo según sea necesario */
+  height: 80px;
   margin-right: 20px;
   margin-left: 10px;
-  z-index: 1; /* Asegura que el logo esté por encima del cuadro negro */
+  z-index: 1;
 }
 
-.logo-container::before {
-  margin-right: 20px;
-  margin-left: 25px;
-  content: '';
-  position: absolute;
-  top: -20px; /* Ajusta para que sobresalga por encima del header */
-  bottom: -25px; /* Ajusta para que sobresalga por debajo del header */
-  left: -20px; /* Ajusta para que sobresalga a la izquierda del header */
-  right: -20px; /* Ajusta para que sobresalga a la derecha del header */
-  background-color: rgb(255, 102, 0);
-  border-radius: 15px; /* Bordes redondeados */
-  z-index: 0; /* Asegura que el cuadro negro esté detrás del logo */
+/* Menú desplegable en móvil */
+.menu-toggle {
+  display: none;
+}
+
+/* Enlaces de navegación */
+.nav-links {
+  display: flex;
+  align-items: center;
 }
 
 .nav-links ul {
@@ -61,14 +51,13 @@ body, html {
   margin: 0;
   display: flex;
   align-items: center;
-  justify-content: center; /* Centra horizontalmente los elementos */
 }
 
 .nav-links li {
-  display: flex; /* Cambia el display a flex para permitir alinear verticalmente */
-  flex-direction: column; /* Coloca los elementos en columna */
-  align-items: center; /* Centra verticalmente los elementos */
-  margin-right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 30px; /* Espacio entre los enlaces */
 }
 
 .nav-links li:last-child {
@@ -79,46 +68,20 @@ body, html {
   text-decoration: none;
   color: white;
   font-weight: bold;
-  font-size: 1.6rem; /* Aumenta el tamaño de la fuente *
+  font-size: 1.8rem; /* Tamaño más grande en escritorio */
   transition: color 0.3s ease;
-  text-align: center; /* Centra el texto horizontalmente */
+  text-align: center;
 }
 
 .nav-links a:hover {
-  color: #ffcd00; /* Cambia el color al pasar el ratón para resaltar */
+  color: #ffcd00;
 }
 
 .nav-links img {
-  width: 20px; /* Define el ancho de las imágenes */
-  height: 20px; /* Define la altura de las imágenes */
-  margin-bottom: 5px; /* Añade un margen abajo de las imágenes */
+  width: 30px; /* Tamaño más grande en escritorio */
+  height: 30px;
+  margin-bottom: 5px;
 }
-
-.nav-links li {
-  font-family: 'Comic', cursive ;
-  font-size: 8rem;
-  margin: 15px 20px;
-}
-
-.icons {
-  display: flex;
-}
-
-.icon-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 10px; /* Aumenta el padding de los iconos */
-  color: white;
-  font-size: 1.5rem; /* Tamaño del icono */
-}
-
-.icon-button:hover {
-  color: #ffcd00; /* Cambia el color al pasar el ratón para resaltar */
-  transition: color 0.3s ease;
-}
-
-
 
 .icons {
   display: flex;
@@ -126,19 +89,119 @@ body, html {
 }
 
 .icon-button {
-  position: relative; /* Necesario para posicionar el contador */
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
   color: white;
-  font-size: 1.5rem;
-  margin-right: 20px; /* Ajusta el margen según tu diseño */
+  font-size: 2rem; /* Tamaño más grande en escritorio */
+  margin-right: 30px; /* Espacio entre los iconos */
+}
+
+.icon-button:hover {
+  color: #ffcd00;
 }
 
 .cart-counter {
   position: absolute;
-  top: -8px; /* Ajusta la posición verticalmente según tu diseño */
-  right: -8px; /* Ajusta la posición horizontalmente según tu diseño */
-  background-color: rgb(255, 102, 0); /* Color de fondo naranja */
+  top: -10px;
+  right: -10px;
+  background-color: rgb(255, 102, 0);
   color: white;
-  border-radius: 50%; /* Hace que el contador sea un círculo */
-  padding: 5px 8px; /* Ajusta el padding según tu diseño */
-  font-size: 0.8rem; /* Tamaño de la fuente del contador */
+  border-radius: 50%;
+  padding: 5px 10px;
+  font-size: 1rem; /* Tamaño del contador */
 }
+
+/* Estilos móviles */
+@media (max-width: 768px) {
+  .header {
+    padding: 0 10px; /* Ajuste para pantallas móviles */
+  }
+
+  .logo {
+    height: 60px;
+  }
+
+  .menu-toggle {
+    display: block;
+    font-size: 2rem; /* Tamaño del ícono de menú */
+    color: white;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .nav-links {
+    display: none; /* Oculta el menú en móviles por defecto */
+    position: absolute;
+    top: 100px;
+    left: 0;
+    width: 100%;
+    background-color: rgb(253, 143, 25); /* Mismo color de fondo que el header */
+    flex-direction: column;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .nav-links.mobile {
+    display: flex; /* Muestra el menú cuando está abierto */
+  }
+
+  .nav-links ul {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .nav-links li {
+    margin: 15px 0;
+  }
+
+  .nav-links a {
+    font-size: 1.4rem; /* Tamaño más pequeño en móviles */
+  }
+
+  .nav-links img {
+    width: 25px; /* Tamaño más pequeño en móviles */
+    height: 25px;
+  }
+
+  .icon-button {
+    font-size: 1.8rem; /* Tamaño más pequeño en móviles */
+    margin-right: 20px; /* Espacio reducido entre los iconos */
+  }
+  
+  .cart-counter {
+    top: -8px;
+    right: -8px;
+  }
+  
+  .dropdown-menu {
+    display: none; /* Oculta el menú desplegable por defecto */
+    position: absolute;
+    top: 100px;
+    right: 0;
+    background-color: rgb(253, 143, 25); /* Fondo del menú desplegable */
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  .user-menu:hover .dropdown-menu {
+    display: block; /* Muestra el menú desplegable al pasar el ratón */
+  }
+
+  .dropdown-link {
+    text-decoration: none;
+    color: white;
+    padding: 10px;
+    display: block;
+    font-size: 1.2rem; /* Tamaño del texto en el menú desplegable */
+  }
+
+  .dropdown-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+
+
