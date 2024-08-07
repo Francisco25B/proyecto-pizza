@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2'; // Importar SweetAlert2
-import { validateLogin } from '../components/controlador';
+import Swal from 'sweetalert2';
+import axios from 'axios';
 import './LoginModal.css';
 
 function LoginModal({ toggleLoginModal, openRegisterModal, onLoginSuccess }) {
   const [fullName, setFullName] = useState('');
   const [number, setNumber] = useState('');
-  const navigate = useNavigate(); // Cambia de useHistory a useNavigate
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validar que el número tenga exactamente 10 dígitos
     if (number.length !== 10) {
       Swal.fire({
         icon: 'error',
@@ -28,46 +28,59 @@ function LoginModal({ toggleLoginModal, openRegisterModal, onLoginSuccess }) {
 
     const userCredentials = {
       fullName: fullName,
-      number: number,
+      number: number
     };
 
-    // Llamar a la función de validación de inicio de sesión
-    validateLogin(userCredentials,
-      (userData) => {
-        onLoginSuccess(userData); // Llama a la función de éxito al iniciar sesión
-        setFullName(''); // Limpiar los campos después de iniciar sesión
-        setNumber('');
+    try {
+      const response = await axios.post('http://localhost:3001/login', userCredentials);
+      if (response.status === 200) {
+        const { user } = response.data;
+        onLoginSuccess(user); // Llama a la función de éxito al iniciar sesión
+
+        // Aquí puedes almacenar el token si decides implementarlo más tarde
+        // localStorage.setItem('token', token);
 
         // Redirigir al usuario dependiendo del rol o cualquier lógica de redirección necesaria
-        if (userData.rol_id === 2) { // Suponiendo que el rol de administrador es 2
-          navigate('/administrador'); // Redirige a la interfaz del administrador usando navigate
+        if (user.rol_id === 2) { 
+          navigate('/administrador'); 
         }
 
-        // Mostrar un mensaje de éxito que se cierra automáticamente después de 2 segundos
         Swal.fire({
           icon: 'success',
           title: 'Sesión iniciada correctamente',
           timer: 2000,
           timerProgressBar: true,
+          showConfirmButton: false
+        });
+      } else {
+        console.error('Error en el inicio de sesión:', response.data);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error en el inicio de sesión',
+          text: 'Nombre de usuario o número de teléfono incorrectos.',
+          timer: 2000,
+          timerProgressBar: true,
           showConfirmButton: false,
           allowOutsideClick: false
         });
-      },
-      (error) => {
-        // Mostrar alerta de error si hay un problema durante el inicio de sesión
-        Swal.fire({
-          icon: 'error',
-          title: 'Error al iniciar sesión',
-          text: 'Por favor, verifica tus credenciales e intenta de nuevo.',
-        });
       }
-    );
+    } catch (error) {
+      console.error('Error en el inicio de sesión:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error en el inicio de sesión',
+        text: 'Hubo un problema al intentar iniciar sesión.',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+        allowOutsideClick: false
+      });
+    }
   };
 
-  const handleNumberChange = (e) => {
+  const handleTelefonoChange = (e) => {
     const value = e.target.value;
-    // Validar que el valor ingresado sean números y no exceda los 10 dígitos
-    if (/^\d*$/.test(value) && value.length <= 10) {
+    if (/^[\d\s]*$/.test(value) && value.length <= 10) {
       setNumber(value);
     }
   };
@@ -90,26 +103,27 @@ function LoginModal({ toggleLoginModal, openRegisterModal, onLoginSuccess }) {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="number">Número:</label>
+            <label htmlFor="number">Número de Teléfono:</label>
             <input
               type="text"
               id="number"
               name="number"
               value={number}
-              onChange={handleNumberChange}
-              pattern="\d{10}"
-              title="Debe contener 10 dígitos numéricos"
+              onChange={handleTelefonoChange}
+              placeholder="1234567890"
               required
             />
           </div>
-          <button type="submit" className="login-button">Ingresar</button>
+          <button type="submit" className="login-button">Iniciar Sesión</button>
         </form>
-        <div className="register-link" onClick={openRegisterModal}>
-          Registrar
-        </div>
+        <p className="switch-to-register-text" onClick={openRegisterModal}>
+          ¿No tienes una cuenta? Regístrate aquí
+        </p>
       </div>
     </div>
   );
 }
 
 export default LoginModal;
+
+
