@@ -40,7 +40,10 @@ function MenuPage() {
             <div className="pizza-details">
               <h3>{pizza.name}</h3>
               <p>{pizza.description}</p>
-              <p>${pizza.price}</p>
+              <p>Pequeña: ${pizza.price_small}</p>
+              <p>Mediana: ${pizza.price_medium}</p>
+              <p>Grande: ${pizza.price_large}</p>
+              <p>Orilla con Queso: ${pizza.cheese_crust_price}</p>
             </div>
           </div>
         ))}

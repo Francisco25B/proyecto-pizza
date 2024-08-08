@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import './PizzaModal.css';
-import { useCart } from './CartContext'; // Importa useCart
+import { useCart } from './CartContext';
 
 function PizzaModal({ pizza, closeModal }) {
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState('Mediana');
   const [cheeseCrust, setCheeseCrust] = useState(false);
-  const { addToCart } = useCart(); // Usa useCart para obtener addToCart
+  const { addToCart } = useCart();
 
   const handleIncrement = () => {
     setQuantity(quantity + 1);
@@ -27,12 +27,15 @@ function PizzaModal({ pizza, closeModal }) {
   };
 
   const calculateTotalPrice = () => {
-    let totalPrice = pizza.price;
-    if (selectedSize === 'Grande') {
-      totalPrice += 2;
+    let basePrice = pizza.price_medium; // Default to Medium
+    if (selectedSize === 'Pequeña') {
+      basePrice = pizza.price_small;
+    } else if (selectedSize === 'Grande') {
+      basePrice = pizza.price_large;
     }
+    let totalPrice = basePrice;
     if (cheeseCrust) {
-      totalPrice += 1;
+      totalPrice += pizza.cheese_crust_price;
     }
     return totalPrice * quantity;
   };
@@ -46,8 +49,8 @@ function PizzaModal({ pizza, closeModal }) {
       cheeseCrust,
       totalPrice: calculateTotalPrice(),
     };
-    addToCart(order); // Llama a addToCart con los detalles del pedido
-    closeModal(); // Cierra el modal después de agregar al carrito
+    addToCart(order);
+    closeModal();
   };
 
   return (
@@ -107,4 +110,3 @@ function PizzaModal({ pizza, closeModal }) {
 }
 
 export default PizzaModal;
-
