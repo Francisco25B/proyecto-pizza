@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2'; // Importar SweetAlert2
-import { validateLogin } from '../components/controlador';
+import Swal from 'sweetalert2';
+import axios from 'axios';
 import './LoginModal.css';
 
 function LoginModal({ toggleLoginModal, openRegisterModal, onLoginSuccess }) {
@@ -9,7 +9,7 @@ function LoginModal({ toggleLoginModal, openRegisterModal, onLoginSuccess }) {
   const [number, setNumber] = useState('');
   const navigate = useNavigate(); // Cambia de useHistory a useNavigate
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validar que el número tenga exactamente 10 dígitos
@@ -31,37 +31,38 @@ function LoginModal({ toggleLoginModal, openRegisterModal, onLoginSuccess }) {
       number: number,
     };
 
-    // Llamar a la función de validación de inicio de sesión
-    validateLogin(userCredentials,
-      (userData) => {
-        onLoginSuccess(userData); // Llama a la función de éxito al iniciar sesión
-        setFullName(''); // Limpiar los campos después de iniciar sesión
-        setNumber('');
+    try {
+      const response = await axios.post('http://localhost:3001/login', userCredentials);
+      const { token, user } = response.data;
+      localStorage.setItem('token', token); // Guarda el token en localStorage
+      onLoginSuccess(user); // Llama a la función de éxito al iniciar sesión
+      setFullName(''); // Limpiar los campos después de iniciar sesión
+      setNumber('');
 
-        // Redirigir al usuario dependiendo del rol o cualquier lógica de redirección necesaria
-        if (userData.rol_id === 2) { // Suponiendo que el rol de administrador es 2
-          navigate('/administrador'); // Redirige a la interfaz del administrador usando navigate
-        }
-
-        // Mostrar un mensaje de éxito que se cierra automáticamente después de 2 segundos
-        Swal.fire({
-          icon: 'success',
-          title: 'Sesión iniciada correctamente',
-          timer: 2000,
-          timerProgressBar: true,
-          showConfirmButton: false,
-          allowOutsideClick: false
-        });
-      },
-      (error) => {
-        // Mostrar alerta de error si hay un problema durante el inicio de sesión
-        Swal.fire({
-          icon: 'error',
-          title: 'Error al iniciar sesión',
-          text: 'Por favor, verifica tus credenciales e intenta de nuevo.',
-        });
+      // Redirigir al usuario dependiendo del rol o cualquier lógica de redirección necesaria
+      if (user.rol_id === 2) { // Suponiendo que el rol de administrador es 2
+        navigate('/administrador'); // Redirige a la interfaz del administrador usando navigate
+      } else {
+        navigate('/'); // Redirige a la página principal o perfil
       }
-    );
+
+      // Mostrar un mensaje de éxito que se cierra automáticamente después de 2 segundos
+      Swal.fire({
+        icon: 'success',
+        title: 'Sesión iniciada correctamente',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+        allowOutsideClick: false
+      });
+    } catch (error) {
+      // Mostrar alerta de error si hay un problema durante el inicio de sesión
+      Swal.fire({
+        icon: 'error',
+        title: 'Error al iniciar sesión',
+        text: 'Por favor, verifica tus credenciales e intenta de nuevo.',
+      });
+    }
   };
 
   const handleNumberChange = (e) => {

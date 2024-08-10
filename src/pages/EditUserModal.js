@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import './RegisterUserModal.css'; // Archivo CSS para estilos específicos
+import './EditUserModal.css';
 
-const RegisterUserModal = ({ toggleRegisterModal, refreshUsers }) => {
+const EditUserModal = ({ toggleEditModal, refreshUsers, usuario }) => {
   const [formData, setFormData] = useState({
     nombre_completo: '',
     telefono: '',
@@ -13,6 +13,19 @@ const RegisterUserModal = ({ toggleRegisterModal, refreshUsers }) => {
     rol_id: 1,
   });
 
+  useEffect(() => {
+    if (usuario) {
+      setFormData({
+        nombre_completo: usuario.nombre_completo,
+        telefono: usuario.telefono,
+        email: usuario.email,
+        direccion: usuario.direccion,
+        especificaciones_direccion: usuario.especificaciones_direccion,
+        rol_id: usuario.rol_id,
+      });
+    }
+  }, [usuario]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -20,29 +33,38 @@ const RegisterUserModal = ({ toggleRegisterModal, refreshUsers }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      await axios.post('http://localhost:3001/register_user', formData);
-      Swal.fire({
-        icon: 'success',
-        title: 'Registro exitoso',
-        text: 'El usuario ha sido registrado exitosamente.',
-      });
-      refreshUsers();
-      toggleRegisterModal();
+        console.log('Enviando solicitud a servidor...');
+        const response = await axios.put(`http://localhost:3001/clientes/${usuario.id}`, formData);
+        console.log('Respuesta recibida del servidor:', response);
+
+        if (response.status === 200) {
+            await Swal.fire({
+                icon: 'success',
+                title: 'Actualización exitosa',
+                text: 'El usuario ha sido actualizado exitosamente.',
+            });
+
+            refreshUsers(); // Actualiza la lista de usuarios
+            toggleEditModal(); // Cierra el modal
+        } else {
+            throw new Error('Error al actualizar el usuario');
+        }
     } catch (error) {
-      console.error('Error al registrar usuario:', error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Error del servidor',
-        text: 'Hubo un error al registrar el usuario.',
-      });
+        console.error('Error al actualizar usuario:', error);
+        await Swal.fire({
+            icon: 'error',
+            title: 'Error del servidor',
+            text: 'Hubo un error al actualizar el usuario.',
+        });
     }
-  };
+};
 
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <h2>Registrar Nuevo Usuario</h2>
+        <h2>Editar Usuario</h2>
         <form onSubmit={handleSubmit}>
           <label>
             Nombre Completo:
@@ -105,12 +127,12 @@ const RegisterUserModal = ({ toggleRegisterModal, refreshUsers }) => {
               <option value="2">Administrador</option>
             </select>
           </label>
-          <button type="submit">Registrar</button>
-          <button type="button" onClick={toggleRegisterModal}>Cancelar</button>
+          <button type="submit">Actualizar</button>
+          <button type="button" onClick={toggleEditModal}>Cancelar</button>
         </form>
       </div>
     </div>
   );
 };
 
-export default RegisterUserModal;
+export default EditUserModal;

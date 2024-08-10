@@ -1,17 +1,20 @@
 .user-profile {
     max-width: 600px;
     margin: 20px auto;
-    padding: 20px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    background-color: #f7f9fc;
+    border: 1px solid #e0e4e8;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    font-family: 'Helvetica Neue', sans-serif;
 }
 
 .profile-header {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e0e4e8;
 }
 
 .profile-picture {
@@ -19,52 +22,81 @@
 }
 
 .profile-picture .avatar {
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #ddd;
+    background-color: #3498db;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 50px;
+    font-weight: bold;
 }
 
 .profile-details h2 {
     margin: 0;
-    font-size: 24px;
+    font-size: 28px;
+    color: #34495e;
 }
 
 .profile-details p {
     margin: 5px 0;
-    font-size: 16px;
-    color: #888;
+    font-size: 18px;
+    color: #7f8c8d;
 }
 
-.profile-table {
+.profile-info {
     margin-top: 20px;
 }
 
-.profile-table table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.profile-table table td {
-    padding: 12px 20px;
-    border-bottom: 1px solid #ddd;
-    font-size: 16px;
-}
-
-.profile-table table td:first-child {
-    width: 50px;
-    text-align: center;
-    color: #888;
-}
-
-.profile-table table td:last-child {
-    text-align: left;
+.profile-subtitle {
+    font-size: 20px;
+    color: #2c3e50;
+    margin-bottom: 10px;
     font-weight: bold;
 }
 
-.profile-table table td svg {
-    font-size: 20px;
+.info-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.info-item svg {
     margin-right: 10px;
     color: #2980b9;
+}
+
+.info-item span {
+    font-size: 18px;
+    color: #34495e;
+}
+
+.password-toggle {
+    background: none;
+    border: none;
+    color: #2980b9;
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 20px;
+}
+
+.profile-actions {
+    margin-top: 20px;
+}
+
+.edit-button {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.edit-button:hover {
+    background-color: #2980b9;
 }
