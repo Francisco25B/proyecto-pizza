@@ -80,11 +80,9 @@ function AppContent() {
         {isRegisterModalVisible && (
           <RegisterModal
             toggleRegisterModal={toggleRegisterModal}
-            openLoginModal={toggleLoginModal}
+            toggleLoginModal={toggleLoginModal} // Cambié `openLoginModal` por `toggleLoginModal`
           />
         )}
-
-       
 
         <Routes>
           <Route path="/" element={
@@ -93,8 +91,8 @@ function AppContent() {
                 <h1>Bienvenidos a Giovannis Pizza</h1>
                 <p>¡Las mejores pizzas!</p>
                 {!isAdminRoute && !user && (
-          <ImageCarousel />
-        )}
+                  <ImageCarousel />
+                )}
                 <ServiceHours />
               </section>
             </>

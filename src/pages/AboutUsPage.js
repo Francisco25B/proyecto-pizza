@@ -1,5 +1,6 @@
 import React from 'react';
-import '../pages/AboutUsPage.css'; // Importamos los estilos para AboutUsPage
+import './AboutUsPage.css'; // Asegúrate de que la ruta sea correcta
+import fondoHistoria from '../assets/fondohistoria.jpeg'; // Importa la imagen de fondo
 
 function AboutUsPage() {
   return (
@@ -15,3 +16,4 @@ function AboutUsPage() {
 }
 
 export default AboutUsPage;
+

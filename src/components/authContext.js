@@ -17,8 +17,12 @@ export function AuthProvider({ children }) {
     return !!user; // Verifica si el usuario está autenticado
   };
 
+  const getUserId = () => {
+    return user ? user.id : null; // Devuelve el ID del usuario si está autenticado
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, logout, isAuthenticated }}>
+    <AuthContext.Provider value={{ user, login, logout, isAuthenticated, getUserId }}>
       {children}
     </AuthContext.Provider>
   );

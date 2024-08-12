@@ -28,13 +28,13 @@ const Pedidos = () => {
     })
       .then(response => response.json())
       .then(() => {
-        setPedidos(pedidos.filter(pedido => pedido.cliente_id !== id));
+        setPedidos(pedidos.filter(pedido => pedido.id !== id));
       })
       .catch(error => console.error('Error al eliminar el pedido:', error));
   };
 
   const handleEdit = (pedido) => {
-    setEditingPedido(pedido.cliente_id);
+    setEditingPedido(pedido.id);
     setEditForm({
       nombre_pizza: pedido.nombre_pizza,
       tamano: pedido.tamano,
@@ -63,7 +63,7 @@ const Pedidos = () => {
       .then(response => response.json())
       .then(() => {
         setPedidos(pedidos.map(pedido =>
-          pedido.cliente_id === editingPedido ? { ...pedido, ...editForm } : pedido
+          pedido.id === editingPedido ? { ...pedido, ...editForm } : pedido
         ));
         setEditingPedido(null);
         setEditForm({
@@ -112,7 +112,7 @@ const Pedidos = () => {
         </thead>
         <tbody>
           {pedidos.map(pedido => (
-            <React.Fragment key={pedido.cliente_id}>
+            <React.Fragment key={pedido.id}>
               <tr>
                 <td>{pedido.cliente_id}</td>
                 <td>{pedido.nombre_pizza}</td>
@@ -128,7 +128,7 @@ const Pedidos = () => {
                   </button>
                   <button
                     className="delete-button"
-                    onClick={() => handleDelete(pedido.cliente_id)}
+                    onClick={() => handleDelete(pedido.id)}
                   >
                     <FontAwesomeIcon icon={faTrash} />
                   </button>

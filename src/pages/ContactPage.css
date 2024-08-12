@@ -1,42 +1,44 @@
 .ContactPage {
-    padding: 20px;
-    background-color: #f8f8f8; /* Agregamos un fondo de color gris claro */
-  }
-  
-  .contact-container {
-    max-width: 600px;
-    margin: 0 auto;
-    background-color: #fff; /* Agregamos un fondo blanco */
-    border-radius: 10px; /* Agregamos bordes redondeados */
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Agregamos una sombra ligera */
-  }
-  
-  .contact-container h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #333; /* Cambiamos el color del texto a negro */
-  }
-  
-  .contact-info {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .contact-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px; /* Aumentamos el margen inferior para un mejor espaciado */
-  }
-  
-  .icon {
-    margin-right: 15px; /* Aumentamos el espacio entre el icono y el texto */
-    font-size: 20px; /* Ajustamos el tamaño del icono */
-  }
-  
-  .ContactPage h1 {
-    font-family: 'Great Vibes', cursive;
-    font-size: 6rem;
-    margin: 9px 0;
-    color: rgb(0, 0, 0);
-  }
+  padding: 150px;
+  background-image: url('../assets/fondocontacto.jpeg'); /* Agregamos la imagen de fondo */
+  background-size: 100 100; /* Ajusta la imagen para cubrir todo el fondo */
+  background-position: center; /* Centra la imagen en el fondo */
+}
+
+.contact-container {
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco con opacidad para resaltar el contenido */
+  border-radius: 10px;
+  padding: 100px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.contact-container h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.icon {
+  margin-right: 15px;
+  font-size: 20px;
+}
+
+.ContactPage h1 {
+  font-family: 'Great Vibes', cursive;
+  font-size: 6rem;
+  margin: 9px 0;
+  color: rgb(0, 0, 0);
+}

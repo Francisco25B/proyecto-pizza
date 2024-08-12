@@ -1,7 +1,82 @@
-.pizza-item {
-  width: 500px; /* Reducimos el ancho para hacer los cuadros más estrechos */
+.menu {
+  position: relative;
+  background-image: url('../assets/fondomenu.jpeg');
+  background-size: cover;
+  background-position: center;
+  padding: 40px;
+}
+
+.menu::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(194, 193, 193, 0.5);
+  z-index: 1;
+}
+
+.menu > * {
+  position: relative;
+  z-index: 2;
+}
+
+.menu h1 {
+  font-family: 'Great Vibes', cursive;
+  font-size: 6rem;
+  margin: 80px 0;
+  color: rgb(0, 0, 0);
+}
+
+.menu-options {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.menu-option {
+  background-color: #ff7700;
+  border: none;
+  padding: 10px 20px;
+  margin: 0 10px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.menu-option.active {
+  background-color: #ffb15e;
+  color: #ffffff;
+}
+
+.menu-option:hover {
+  background-color: #ff9a4c;
+  color: #ffffff;
+}
+
+.item-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   padding: 20px;
-  margin: 20px; /* Ajuste para un espacio más uniforme */
+  margin: 20px 0;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.item-list h2 {
+  margin-top: 0;
+  font-size: 2rem;
+  color: #333;
+}
+
+.pizza-item {
+  width: 500px;
+  padding: 20px;
+  margin: 20px;
   background-color: #f9f9f9;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -9,8 +84,8 @@
   transition: transform 0.3s, box-shadow 0.3s;
   display: flex;
   flex-direction: column;
-  align-items: flex-end; /* Alinea el contenido a la derecha */
-  position: relative; /* Necesario para posicionar el círculo */
+  align-items: flex-end;
+  position: relative;
 }
 
 .pizza-item:hover {
@@ -18,81 +93,79 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilos para alternar el color de fondo */
 .pizza-item:nth-child(odd) {
-  background-color: #ffb15e; /* Fondo naranja */
-  color: #333; /* Texto oscuro para contraste */
+  background-color: #ffb15e;
+  color: #333;
 }
 
 .pizza-item:nth-child(even) {
-  background-color: #fbe5cd; /* Fondo beige */
-  color: #333; /* Texto oscuro para contraste */
+  background-color: #fbe5cd;
+  color: #333;
 }
 
-/* Círculo en la parte izquierda sobresaliendo cerca de la esquina superior */
 .pizza-item::before {
   content: '';
   position: absolute;
-  top: -20px; /* Ajusta la posición para estar cerca de la esquina superior */
-  left: -20px; /* Posiciona fuera del borde izquierdo */
-  width: 150px; /* Ancho del círculo */
-  height: 150px; /* Altura del círculo */
-  border-radius: 50%; /* Hace que el div sea un círculo */
-  background-color: #ffffff; /* Color del círculo */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra para el círculo */
-  overflow: hidden; /* Oculta cualquier parte de la imagen que sobresalga del círculo */
+  top: -20px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  z-index: 1;
 }
 
-/* Si el fondo del cuadro es naranja, el círculo es blanco */
-.pizza-item:nth-child(odd)::before {
-  background-color: white; /* Círculo blanco */
+.pizza-item:hover::before {
+  background: rgba(255, 255, 255, 0.5);
 }
 
-/* Contenedor para la imagen dentro del círculo */
 .pizza-image-container {
+  width: 150px; /* Ajusta el tamaño según sea necesario */
+  height: 150px; /* Ajusta el tamaño según sea necesario */
+  overflow: hidden;
+  margin-bottom: 10px;
+  border-radius: 50%;
+  border: 5px solid #ffffff; /* Ajusta el borde si es necesario */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Añade una sombra para darle más énfasis */
   position: absolute;
-  top: -20px; /* Ajusta la posición para estar dentro del círculo */
-  left: -20px; /* Posiciona dentro del círculo */
-  width: 150px; /* Ancho del contenedor */
-  height: 150px; /* Altura del contenedor */
+  top: -50px; /* Ajusta la posición vertical */
+  left: -50px; /* Ajusta la posición horizontal */
+  z-index: 3;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 50%; /* Hace que el div sea un círculo */
-  overflow: hidden; /* Asegura que la imagen no sobresalga del círculo */
 }
 
 .pizza-image {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
-/* Estilos para la imagen de marcador de posición */
 .pizza-image-placeholder {
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 150px;
-  background-color: #f0f0f0;
-  border-radius: 50%; /* Hace que el div sea un círculo */
-}
-
-.pizza-image-placeholder i {
-  font-size: 48px; /* Tamaño del ícono */
-  color: #888; /* Color del ícono */
+  background-color: #e0e0e0;
+  color: #666;
+  font-size: 2rem;
+  text-align: center;
+  border-radius: 50%;
 }
 
 .pizza-details {
-  text-align: right; /* Alinea el texto a la derecha */
-  padding: 0 100px; /* Añade padding: arriba, derecha, abajo, izquierda */
-  margin-top: auto; /* Empuja el contenido hacia arriba */
+  width: 100%;
+  padding: 10px;
 }
 
 .pizza-details h3 {
-  margin-top: 10px;
+  font-size: 1.5rem;
+  margin: 0;
 }
 
 .pizza-details p {
-  margin: 10px 0;
-  /* Opcional: podrías agregar margin-right si quieres más separación del borde derecho */
+  margin: 5px 0;
 }

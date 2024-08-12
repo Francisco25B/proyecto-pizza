@@ -3,97 +3,138 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import './RegisterModal.css';
 
-function RegisterModal({ toggleRegisterModal, openLoginModal }) {
-  const [nombre_completo, setNombreCompleto] = useState('');
-  const [telefono, setTelefono] = useState('');
+function RegisterModal({ toggleRegisterModal, onRegisterSuccess, toggleLoginModal }) {
+  const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
-  const [direccion, setDireccion] = useState('');
-  const [especificaciones_direccion, setEspecificacionesDireccion] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (telefono.length !== 10 || !(/^\d+$/.test(telefono))) {
+    if (password !== confirmPassword) {
       Swal.fire({
         icon: 'error',
-        title: 'Error',
-        text: 'El número de teléfono debe contener solo 10 dígitos numéricos.',
+        title: 'Contraseñas no coinciden',
+        text: 'Por favor, asegúrate de que ambas contraseñas sean iguales.',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+        allowOutsideClick: false
       });
       return;
     }
 
     const newUser = {
-      nombre_completo,
-      telefono,
+      fullName,
       email,
-      direccion,
-      especificaciones_direccion,
-      rol_id: 1,
+      password,
+      phoneNumber
     };
 
     try {
-      const response = await axios.post('http://localhost:3001/register_user', newUser);
+      await axios.post('http://localhost:3001/register', newUser);
+      onRegisterSuccess(); // Llama a la función de éxito al registrarse
+      setFullName('');
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
+      setPhoneNumber('');
 
-      if (response.status === 200) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Usuario registrado correctamente',
-          text: '¡Ahora puedes iniciar sesión!',
-          timer: 2000,  // Desaparecerá automáticamente después de 2000 milisegundos (2 segundos)
-          timerProgressBar: true,  // Barra de progreso del temporizador
-          showConfirmButton: false, // Ocultar el botón de confirmación
-        }).then(() => {
-          openLoginModal(); // Redirigir al usuario a la página de inicio de sesión
-        });
-      } else {
-        console.error('Error en el registro:', response.data);
-      }
+      Swal.fire({
+        icon: 'success',
+        title: 'Registro exitoso',
+        text: 'Tu cuenta ha sido creada exitosamente.',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+        allowOutsideClick: false
+      });
+
+      toggleRegisterModal(); // Cierra el modal después del registro exitoso
+      toggleLoginModal(); // Abre el modal de inicio de sesión
     } catch (error) {
-      console.error('Error en el registro:', error);
-    }
-  };
-
-  const handleTelefonoChange = (e) => {
-    const value = e.target.value;
-    if (value.length <= 10 && /^[0-9]*$/.test(value)) {
-      setTelefono(value);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error al registrar',
+        text: 'Hubo un problema al crear tu cuenta. Por favor, inténtalo de nuevo.',
+      });
     }
   };
 
   return (
     <div className="register-modal">
       <div className="register-modal-content">
-        <span className="close-button" onClick={toggleRegisterModal}>&times;</span>
-        <h2>Registrarse</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="nombre_completo">Nombre Completo:</label>
-            <input type="text" id="nombre_completo" name="nombre_completo" value={nombre_completo} onChange={(e) => setNombreCompleto(e.target.value)} required />
+        <button className="close-button" onClick={toggleRegisterModal}>&times;</button>
+        <div className="register-image"></div>
+        <div className="register-form">
+          <h2>Registrarse</h2>
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="fullName">Nombre Completo:</label>
+              <input
+                type="text"
+                id="fullName"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="email">Correo Electrónico:</label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="password">Contraseña:</label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="confirmPassword">Confirmar Contraseña:</label>
+              <input
+                type="password"
+                id="confirmPassword"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="phoneNumber">Número de Teléfono:</label>
+              <input
+                type="text"
+                id="phoneNumber"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                required
+              />
+            </div>
+            <button type="submit" className="register-button">Registrar</button>
+          </form>
+          <div className="login-link" onClick={() => {
+            toggleRegisterModal();
+            toggleLoginModal();
+          }}>
+            ¿Ya tienes cuenta? Inicia sesión aquí
           </div>
-          <div className="form-group">
-            <label htmlFor="telefono">Número de Teléfono:</label>
-            <input type="text" id="telefono" name="telefono" value={telefono} onChange={handleTelefonoChange} pattern="\d{10}" title="Debe contener 10 dígitos numéricos" required />
-          </div>
-          <div className="form-group">
-            <label htmlFor="email">Correo Electrónico:</label>
-            <input type="email" id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-          </div>
-          <div className="form-group">
-            <label htmlFor="direccion">Dirección:</label>
-            <input type="text" id="direccion" name="direccion" value={direccion} onChange={(e) => setDireccion(e.target.value)} required />
-          </div>
-          <div className="form-group">
-            <label htmlFor="especificaciones_direccion">Referencias del Lugar:</label>
-            <input type="text" id="especificaciones_direccion" name="especificaciones_direccion" value={especificaciones_direccion} onChange={(e) => setEspecificacionesDireccion(e.target.value)} required />
-          </div>
-          <button type="submit" className="register-button">Registrar</button>
-        </form>
-        <p className="back-to-login-text" onClick={openLoginModal}>
-          Volver al inicio de sesión
-        </p>
+        </div>
       </div>
     </div>
   );
 }
 
 export default RegisterModal;
+
+

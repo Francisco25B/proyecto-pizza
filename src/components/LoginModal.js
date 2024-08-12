@@ -76,37 +76,40 @@ function LoginModal({ toggleLoginModal, openRegisterModal, onLoginSuccess }) {
   return (
     <div className="login-modal">
       <div className="login-modal-content">
-        <span className="close-button" onClick={toggleLoginModal}>&times;</span>
-        <h2>Iniciar Sesión</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="fullName">Nombre Completo:</label>
-            <input
-              type="text"
-              id="fullName"
-              name="fullName"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              required
-            />
+        <button className="close-button" onClick={toggleLoginModal}>&times;</button>
+        <div className="login-image"></div>
+        <div className="login-form">
+          <h2>Iniciar Sesión</h2>
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="fullName">Nombre Completo:</label>
+              <input
+                type="text"
+                id="fullName"
+                name="fullName"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="number">Número:</label>
+              <input
+                type="text"
+                id="number"
+                name="number"
+                value={number}
+                onChange={handleNumberChange}
+                pattern="\d{10}"
+                title="Debe contener 10 dígitos numéricos"
+                required
+              />
+            </div>
+            <button type="submit" className="login-button">Ingresar</button>
+          </form>
+          <div className="register-link" onClick={openRegisterModal}>
+            ¿No tienes cuenta? Regístrate
           </div>
-          <div className="form-group">
-            <label htmlFor="number">Número:</label>
-            <input
-              type="text"
-              id="number"
-              name="number"
-              value={number}
-              onChange={handleNumberChange}
-              pattern="\d{10}"
-              title="Debe contener 10 dígitos numéricos"
-              required
-            />
-          </div>
-          <button type="submit" className="login-button">Ingresar</button>
-        </form>
-        <div className="register-link" onClick={openRegisterModal}>
-          Registrar
         </div>
       </div>
     </div>
@@ -114,3 +117,4 @@ function LoginModal({ toggleLoginModal, openRegisterModal, onLoginSuccess }) {
 }
 
 export default LoginModal;
+

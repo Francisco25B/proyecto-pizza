@@ -72,6 +72,15 @@ function CartPage({ toggleLoginModal }) {
   const completeOrder = () => {
     const userId = getUserId(); // Obtén el ID del usuario
 
+    if (!userId) {
+      Swal.fire(
+        'Error',
+        'No se pudo obtener el ID del usuario.',
+        'error'
+      );
+      return;
+    }
+
     const orderDetails = cartItems.map(item => ({
       cliente_id: userId,
       producto_id: item.pizza.id, // Cambia para enviar el ID del producto
@@ -139,4 +148,3 @@ function CartPage({ toggleLoginModal }) {
 }
 
 export default CartPage;
-

@@ -1,29 +1,93 @@
 /* src/components/LoginModal.css */
 
 .login-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-  
-  .login-modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
-    position: relative;
-  }
- 
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 1.5rem; /* Aumenta el tamaño para asegurar visibilidad */
+  cursor: pointer;
+  color: red;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+.close-button:hover {
+  color: darkred; /* Cambia el color al pasar el cursor para darle efecto */
+}
+
+.login-modal-content {
+  display: flex;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden; /* Asegura que el contenido no se salga de los bordes */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 800px; /* Ajusta el ancho máximo del modal según sea necesario */
+  width: 100%;
+  height: 500px; /* Ajusta la altura según sea necesario */
+  position: relative; /* Asegura que el botón de cerrar se posicione relativo al modal */
+}
+
+.login-image {
+  flex: 1;
+  background-image: url('../assets/login.png'); /* Cambia la ruta a la imagen deseada */
+  background-size: contain; /* Asegura que la imagen se ajuste al contenedor sin distorsionarse */
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 200px; /* Ajusta el ancho según sea necesario */
+  height: 100%; /* Asegura que la imagen cubra toda la altura del contenedor */
+}
+
+.login-form {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.login-button {
+  background-color: mediumaquamarine;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.login-button:hover {
+  background-color: #45a049;
+}
 
 .register-link {
   margin-top: 20px; /* Espacio encima del texto de registro */
@@ -37,44 +101,4 @@
 .register-link:hover {
   color: #0056b3; /* Cambia el color al pasar el cursor para darle efecto */
 }
-  
-  .close-button {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: red;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-    text-align: left;
-  }
-  
-  .form-group label {
-    display: block;
-    margin-bottom: 5px;
-  }
-  
-  .form-group input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .login-button {
-    background-color: mediumaquamarine;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-  }
-  
-  .login-button:hover {
-    background-color: #45a049;
-  }
-  
+

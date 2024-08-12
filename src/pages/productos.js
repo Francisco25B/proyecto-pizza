@@ -6,103 +6,136 @@ import axios from 'axios';
 
 const Productos = () => {
   const [productos, setProductos] = useState([]);
+  const [tipoProducto, setTipoProducto] = useState('Pizzas');
   const [showModal, setShowModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [currentProduct, setCurrentProduct] = useState(null);
-  const [newProduct, setNewProduct] = useState({ 
-    name: '', 
-    description: '', 
-    price_small: '', 
-    price_medium: '', 
-    price_large: '', 
-    cheese_crust_price: '', 
-    image: null // Añadir campo para la imagen
+  const [newProduct, setNewProduct] = useState({
+    nombre: '',
+    descripcion: '',
+    precio: '',
+    price_small: '',
+    price_medium: '',
+    price_large: '',
+    cheese_crust_price: '',
+    tamaño: '',
+    image: null,
   });
 
   useEffect(() => {
     fetchProductos();
-  }, []);
+  }, [tipoProducto]);
 
   const fetchProductos = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/productos');
+      const response = await axios.get(`http://localhost:3001/${tipoProducto.toLowerCase()}`);
       setProductos(response.data);
     } catch (error) {
-      console.error('Error fetching productos:', error);
+      console.error(`Error fetching ${tipoProducto.toLowerCase()}:`, error);
     }
   };
 
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
     if (name === 'image') {
-      setNewProduct({ ...newProduct, image: files[0] });
+      setNewProduct((prevState) => ({ ...prevState, image: files[0] }));
     } else {
       if (name.includes('price') && isNaN(value)) return;
-      setNewProduct({ ...newProduct, [name]: value });
+      setNewProduct((prevState) => ({ ...prevState, [name]: value }));
     }
   };
 
-  const handleAddProduct = async () => {
+  const handleTipoProductoChange = (e) => {
+    setTipoProducto(e.target.value);
+    resetNewProduct();
+  };
+
+  const resetNewProduct = () => {
+    setNewProduct({
+      nombre: '',
+      descripcion: '',
+      precio: '',
+      price_small: '',
+      price_medium: '',
+      price_large: '',
+      cheese_crust_price: '',
+      tamaño: '',
+      image: null,
+    });
+  };
+
+  const handleAddOrEditProduct = async () => {
+    if (!newProduct.nombre) {
+      console.error('El nombre es obligatorio');
+      return;
+    }
+
     const formData = new FormData();
-    formData.append('name', newProduct.name);
-    formData.append('description', newProduct.description);
-    formData.append('price_small', newProduct.price_small);
-    formData.append('price_medium', newProduct.price_medium);
-    formData.append('price_large', newProduct.price_large);
-    formData.append('cheese_crust_price', newProduct.cheese_crust_price);
+    formData.append('nombre', newProduct.nombre);
+    formData.append('descripcion', newProduct.descripcion);
+
+    if (tipoProducto === 'Pizzas') {
+      formData.append('price_small', newProduct.price_small);
+      formData.append('price_medium', newProduct.price_medium);
+      formData.append('price_large', newProduct.price_large);
+      formData.append('cheese_crust_price', newProduct.cheese_crust_price);
+    } else if (tipoProducto === 'Refrescos') {
+      formData.append('precio', newProduct.precio);
+      formData.append('tamaño', newProduct.tamaño);
+    } else if (tipoProducto === 'Antojitos') {
+      formData.append('precio', newProduct.precio);
+    }
     if (newProduct.image) {
       formData.append('image', newProduct.image);
     }
 
     try {
-      await axios.post('http://localhost:3001/productos', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
+      if (editMode && currentProduct) {
+        await axios.put(`http://localhost:3001/${tipoProducto.toLowerCase()}/${currentProduct.id}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      } else {
+        await axios.post(`http://localhost:3001/${tipoProducto.toLowerCase()}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      }
       fetchProductos();
       setShowModal(false);
-      setNewProduct({ name: '', description: '', price_small: '', price_medium: '', price_large: '', cheese_crust_price: '', image: null });
+      resetNewProduct();
+      setCurrentProduct(null);
     } catch (error) {
-      console.error('Error adding product:', error);
-    }
-  };
-
-  const handleEditProduct = async () => {
-    const formData = new FormData();
-    formData.append('name', newProduct.name);
-    formData.append('description', newProduct.description);
-    formData.append('price_small', newProduct.price_small);
-    formData.append('price_medium', newProduct.price_medium);
-    formData.append('price_large', newProduct.price_large);
-    formData.append('cheese_crust_price', newProduct.cheese_crust_price);
-    if (newProduct.image) {
-      formData.append('image', newProduct.image);
-    }
-    if (currentProduct) {
-      try {
-        await axios.put(`http://localhost:3001/productos/${currentProduct.id}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        });
-        fetchProductos();
-        setShowModal(false);
-        setNewProduct({ name: '', description: '', price_small: '', price_medium: '', price_large: '', cheese_crust_price: '', image: null });
-        setCurrentProduct(null);
-      } catch (error) {
-        console.error('Error editing product:', error);
-      }
+      console.error(`Error ${editMode ? 'editing' : 'adding'} ${tipoProducto.toLowerCase()}:`, error);
     }
   };
 
   const handleDeleteProduct = async (id) => {
     try {
-      await axios.delete(`http://localhost:3001/productos/${id}`);
+      await axios.delete(`http://localhost:3001/${tipoProducto.toLowerCase()}/${id}`);
       fetchProductos();
     } catch (error) {
-      console.error('Error deleting product:', error);
+      console.error(`Error deleting ${tipoProducto.toLowerCase()}:`, error);
     }
+  };
+
+  const handleEditButtonClick = (product) => {
+    setCurrentProduct(product);
+    setNewProduct({
+      nombre: product.nombre,
+      descripcion: product.descripcion,
+      precio: product.precio,
+      price_small: product.price_small,
+      price_medium: product.price_medium,
+      price_large: product.price_large,
+      cheese_crust_price: product.cheese_crust_price,
+      tamaño: product.tamaño || '',
+      image: null,
+    });
+    setShowModal(true);
+    setEditMode(true);
   };
 
   const handleViewProduct = (product) => {
@@ -111,43 +144,55 @@ const Productos = () => {
     setEditMode(false);
   };
 
-  const handleEditButtonClick = (product) => {
-    setCurrentProduct(product);
-    setNewProduct({
-      name: product.name,
-      description: product.description,
-      price_small: product.price_small,
-      price_medium: product.price_medium,
-      price_large: product.price_large,
-      cheese_crust_price: product.cheese_crust_price,
-      image: null // No asignar la imagen aquí, solo el resto de los datos
-    });
-    setShowModal(true);
-    setEditMode(true);
-  };
-
   return (
     <div className="productos-container">
       <h2>Productos de la Pizzería</h2>
-      <button className="add-button" onClick={() => { setShowModal(true); setEditMode(false); }}>
+
+      <button
+        className="add-button"
+        onClick={() => {
+          setShowModal(true);
+          setEditMode(false);
+        }}
+      >
         <FontAwesomeIcon icon={faPlus} /> Agregar
       </button>
 
       <div className="search-box">
         <input type="text" placeholder="Buscar..." />
-        <button><FontAwesomeIcon icon={faSearch} /></button>
+        <button>
+          <FontAwesomeIcon icon={faSearch} />
+        </button>
+      </div>
+
+      <div className="filter-box">
+        <label>Tipo de Producto</label>
+        <select value={tipoProducto} onChange={handleTipoProductoChange}>
+          <option value="Pizzas">Pizzas</option>
+          <option value="Refrescos">Refrescos</option>
+          <option value="Antojitos">Antojitos</option>
+        </select>
       </div>
 
       <table className="productos-table">
         <thead>
           <tr>
             <th>Imagen</th>
-            <th>Nombre de Pizza</th>
-            <th>Ingredientes</th>
-            <th>Precio Pequeña</th>
-            <th>Precio Mediana</th>
-            <th>Precio Grande</th>
-            <th>Precio Orilla con Queso</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            {tipoProducto === 'Pizzas' ? (
+              <>
+                <th>Precio Pequeña</th>
+                <th>Precio Mediana</th>
+                <th>Precio Grande</th>
+                <th>Precio Orilla con Queso</th>
+              </>
+            ) : (
+              <>
+                {tipoProducto === 'Refrescos' && <th>Tamaño</th>}
+                <th>Precio</th>
+              </>
+            )}
             <th>Opciones</th>
           </tr>
         </thead>
@@ -156,18 +201,34 @@ const Productos = () => {
             <tr key={producto.id}>
               <td>
                 {producto.url_imagen && (
-                  <img src={producto.url_imagen} alt={producto.name} width="100" />
+                  <img src={`http://localhost:3001/${producto.url_imagen}`} alt={producto.nombre} width="100" />
                 )}
               </td>
-              <td>{producto.name}</td>
-              <td>{producto.description}</td>
-              <td>${producto.price_small}</td>
-              <td>${producto.price_medium}</td>
-              <td>${producto.price_large}</td>
-              <td>${producto.cheese_crust_price}</td>
+              <td>{producto.nombre}</td>
+              <td>{producto.descripcion}</td>
+              {tipoProducto === 'Pizzas' ? (
+                <>
+                  <td>${producto.price_small}</td>
+                  <td>${producto.price_medium}</td>
+                  <td>${producto.price_large}</td>
+                  <td>${producto.cheese_crust_price}</td>
+                </>
+              ) : (
+                <>
+                  {tipoProducto === 'Refrescos' && <td>{producto.tamaño}</td>}
+                  <td>${producto.precio}</td>
+                </>
+              )}
               <td>
-                <button className="edit-button" onClick={() => handleEditButtonClick(producto)}><FontAwesomeIcon icon={faEdit} /></button>
-                <button className="delete-button" onClick={() => handleDeleteProduct(producto.id)}><FontAwesomeIcon icon={faTrash} /></button>
+                <button className="edit-button" onClick={() => handleEditButtonClick(producto)}>
+                  <FontAwesomeIcon icon={faEdit} />
+                </button>
+                <button className="delete-button" onClick={() => handleDeleteProduct(producto.id)}>
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
+                <button className="view-button" onClick={() => handleViewProduct(producto)}>
+                  <FontAwesomeIcon icon={faEye} />
+                </button>
               </td>
             </tr>
           ))}
@@ -177,43 +238,93 @@ const Productos = () => {
       {showModal && (
         <div className="modal">
           <div className="modal-content">
-            <span className="close-button" onClick={() => setShowModal(false)}>&times;</span>
             <h2>{editMode ? 'Editar Producto' : 'Agregar Producto'}</h2>
             <form>
-              <label>
-                Nombre:
-                <input type="text" name="name" value={newProduct.name} onChange={handleInputChange} />
-              </label>
-              <label>
-                Descripción:
-                <input type="text" name="description" value={newProduct.description} onChange={handleInputChange} />
-              </label>
-              <label>
-                Precio Pequeña:
-                <input type="text" name="price_small" value={newProduct.price_small} onChange={handleInputChange} />
-              </label>
-              <label>
-                Precio Mediana:
-                <input type="text" name="price_medium" value={newProduct.price_medium} onChange={handleInputChange} />
-              </label>
-              <label>
-                Precio Grande:
-                <input type="text" name="price_large" value={newProduct.price_large} onChange={handleInputChange} />
-              </label>
-              <label>
-                Precio Orilla con Queso:
-                <input type="text" name="cheese_crust_price" value={newProduct.cheese_crust_price} onChange={handleInputChange} />
-              </label>
-              <label>
-                Imagen:
-                <input type="file" name="image" onChange={handleInputChange} />
-              </label>
-              {editMode ? (
-                <button type="button" onClick={handleEditProduct}>Guardar Cambios</button>
+              <label>Nombre</label>
+              <input
+                type="text"
+                name="nombre"
+                value={newProduct.nombre}
+                onChange={handleInputChange}
+                required
+              />
+              <label>Descripción</label>
+              <textarea
+                name="descripcion"
+                value={newProduct.descripcion}
+                onChange={handleInputChange}
+              ></textarea>
+              {tipoProducto === 'Pizzas' ? (
+                <>
+                  <label>Precio Pequeña</label>
+                  <input
+                    type="text"
+                    name="price_small"
+                    value={newProduct.price_small}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <label>Precio Mediana</label>
+                  <input
+                    type="text"
+                    name="price_medium"
+                    value={newProduct.price_medium}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <label>Precio Grande</label>
+                  <input
+                    type="text"
+                    name="price_large"
+                    value={newProduct.price_large}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <label>Precio Orilla con Queso</label>
+                  <input
+                    type="text"
+                    name="cheese_crust_price"
+                    value={newProduct.cheese_crust_price}
+                    onChange={handleInputChange}
+                  />
+                </>
               ) : (
-                <button type="button" onClick={handleAddProduct}>Agregar</button>
+                <>
+                  {tipoProducto === 'Refrescos' && (
+                    <>
+                      <label>Tamaño</label>
+                      <input
+                        type="text"
+                        name="tamaño"
+                        value={newProduct.tamaño}
+                        onChange={handleInputChange}
+                      />
+                    </>
+                  )}
+                  <label>Precio</label>
+                  <input
+                    type="text"
+                    name="precio"
+                    value={newProduct.precio}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </>
               )}
+              <label>Imagen</label>
+              <input
+                type="file"
+                name="image"
+                accept="image/*"
+                onChange={handleInputChange}
+              />
             </form>
+            <div className="modal-actions">
+              <button onClick={handleAddOrEditProduct}>
+                {editMode ? 'Guardar Cambios' : 'Agregar Producto'}
+              </button>
+              <button onClick={() => setShowModal(false)}>Cancelar</button>
+            </div>
           </div>
         </div>
       )}

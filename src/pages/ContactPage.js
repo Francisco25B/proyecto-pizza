@@ -1,6 +1,7 @@
 import React from 'react';
 import './ContactPage.css'; // Importamos los estilos para ContactPage
 import { FaPhone, FaEnvelope, FaFacebook, FaWhatsapp } from 'react-icons/fa'; // Importamos los iconos de react-icons
+import backgroundImage from '../assets/fondocontacto.jpeg'; // Importa la imagen desde la carpeta assets
 
 function ContactPage() {
   return (
