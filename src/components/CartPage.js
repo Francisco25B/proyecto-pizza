@@ -7,14 +7,13 @@ import './CartPage.css';
 
 function CartPage({ toggleLoginModal }) {
   const { cartItems, removeFromCart, clearCart } = useCart();
-  const { isAuthenticated, getUserId, getUserRole } = useAuthentication();
-  const [isOrderConfirmed, setIsOrderConfirmed] = useState(false);
+  const { isAuthenticated, getUserId } = useAuthentication();
   const [paymentMethod, setPaymentMethod] = useState('');
   const [transferReference, setTransferReference] = useState('');
+  const [isOrderConfirmed, setIsOrderConfirmed] = useState(false);
 
-  // Calcular el total del carrito
   const calculateTotal = () => {
-    return cartItems.reduce((total, item) => total + item.totalPrice, 0).toFixed(2);
+    return cartItems.reduce((sum, item) => sum + item.totalPrice, 0);
   };
 
   const handleRemoveFromCart = (index) => {
@@ -30,7 +29,7 @@ function CartPage({ toggleLoginModal }) {
     }).then((result) => {
       if (result.isConfirmed) {
         removeFromCart(index);
-        Swal.fire('Eliminado', 'El artículo ha sido eliminado del carrito.', 'success');
+        Swal.fire('Eliminado', 'La pizza ha sido eliminada del carrito.', 'success');
       }
     });
   };
@@ -111,22 +110,18 @@ function CartPage({ toggleLoginModal }) {
     const date = now.toLocaleDateString();
     const time = now.toLocaleTimeString();
 
-    // Configuración del estilo
     doc.setFontSize(12);
     doc.setFont('helvetica', 'normal');
 
-    // Encabezado
     doc.setFontSize(16);
     doc.text('Pizzería Ejemplo', 10, 10);
     doc.setFontSize(12);
     doc.text(`Fecha: ${date}`, 10, 20);
     doc.text(`Hora: ${time}`, 10, 30);
 
-    // Línea divisoria
     doc.setLineWidth(0.5);
     doc.line(10, 35, 200, 35);
 
-    // Productos
     let yOffset = 40;
     cartItems.forEach(item => {
       doc.text(`${item.pizza.name} - ${item.size} x ${item.quantity}`, 10, yOffset);
@@ -134,36 +129,25 @@ function CartPage({ toggleLoginModal }) {
       yOffset += 10;
     });
 
-    // Total
     doc.text(`Total: $${calculateTotal()}`, 10, yOffset + 10);
 
-    // Información de referencia
     if (paymentMethod === 'bank_transfer') {
       doc.text(`Referencia Transferencia: ${transferReference}`, 10, yOffset + 20);
     }
 
-    // Línea divisoria inferior
     doc.line(10, yOffset + 30, 200, yOffset + 30);
     doc.text('¡Gracias por tu compra!', 10, yOffset + 40);
 
-    // Guardar el PDF
     doc.save('ticket-pedido.pdf');
   };
 
-  const completeOrder = (paymentDetails) => {
+  const completeOrder = (orderDetails) => {
     const userId = getUserId();
+
     if (!userId) {
       Swal.fire('Error', 'No se pudo obtener el ID del usuario.', 'error');
       return;
     }
-
-    const orderDetails = cartItems.map(item => ({
-      cliente_id: userId,
-      producto_id: item.pizza.id,
-      tamano: item.size,
-      cantidad: item.quantity,
-      precio: item.totalPrice
-    }));
 
     fetch('http://localhost:3001/register_order', {
       method: 'POST',
@@ -172,20 +156,25 @@ function CartPage({ toggleLoginModal }) {
       },
       body: JSON.stringify(orderDetails)
     })
-      .then(response => response.json())
-      .then(data => {
-        Swal.fire('¡Pedido realizado!', 'Gracias por tu compra.', 'success').then(() => {
-          clearCart();
-          setIsOrderConfirmed(false);
-          if (paymentDetails.paymentMethod === 'bank_transfer') {
-            generatePDF();
-          }
-        });
-      })
-      .catch(error => {
-        console.error('Error al registrar el pedido:', error);
-        Swal.fire('Error', 'Hubo un problema al registrar tu pedido. Inténtalo de nuevo.', 'error');
+    .then(response => response.json())
+    .then(data => {
+      Swal.fire(
+        '¡Pedido realizado!',
+        'Gracias por tu compra.',
+        'success'
+      ).then(() => {
+        clearCart();
+        setIsOrderConfirmed(true);
       });
+    })
+    .catch(error => {
+      console.error('Error al registrar el pedido:', error);
+      Swal.fire(
+        'Error',
+        'Hubo un problema al registrar tu pedido. Inténtalo de nuevo.',
+        'error'
+      );
+    });
   };
 
   return (

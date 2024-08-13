@@ -90,6 +90,12 @@ const Pedidos = () => {
     }
   };
 
+  // Agrupar pedidos por cliente
+  const pedidosPorCliente = pedidos.reduce((acc, pedido) => {
+    (acc[pedido.cliente_id] = acc[pedido.cliente_id] || []).push(pedido);
+    return acc;
+  }, {});
+
   return (
     <div className="pedidos-container">
       <h2>Pedidos a Domicilio</h2>
@@ -99,67 +105,32 @@ const Pedidos = () => {
         <button><FontAwesomeIcon icon={faSearch} /></button>
       </div>
 
-      <table className="pedidos-table">
-        <thead>
-          <tr>
-            <th>Cliente ID</th>
-            <th>Pizza</th>
-            <th>Tamaño</th>
-            <th>Cantidad</th>
-            <th>Precio</th>
-            <th>Opciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {pedidos.map(pedido => (
-            <React.Fragment key={pedido.id}>
-              <tr>
-                <td>{pedido.cliente_id}</td>
-                <td>{pedido.nombre_pizza}</td>
-                <td>{pedido.tamano}</td>
-                <td>{pedido.cantidad}</td>
-                <td>{pedido.precio}</td>
-                <td>
-                  <button
-                    className="view-button"
-                    onClick={() => handleEdit(pedido)}
-                  >
-                    <FontAwesomeIcon icon={faEye} />
-                  </button>
-                  <button
-                    className="delete-button"
-                    onClick={() => handleDelete(pedido.id)}
-                  >
-                    <FontAwesomeIcon icon={faTrash} />
-                  </button>
-                  <button
-                    className="orders-button"
-                    onClick={() => handleShowOrders(pedido.cliente_id)}
-                  >
-                    <FontAwesomeIcon icon={selectedCliente === pedido.cliente_id ? faArrowUp : faArrowDown} />
-                  </button>
-                </td>
-              </tr>
-              {selectedCliente === pedido.cliente_id && (
-                <tr>
-                  <td colSpan="6">
-                    <div className="orders-list">
-                      <h4>Pedidos de Cliente {pedido.cliente_id}</h4>
-                      <ul>
-                        {clientOrders.map(order => (
-                          <li key={order.id}>
-                            {order.nombre_pizza} - Tamaño: {order.tamano} - Cantidad: {order.cantidad} - Precio: ${order.precio}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </td>
-                </tr>
-              )}
-            </React.Fragment>
-          ))}
-        </tbody>
-      </table>
+      <div className="pedidos-list">
+        {Object.keys(pedidosPorCliente).map(cliente_id => (
+          <div key={cliente_id} className="cliente-section">
+            <div className="cliente-header">
+              <h3>Cliente {cliente_id} - {pedidosPorCliente[cliente_id][0].nombre_completo}</h3>
+              <button
+                className="orders-button"
+                onClick={() => handleShowOrders(cliente_id)}
+              >
+                <FontAwesomeIcon icon={selectedCliente === cliente_id ? faArrowUp : faArrowDown} />
+              </button>
+            </div>
+            {selectedCliente === cliente_id && (
+              <div className="orders-list">
+                <ul>
+                  {clientOrders.map(order => (
+                    <li key={order.id}>
+                      {order.nombre_pizza} - Tamaño: {order.tamano} - Cantidad: {order.cantidad} - Precio: ${order.precio}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
 
       {editingPedido && (
         <div className="edit-form">

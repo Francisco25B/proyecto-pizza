@@ -13,8 +13,6 @@ function RegisterModal({ toggleRegisterModal, onRegisterSuccess, toggleLoginModa
   const [nombre_completo, setNombreCompleto] = useState('');
   const [telefono, setTelefono] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [direccion, setDireccion] = useState('');
   const [especificaciones_direccion, setEspecificacionesDireccion] = useState('');
 
@@ -71,19 +69,6 @@ function RegisterModal({ toggleRegisterModal, onRegisterSuccess, toggleLoginModa
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (password !== confirmPassword) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Contraseñas no coinciden',
-        text: 'Por favor, asegúrate de que ambas contraseñas sean iguales.',
-        timer: 2000,
-        timerProgressBar: true,
-        showConfirmButton: false,
-        allowOutsideClick: false,
-      });
-      return;
-    }
-
     if (!telefonoPattern.test(telefono) || !isValidPhoneNumber(telefono)) {
       Swal.fire({
         icon: 'error',
@@ -97,7 +82,6 @@ function RegisterModal({ toggleRegisterModal, onRegisterSuccess, toggleLoginModa
       nombre_completo,
       telefono,
       email,
-      password,
       direccion,
       especificaciones_direccion
     };
@@ -117,8 +101,6 @@ function RegisterModal({ toggleRegisterModal, onRegisterSuccess, toggleLoginModa
           setNombreCompleto('');
           setTelefono('');
           setEmail('');
-          setPassword('');
-          setConfirmPassword('');
           setDireccion('');
           setEspecificacionesDireccion('');
 
@@ -189,26 +171,6 @@ function RegisterModal({ toggleRegisterModal, onRegisterSuccess, toggleLoginModa
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="password">Contraseña:</label>
-              <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="confirmPassword">Confirmar Contraseña:</label>
-              <input
-                type="password"
-                id="confirmPassword"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
                 required
               />
             </div>
