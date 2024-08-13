@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { useCart } from './CartContext';
 import './CartPage.css';
 import Swal from 'sweetalert2';
-import { useAuthentication } from '../components/authContext'; // Asegúrate de que la ruta es correcta
+import { useAuthentication } from '../components/authContext';
 
 function CartPage({ toggleLoginModal }) {
   const { cartItems, removeFromCart, clearCart } = useCart();
-  const { isAuthenticated, getUserId } = useAuthentication(); // Obtén la información de autenticación
-  const [isOrderConfirmed, setIsOrderConfirmed] = useState(false); // Estado para controlar si el pedido ha sido confirmado después de iniciar sesión
+  const { isAuthenticated, getUserId } = useAuthentication();
+  const [isOrderConfirmed, setIsOrderConfirmed] = useState(false);
 
   const handleRemoveFromCart = (index) => {
     Swal.fire({
@@ -21,12 +21,8 @@ function CartPage({ toggleLoginModal }) {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        removeFromCart(index); // Usa removeFromCart en lugar de clearCart
-        Swal.fire(
-          'Eliminado',
-          'La pizza ha sido eliminada del carrito.',
-          'success'
-        );
+        removeFromCart(index);
+        Swal.fire('Eliminado', 'La pizza ha sido eliminada del carrito.', 'success');
       }
     });
   };
@@ -43,7 +39,7 @@ function CartPage({ toggleLoginModal }) {
         confirmButtonText: 'Iniciar Sesión'
       }).then((result) => {
         if (result.isConfirmed) {
-          toggleLoginModal(); // Muestra el modal de inicio de sesión
+          toggleLoginModal();
         }
       });
     } else {
@@ -70,50 +66,48 @@ function CartPage({ toggleLoginModal }) {
   };
 
   const completeOrder = () => {
-    const userId = getUserId(); // Obtén el ID del usuario
+    const userId = getUserId(); 
 
     if (!userId) {
-      Swal.fire(
-        'Error',
-        'No se pudo obtener el ID del usuario.',
-        'error'
-      );
+      Swal.fire('Error', 'No se pudo obtener el ID del usuario.', 'error');
       return;
     }
 
-    const orderDetails = cartItems.map(item => ({
-      cliente_id: userId,
-      producto_id: item.pizza.id, // Cambia para enviar el ID del producto
-      tamano: item.size,
-      cantidad: item.quantity,
-      precio: item.totalPrice
-    }));
+    const orderDetails = cartItems.map(item => {
+      const productoTipo = item.pizza.type || 'pizza'; // Valor predeterminado
+      return {
+        cliente_id: userId,
+        producto_id: item.pizza.id,
+        producto_tipo: productoTipo,
+        tamano: item.size,
+        cantidad: item.quantity,
+        precio: item.totalPrice
+      };
+    });
 
     fetch('http://localhost:3001/register_order', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+          'Content-Type': 'application/json'
       },
       body: JSON.stringify(orderDetails)
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
     })
-    .then(response => response.json())
     .then(data => {
-      Swal.fire(
-        '¡Pedido realizado!',
-        'Gracias por tu compra.',
-        'success'
-      ).then(() => {
-        clearCart(); // Limpia el carrito después de hacer el pedido
-        setIsOrderConfirmed(false); // Reinicia el estado de confirmación
+      Swal.fire('¡Pedido realizado!', 'Gracias por tu compra.', 'success')
+      .then(() => {
+        clearCart();
+        setIsOrderConfirmed(false);
       });
     })
     .catch(error => {
       console.error('Error al registrar el pedido:', error);
-      Swal.fire(
-        'Error',
-        'Hubo un problema al registrar tu pedido. Inténtalo de nuevo.',
-        'error'
-      );
+      Swal.fire('Error', 'Hubo un problema al registrar tu pedido. Inténtalo de nuevo.', 'error');
     });
   };
 
