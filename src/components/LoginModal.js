@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import './LoginModal.css';
+import { useAuthentication } from '../components/authentication'; // Ruta unificada
 
 function LoginModal({ toggleLoginModal, openRegisterModal, onLoginSuccess }) {
   const [fullName, setFullName] = useState('');
   const [number, setNumber] = useState('');
-  const navigate = useNavigate(); // Cambia de useHistory a useNavigate
+  const { login } = useAuthentication(); // Agrega la función de login del contexto
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,7 +23,7 @@ function LoginModal({ toggleLoginModal, openRegisterModal, onLoginSuccess }) {
         timer: 2000,
         timerProgressBar: true,
         showConfirmButton: false,
-        allowOutsideClick: false
+        allowOutsideClick: false,
       });
       return;
     }
@@ -34,8 +36,9 @@ function LoginModal({ toggleLoginModal, openRegisterModal, onLoginSuccess }) {
     try {
       const response = await axios.post('http://localhost:3001/login', userCredentials);
       const { token, user } = response.data;
+
       localStorage.setItem('token', token); // Guarda el token en localStorage
-      onLoginSuccess(user); // Llama a la función de éxito al iniciar sesión
+      login(user); // Llama a la función de login del contexto
       setFullName(''); // Limpiar los campos después de iniciar sesión
       setNumber('');
 
@@ -53,19 +56,26 @@ function LoginModal({ toggleLoginModal, openRegisterModal, onLoginSuccess }) {
         timer: 2000,
         timerProgressBar: true,
         showConfirmButton: false,
-        allowOutsideClick: false
+        allowOutsideClick: false,
       });
+
+      // Llamar a la función onLoginSuccess para cerrar el modal
+      onLoginSuccess(user);
     } catch (error) {
       // Mostrar alerta de error si hay un problema durante el inicio de sesión
       Swal.fire({
         icon: 'error',
-        title: 'Error al iniciar sesión',
-        text: 'Por favor, verifica tus credenciales e intenta de nuevo.',
+        title: 'Error en el inicio de sesión',
+        text: 'Hubo un problema al intentar iniciar sesión.',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+        allowOutsideClick: false,
       });
     }
   };
 
-  const handleNumberChange = (e) => {
+  const handleTelefonoChange = (e) => {
     const value = e.target.value;
     // Validar que el valor ingresado sean números y no exceda los 10 dígitos
     if (/^\d*$/.test(value) && value.length <= 10) {
@@ -76,7 +86,9 @@ function LoginModal({ toggleLoginModal, openRegisterModal, onLoginSuccess }) {
   return (
     <div className="login-modal">
       <div className="login-modal-content">
-        <button className="close-button" onClick={toggleLoginModal}>&times;</button>
+        <button className="close-button" onClick={toggleLoginModal}>
+          &times;
+        </button>
         <div className="login-image"></div>
         <div className="login-form">
           <h2>Iniciar Sesión</h2>
@@ -99,13 +111,14 @@ function LoginModal({ toggleLoginModal, openRegisterModal, onLoginSuccess }) {
                 id="number"
                 name="number"
                 value={number}
-                onChange={handleNumberChange}
-                pattern="\d{10}"
-                title="Debe contener 10 dígitos numéricos"
+                onChange={handleTelefonoChange}
+                placeholder="1234567890"
                 required
               />
             </div>
-            <button type="submit" className="login-button">Ingresar</button>
+            <button type="submit" className="login-button">
+              Ingresar
+            </button>
           </form>
           <div className="register-link" onClick={openRegisterModal}>
             ¿No tienes cuenta? Regístrate
@@ -117,4 +130,3 @@ function LoginModal({ toggleLoginModal, openRegisterModal, onLoginSuccess }) {
 }
 
 export default LoginModal;
-

@@ -38,12 +38,12 @@ header {
 
 /* Estilos para la sección home */
 .home {
-  margin-top: 80px;
+  margin-top: 80px; /* Se mantiene el margen superior de 80px */
 }
 
 .home h1 {
   font-family: 'Great Vibes', cursive;
-  font-size: 5rem; /* Reducir el tamaño del título para que no sea demasiado grande */
+  font-size: 4rem; /* Tamaño del título unificado a 4rem */
   margin: 20px 0;
   color: rgb(0, 0, 0);
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -34,8 +34,8 @@ function AppContent() {
   const isAdminRoute = location.pathname.startsWith('/administrador');
   
   // Estado para controlar la visibilidad de los modales
-  const [isLoginModalVisible, setLoginModalVisible] = React.useState(false);
-  const [isRegisterModalVisible, setRegisterModalVisible] = React.useState(false);
+  const [isLoginModalVisible, setLoginModalVisible] = useState(false);
+  const [isRegisterModalVisible, setRegisterModalVisible] = useState(false);
 
   // Hook de autenticación
   const { user, login, logout } = useAuthentication();
@@ -56,7 +56,7 @@ function AppContent() {
 
   const handleSuccessfulLogin = (userData) => {
     login(userData);
-    setLoginModalVisible(false);
+    setLoginModalVisible(false); // Cierra el modal de inicio de sesión al iniciar sesión exitosamente
   };
 
   return (
@@ -68,19 +68,19 @@ function AppContent() {
           handleLogout={logout}
         />
       )}
-      
+
       <main>
         {isLoginModalVisible && (
           <LoginModal
             toggleLoginModal={toggleLoginModal}
             openRegisterModal={toggleRegisterModal}
-            onLoginSuccess={handleSuccessfulLogin}
+            onLoginSuccess={handleSuccessfulLogin} // Se asegura de que el login sea exitoso y cierre el modal
           />
         )}
         {isRegisterModalVisible && (
           <RegisterModal
             toggleRegisterModal={toggleRegisterModal}
-            toggleLoginModal={toggleLoginModal} // Cambié `openLoginModal` por `toggleLoginModal`
+            toggleLoginModal={toggleLoginModal}
           />
         )}
 
@@ -89,10 +89,8 @@ function AppContent() {
             <>
               <section id="home" className="home">
                 <h1>Bienvenidos a Giovannis Pizza</h1>
+                <ImageCarousel /> {/* Carrusel aquí */}
                 <p>¡Las mejores pizzas!</p>
-                {!isAdminRoute && !user && (
-                  <ImageCarousel />
-                )}
                 <ServiceHours />
               </section>
             </>
@@ -102,7 +100,7 @@ function AppContent() {
           <Route path="/menu" element={<MenuPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/cart" element={<CartPage toggleLoginModal={toggleLoginModal} />} />
-          <Route path="/profile" element={<ProfileUser />} /> {/* Asegúrate de que ProfileUser esté importado */}
+          <Route path="/profile" element={<ProfileUser />} />
           <Route path="/administrador/*" element={
             <ProtectedRoute toggleLoginModal={toggleLoginModal}>
               <AdminInterface />

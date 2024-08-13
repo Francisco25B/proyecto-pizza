@@ -1,37 +1,44 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import axios from 'axios';
 
 const AuthContext = createContext();
 
-export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null); // Estado para el usuario autenticado
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
 
-  const login = (userData) => {
-    setUser(userData); // Actualiza el usuario
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      axios.get('http://localhost:3001/profile', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then(response => {
+        setUser(response.data.user);
+      })
+      .catch(() => {
+        localStorage.removeItem('token');
+      });
+    }
+  }, []);
+
+  const login = async (user) => {
+    setUser(user);
   };
 
-  const logout = () => {
-    setUser(null); // Limpia el usuario
+  const logout = async () => {
+    localStorage.removeItem('token');
+    setUser(null);
   };
 
   const isAuthenticated = () => {
-    return !!user; // Verifica si el usuario está autenticado
-  };
-
-  const getUserId = () => {
-    return user ? user.id : null; // Devuelve el ID del usuario si está autenticado
+    return !!user;
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isAuthenticated, getUserId }}>
+    <AuthContext.Provider value={{ user, login, logout, isAuthenticated }}>
       {children}
     </AuthContext.Provider>
   );
-}
+};
 
-export function useAuthentication() {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuthentication must be used within an AuthProvider');
-  }
-  return context;
-}
+export const useAuthentication = () => useContext(AuthContext);

@@ -3,12 +3,70 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import './RegisterModal.css';
 
+// Función para validar el número de teléfono
+const isValidPhoneNumber = (number) => {
+  const cleanNumber = number.replace(/\D/g, '');
+  return cleanNumber.length === 10;
+};
+
 function RegisterModal({ toggleRegisterModal, onRegisterSuccess, toggleLoginModal }) {
-  const [fullName, setFullName] = useState('');
+  const [nombre_completo, setNombreCompleto] = useState('');
+  const [telefono, setTelefono] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [direccion, setDireccion] = useState('');
+  const [especificaciones_direccion, setEspecificacionesDireccion] = useState('');
+
+  const telefonoPattern = /^(\+52\s?)?\d{10}$/;
+
+  const obtenerUbicacion = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+          try {
+            const response = await axios.get('https://nominatim.openstreetmap.org/reverse', {
+              params: {
+                lat: latitude,
+                lon: longitude,
+                format: 'json',
+                addressdetails: 1
+              }
+            });
+            if (response.data && response.data.display_name) {
+              setDireccion(response.data.display_name);
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error en la geocodificación',
+                text: 'No se pudo obtener la dirección desde la ubicación.',
+              });
+            }
+          } catch (error) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error al obtener dirección',
+              text: 'No se pudo realizar la solicitud a Nominatim.',
+            });
+          }
+        },
+        (error) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error al obtener ubicación',
+            text: 'No se pudo obtener la ubicación del usuario.',
+          });
+        }
+      );
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Geolocalización no soportada',
+        text: 'Tu navegador no soporta la geolocalización.',
+      });
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,39 +79,55 @@ function RegisterModal({ toggleRegisterModal, onRegisterSuccess, toggleLoginModa
         timer: 2000,
         timerProgressBar: true,
         showConfirmButton: false,
-        allowOutsideClick: false
+        allowOutsideClick: false,
+      });
+      return;
+    }
+
+    if (!telefonoPattern.test(telefono) || !isValidPhoneNumber(telefono)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Número de teléfono inválido',
+        text: 'El número de teléfono debe contener exactamente 10 dígitos numéricos, opcionalmente precedidos por el código de país (+52).',
       });
       return;
     }
 
     const newUser = {
-      fullName,
+      nombre_completo,
+      telefono,
       email,
       password,
-      phoneNumber
+      direccion,
+      especificaciones_direccion
     };
 
     try {
-      await axios.post('http://localhost:3001/register', newUser);
-      onRegisterSuccess(); // Llama a la función de éxito al registrarse
-      setFullName('');
-      setEmail('');
-      setPassword('');
-      setConfirmPassword('');
-      setPhoneNumber('');
+      const response = await axios.post('http://localhost:3001/register_user', newUser);
+      if (response.status === 200) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Usuario registrado correctamente',
+          text: '¡Ahora puedes iniciar sesión!',
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        }).then(() => {
+          onRegisterSuccess(); // Llama a la función de éxito al registrarse
+          setNombreCompleto('');
+          setTelefono('');
+          setEmail('');
+          setPassword('');
+          setConfirmPassword('');
+          setDireccion('');
+          setEspecificacionesDireccion('');
 
-      Swal.fire({
-        icon: 'success',
-        title: 'Registro exitoso',
-        text: 'Tu cuenta ha sido creada exitosamente.',
-        timer: 2000,
-        timerProgressBar: true,
-        showConfirmButton: false,
-        allowOutsideClick: false
-      });
-
-      toggleRegisterModal(); // Cierra el modal después del registro exitoso
-      toggleLoginModal(); // Abre el modal de inicio de sesión
+          toggleRegisterModal(); // Cierra el modal después del registro exitoso
+          toggleLoginModal(); // Abre el modal de inicio de sesión
+        });
+      } else {
+        console.error('Error en el registro:', response.data);
+      }
     } catch (error) {
       Swal.fire({
         icon: 'error',
@@ -61,6 +135,21 @@ function RegisterModal({ toggleRegisterModal, onRegisterSuccess, toggleLoginModa
         text: 'Hubo un problema al crear tu cuenta. Por favor, inténtalo de nuevo.',
       });
     }
+  };
+
+  const handleTelefonoChange = (e) => {
+    const value = e.target.value;
+    if (/^[\d\s]*$/.test(value) && value.length <= 12) {
+      setTelefono(value);
+    }
+  };
+
+  const formatTelefono = (value) => {
+    const cleanValue = value.replace(/\D/g, '');
+    if (cleanValue.length === 10) {
+      return `+52 ${cleanValue}`;
+    }
+    return cleanValue;
   };
 
   return (
@@ -72,12 +161,24 @@ function RegisterModal({ toggleRegisterModal, onRegisterSuccess, toggleLoginModa
           <h2>Registrarse</h2>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label htmlFor="fullName">Nombre Completo:</label>
+              <label htmlFor="nombre_completo">Nombre Completo:</label>
               <input
                 type="text"
-                id="fullName"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
+                id="nombre_completo"
+                value={nombre_completo}
+                onChange={(e) => setNombreCompleto(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="telefono">Número de Teléfono:</label>
+              <input
+                type="text"
+                id="telefono"
+                value={formatTelefono(telefono)}
+                onChange={handleTelefonoChange}
+                placeholder="+52 1234567890"
+                title="El número debe contener exactamente 10 dígitos numéricos, opcionalmente precedidos por el código de país (+52)."
                 required
               />
             </div>
@@ -112,12 +213,23 @@ function RegisterModal({ toggleRegisterModal, onRegisterSuccess, toggleLoginModa
               />
             </div>
             <div className="form-group">
-              <label htmlFor="phoneNumber">Número de Teléfono:</label>
+              <label htmlFor="direccion">Dirección:</label>
               <input
                 type="text"
-                id="phoneNumber"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
+                id="direccion"
+                value={direccion}
+                onChange={(e) => setDireccion(e.target.value)}
+                required
+              />
+              <button type="button" onClick={obtenerUbicacion}>Obtener Ubicación</button>
+            </div>
+            <div className="form-group">
+              <label htmlFor="especificaciones_direccion">Referencias del Lugar:</label>
+              <input
+                type="text"
+                id="especificaciones_direccion"
+                value={especificaciones_direccion}
+                onChange={(e) => setEspecificacionesDireccion(e.target.value)}
                 required
               />
             </div>
@@ -136,5 +248,3 @@ function RegisterModal({ toggleRegisterModal, onRegisterSuccess, toggleLoginModa
 }
 
 export default RegisterModal;
-
-

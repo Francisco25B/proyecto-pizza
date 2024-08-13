@@ -236,7 +236,7 @@ const Productos = () => {
       </table>
 
       {showModal && (
-        <div className="modal">
+        <div className="modal-overlay">
           <div className="modal-content">
             <h2>{editMode ? 'Editar Producto' : 'Agregar Producto'}</h2>
             <form>
@@ -286,21 +286,30 @@ const Productos = () => {
                     name="cheese_crust_price"
                     value={newProduct.cheese_crust_price}
                     onChange={handleInputChange}
+                    required
+                  />
+                </>
+              ) : tipoProducto === 'Refrescos' ? (
+                <>
+                  <label>Tamaño</label>
+                  <input
+                    type="text"
+                    name="tamaño"
+                    value={newProduct.tamaño}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <label>Precio</label>
+                  <input
+                    type="text"
+                    name="precio"
+                    value={newProduct.precio}
+                    onChange={handleInputChange}
+                    required
                   />
                 </>
               ) : (
                 <>
-                  {tipoProducto === 'Refrescos' && (
-                    <>
-                      <label>Tamaño</label>
-                      <input
-                        type="text"
-                        name="tamaño"
-                        value={newProduct.tamaño}
-                        onChange={handleInputChange}
-                      />
-                    </>
-                  )}
                   <label>Precio</label>
                   <input
                     type="text"
@@ -315,16 +324,25 @@ const Productos = () => {
               <input
                 type="file"
                 name="image"
-                accept="image/*"
                 onChange={handleInputChange}
               />
-            </form>
-            <div className="modal-actions">
-              <button onClick={handleAddOrEditProduct}>
+              <button
+                type="button"
+                onClick={handleAddOrEditProduct}
+              >
                 {editMode ? 'Guardar Cambios' : 'Agregar Producto'}
               </button>
-              <button onClick={() => setShowModal(false)}>Cancelar</button>
-            </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowModal(false);
+                  resetNewProduct();
+                  setCurrentProduct(null);
+                }}
+              >
+                Cancelar
+              </button>
+            </form>
           </div>
         </div>
       )}
