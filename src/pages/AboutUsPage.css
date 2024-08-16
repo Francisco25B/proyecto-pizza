@@ -1,43 +1,84 @@
 .AboutUsPage {
-    padding: 150px;
-    background-image: url('../assets/fondohistoria.jpeg'); /* Aplicamos la imagen de fondo */
-    background-size: 100 100; /* Ajusta la imagen para cubrir todo el fondo */
-    background-position: center; /* Centra la imagen en el fondo */
+  padding: 150px 20px; /* Ajusta el padding para pantallas grandes y pequeñas */
+  background-image: url('../assets/fondohistoria.jpeg'); /* Aplicamos la imagen de fondo */
+  background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
+  background-position: center; /* Centra la imagen en el fondo */
+  background-repeat: no-repeat; /* Evita la repetición de la imagen de fondo */
+}
+
+.about-us-container {
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco con opacidad para resaltar el contenido */
+  border-radius: 10px;
+  padding: 40px; /* Reduce el padding para pantallas más pequeñas */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative; /* Para que los pseudoelementos ::before y ::after funcionen correctamente */
+}
+
+.about-us-container h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #333; /* Color oscuro para el texto del título */
+  text-align: center; /* Centrar el título */
+}
+
+.about-us-container p {
+  font-size: 20px;
+  line-height: 1.5;
+  color: #333; /* Color oscuro para el texto del párrafo */
+  margin-bottom: 20px; /* Espacio adicional al final del párrafo */
+}
+
+.AboutUsPage h1 {
+  font-family: 'Great Vibes', cursive;
+  font-size: 4rem; /* Reduce el tamaño del título principal para mejor adaptabilidad en pantallas pequeñas */
+  margin: 20px 0;
+  color: rgb(0, 0, 0);
+  text-align: center; /* Centrar el título principal */
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 768px) {
+  .AboutUsPage {
+    padding: 100px 10px; /* Ajusta el padding para pantallas más pequeñas */
   }
-  
+
   .about-us-container {
-    max-width: 900px;
-    margin: 0 auto;
-    background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco con opacidad para resaltar el contenido */
-    border-radius: 10px;
-    padding: 100px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    position: relative; /* Para que los pseudoelementos ::before y ::after funcionen correctamente */
+    padding: 20px; /* Reduce el padding para pantallas más pequeñas */
   }
-  
-  
-  
- 
-  
+
   .about-us-container h2 {
-    font-size: 24px;
-    margin-bottom: 10px;
-    color: #333; /* Color oscuro para el texto del título */
-    text-align: center; /* Centrar el título */
+    font-size: 20px; /* Reduce el tamaño del título en pantallas pequeñas */
   }
-  
+
   .about-us-container p {
-    font-size: 20px;
-    line-height: 1.5;
-    color: #333; /* Color oscuro para el texto del párrafo */
-    margin-bottom: 20px; /* Espacio adicional al final del párrafo */
+    font-size: 18px; /* Reduce el tamaño del párrafo en pantallas pequeñas */
   }
-  
+
   .AboutUsPage h1 {
-    font-family: 'Great Vibes', cursive;
-    font-size: 6rem;
-    margin: 9px 0;
-    color: rgb(0, 0, 0);
-    text-align: center; /* Centrar el título principal */
+    font-size: 3rem; /* Ajusta el tamaño del título principal en pantallas más pequeñas */
   }
-  
+}
+
+@media (max-width: 480px) {
+  .AboutUsPage {
+    padding: 80px 10px; /* Ajusta el padding para pantallas muy pequeñas */
+  }
+
+  .about-us-container {
+    padding: 15px; /* Reduce aún más el padding */
+  }
+
+  .about-us-container h2 {
+    font-size: 18px; /* Ajusta el tamaño del título en pantallas muy pequeñas */
+  }
+
+  .about-us-container p {
+    font-size: 16px; /* Ajusta el tamaño del párrafo en pantallas muy pequeñas */
+  }
+
+  .AboutUsPage h1 {
+    font-size: 2.5rem; /* Ajusta el tamaño del título principal en pantallas muy pequeñas */
+  }
+}

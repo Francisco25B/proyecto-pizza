@@ -9,7 +9,7 @@ body, html {
 /* Estilos generales para el header */
 .header {
   background-color: rgb(253, 143, 25); /* Color de fondo */
-  padding: 0 10px; /* Ajustado para mayor espacio en los extremos */
+  padding: 0 20px; /* Ajustado para mayor espacio en los extremos */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -17,8 +17,11 @@ body, html {
   height: 100px;
   position: fixed;
   top: 0;
+  left: 0; /* Asegura que el header se extienda hasta el borde izquierdo */
+  right: 0; /* Asegura que el header se extienda hasta el borde derecho */
   z-index: 999;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box; /* Asegura que el padding se incluya en el tamaño total */
 }
 
 /* Logo */
@@ -31,7 +34,6 @@ body, html {
   height: 80px;
   margin-right: 20px;
   margin-left: 10px;
-  z-index: 1;
 }
 
 /* Menú desplegable en móvil */
@@ -96,6 +98,7 @@ body, html {
   color: white;
   font-size: 2rem; /* Tamaño más grande en escritorio */
   margin-right: 30px; /* Espacio entre los iconos */
+  position: relative; /* Necesario para el contador */
 }
 
 .icon-button:hover {
@@ -117,6 +120,9 @@ body, html {
 @media (max-width: 768px) {
   .header {
     padding: 0 10px; /* Ajuste para pantallas móviles */
+    height: auto; /* Ajusta la altura para adaptarse al contenido */
+    left: 0; /* Asegura que el header se extienda hasta el borde izquierdo */
+    right: 0; /* Asegura que el header se extienda hasta el borde derecho */
   }
 
   .logo {
@@ -142,6 +148,7 @@ body, html {
     flex-direction: column;
     align-items: center;
     z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Agrega una sombra para mejor visibilidad */
   }
 
   .nav-links.mobile {
@@ -151,6 +158,8 @@ body, html {
   .nav-links ul {
     flex-direction: column;
     width: 100%;
+    padding: 0; /* Quita el padding en móviles */
+    margin: 0; /* Quita el margen en móviles */
   }
 
   .nav-links li {
@@ -170,38 +179,58 @@ body, html {
     font-size: 1.8rem; /* Tamaño más pequeño en móviles */
     margin-right: 20px; /* Espacio reducido entre los iconos */
   }
-  
+
   .cart-counter {
     top: -8px;
     right: -8px;
   }
-  
-  .dropdown-menu {
-    display: none; /* Oculta el menú desplegable por defecto */
-    position: absolute;
-    top: 100px;
-    right: 0;
-    background-color: rgb(253, 143, 25); /* Fondo del menú desplegable */
-    padding: 10px;
-    border-radius: 5px;
-  }
-
-  .user-menu:hover .dropdown-menu {
-    display: block; /* Muestra el menú desplegable al pasar el ratón */
-  }
-
-  .dropdown-link {
-    text-decoration: none;
-    color: white;
-    padding: 10px;
-    display: block;
-    font-size: 1.2rem; /* Tamaño del texto en el menú desplegable */
-  }
-
-  .dropdown-link:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
 }
 
+/* Estilos para el menú desplegable */
+.user-menu {
+  position: relative; /* Necesario para el menú desplegable */
+}
 
+.dropdown-menu {
+  display: none; /* Oculta el menú desplegable por defecto */
+  position: absolute;
+  top: 50px; /* Ajuste según el ícono */
+  right: 0;
+  background-color: rgb(253, 143, 25); /* Fondo del menú desplegable */
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  z-index: 1000; /* Asegura que esté por encima de otros elementos */
+  width: 200px; /* Ancho fijo para el menú desplegable */
+}
 
+.user-menu:hover .dropdown-menu,
+.notifications-menu:hover .dropdown-menu {
+  display: block; /* Muestra el menú desplegable al pasar el ratón */
+}
+
+.dropdown-link {
+  text-decoration: none;
+  color: white;
+  padding: 10px;
+  display: block;
+  font-size: 1.2rem; /* Tamaño del texto en el menú desplegable */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dropdown-link:last-child {
+  border-bottom: none; /* Quita el borde en el último ítem */
+}
+
+.dropdown-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Estilos para el menú desplegable de notificaciones */
+.notifications-menu {
+  position: relative; /* Necesario para el menú desplegable */
+}
+
+.notifications-menu .dropdown-menu {
+  width: 250px; /* Ancho fijo para el menú desplegable de notificaciones */
+}

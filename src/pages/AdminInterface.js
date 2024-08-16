@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { AdminHeader } from './AdminHeader';
 import UserProfile from '../components/UserProfile';
-// import AdminDashboard from './AdminDashboard'; // Comentado ya que el archivo no se encuentra
 import Pedidos from './pedidos'; // Asegúrate de que el nombre del archivo y el componente coincidan
 import Productos from './productos'; // Asegúrate de que el nombre del archivo y el componente coincidan
 import Usuarios from './usuarios'; // Asegúrate de que el nombre del archivo y el componente coincidan
+import Dashboard from './Dashboard'; // Importa el nuevo componente Dashboard
 import './AdminInterface.css';
 
 function AdminInterface() {
@@ -25,6 +25,12 @@ function AdminInterface() {
         
         <ul>
           <li
+            className={selectedSection === 'dashboard' ? 'active' : ''}
+            onClick={() => setSelectedSection('dashboard')}
+          >
+            <i className="fa fa-tachometer-alt"></i> Inicio
+          </li>
+          <li
             className={selectedSection === 'usuarios' ? 'active' : ''}
             onClick={() => setSelectedSection('usuarios')}
           >
@@ -34,13 +40,13 @@ function AdminInterface() {
             className={selectedSection === 'pedidos' ? 'active' : ''}
             onClick={() => setSelectedSection('pedidos')}
           >
-            <i className="fa fa-user"></i> Pedidos
+            <i className="fa fa-shopping-cart"></i> Pedidos
           </li>
           <li
             className={selectedSection === 'productos' ? 'active' : ''}
             onClick={() => setSelectedSection('productos')}
           >
-            <i className="fa fa-cog"></i> Productos
+            <i className="fa fa-box"></i> Productos
           </li>
           <li
             className={selectedSection === 'profile' ? 'active' : ''}
@@ -60,12 +66,12 @@ function AdminInterface() {
         </div>
       </aside>
 
-      <AdminHeader /> {/* Header colocado debajo del menú */}
+      <AdminHeader setSelectedSection={setSelectedSection} /> {/* Pasa la función al header */}
       
       <div className="admin-content">
         <main className="admin-main">
+          {selectedSection === 'dashboard' && <Dashboard />} {/* Agrega la nueva opción */}
           {selectedSection === 'profile' && <UserProfile />}
-          {/* {selectedSection === 'dashboard' && <AdminDashboard />} */}
           {selectedSection === 'usuarios' && <Usuarios />} {/* Nombre del componente importado */}
           {selectedSection === 'pedidos' && <Pedidos />} {/* Nombre del componente importado */}
           {selectedSection === 'productos' && <Productos />} {/* Nombre del componente importado */}

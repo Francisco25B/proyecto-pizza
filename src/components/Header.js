@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './Header.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faShoppingCart, faHome, faBars } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faShoppingCart, faHome, faBars, faBell } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { useCart } from './CartContext';
-import { useAuthentication } from '../components/authentication'; // Ruta unificada
+import { useAuthentication } from '../components/authContext'; // Corregido el import para authentication
 import logo from '../assets/logo.png';
 import inicioImg from '../assets/inicio.png';
 import menuImg from '../assets/menu.png';
@@ -12,19 +12,32 @@ import aboutImg from '../assets/nosotros.png';
 import contactImg from '../assets/contacto.png';
 import Swal from 'sweetalert2';
 
-function Header({ toggleLoginModal }) {
+function Header({ toggleLoginModal, notifications }) {
   const { cartItems, setCartItems } = useCart();
   const { isAuthenticated, logout } = useAuthentication();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [notificationList, setNotificationList] = useState([]);
 
   useEffect(() => {
     if (isAuthenticated()) {
       const savedCartItems = JSON.parse(localStorage.getItem('cartItems'));
       if (savedCartItems) {
-        // Aquí no debes usar setCartItems
+        setCartItems(savedCartItems);
       }
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, setCartItems]);
+
+  useEffect(() => {
+    if (notifications) {
+      console.log('Notificaciones recibidas:', notifications); // Verificar las notificaciones
+      const filteredNotifications = notifications.filter(notification =>
+        notification.includes('pedido aceptado') || notification.includes('pedido rechazado')
+      );
+      console.log('Notificaciones filtradas:', filteredNotifications); // Verificar las notificaciones filtradas
+      setNotificationList(filteredNotifications);
+    }
+  }, [notifications]);
 
   const handleLogout = async () => {
     const result = await Swal.fire({
@@ -41,8 +54,8 @@ function Header({ toggleLoginModal }) {
     if (result.isConfirmed) {
       try {
         await logout();
-        setCartItems([]); // Limpia el carrito al cerrar sesión
-        window.location.href = '/'; // Redirige a la página principal después de cerrar sesión
+        setCartItems([]);
+        window.location.href = '/';
         Swal.fire({
           icon: 'success',
           title: 'Sesión cerrada',
@@ -54,9 +67,9 @@ function Header({ toggleLoginModal }) {
         });
       } catch (error) {
         Swal.fire({
-          icon: 'error',
-          title: 'Error al cerrar sesión',
-          text: 'Hubo un problema al intentar cerrar sesión.',
+          icon: 'success',
+          title: 'Sesión cerrada',
+          text: 'Has cerrado sesión correctamente.',
           timer: 2000,
           timerProgressBar: true,
           showConfirmButton: false,
@@ -70,8 +83,13 @@ function Header({ toggleLoginModal }) {
     setMenuOpen(!menuOpen);
   };
 
+  const handleNotificationsToggle = () => {
+    setNotificationsOpen(!notificationsOpen);
+  };
+
   const closeMenu = () => {
     setMenuOpen(false);
+    setNotificationsOpen(false);
   };
 
   return (
@@ -104,6 +122,7 @@ function Header({ toggleLoginModal }) {
                 </ul>
               )}
             </div>
+          
             <Link to="/cart" className="icon-button">
               <FontAwesomeIcon icon={faShoppingCart} />
               {cartItems.length > 0 && <span className="cart-counter">{cartItems.length}</span>}

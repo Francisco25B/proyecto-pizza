@@ -1,11 +1,10 @@
 /* AdminHeader.css */
 
-/* Aumentar la especificidad */
+/* Estilos generales del encabezado */
 .admin-header {
     background-color: #ff5722;
     color: white;
-    padding: 10px;
-    text-align: center;
+    padding: 10px 20px;
     width: 100%;
     top: 0;
     left: 0;
@@ -19,7 +18,7 @@
     font-weight: bold;
     position: fixed;
     z-index: 1000;
-  }
+}
 
 .header-content {
     display: flex;
@@ -28,210 +27,137 @@
     width: 95%;
 }
 
-
-  
-  .header-left {
+.header-left {
     display: flex;
     align-items: center;
-  }
-  
-  .header-search {
+}
+
+.header-left h1 {
+    margin-right: 20px;
+}
+
+.header-search {
     position: relative;
-    margin-left: 200px;
-  }
-  
-  .header-search input[type="text"] {
+}
+
+.header-search input[type="text"] {
     width: 200px;
-    padding: 16px;
+    padding: 8px 40px 8px 16px;
     border: 1px solid #ccc;
-    border-radius: 20px; /* Bordes redondos */
+    border-radius: 20px;
     outline: none;
-  }
-  
-  .search-icon {
+}
+
+.search-icon {
     position: absolute;
     right: 10px;
     top: 50%;
     transform: translateY(-50%);
     color: #555;
     cursor: pointer;
-  }
-  
-  .header-icons {
+}
+
+.header-icons {
     display: flex;
     align-items: center;
-  }
-  
-  .icon {
+}
+
+.icon {
     margin-left: 20px;
+    font-size: 1.5rem;
     cursor: pointer;
     transition: color 0.3s ease;
-  }
-  
-  .icon:hover {
-    color: #f39c12;
-  }
-  
-  .user-icon {
-    font-size: 1.2em;
-  }
-  
-  .logout-icon {
-    font-size: 1.2em;
-  }
-  
-  .notification-icon {
-    font-size: 1.2em;
-  }
-  
-  .admin-header {
-    background-color: #333;
-    color: white;
-    padding: 10px 20px;
-  }
-  
-  .header-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-/* AdminHeader.css */
+}
 
-/* Estilos generales del encabezado */
-.admin-header {
-    background-color: #333;
-    color: white;
-    padding: 10px 20px;
-  }
-  
-  .header-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .header-left {
-    display: flex;
-    align-items: center;
-  }
-  
-  .header-left h1 {
-    margin-right: 20px;
-  }
-  
-  .header-search {
-    position: relative;
-  }
-  
-  .header-search input {
-    padding: 8px;
-    border: none;
-    border-radius: 5px;
-  }
-  
-  .search-icon {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-    color: #ccc;
-    cursor: pointer;
-  }
-  
-  .header-icons {
-    display: flex;
-    align-items: center;
-  }
-  
-  .icon {
-    font-size: 1.5rem;
-    margin-left: 15px;
-    cursor: pointer;
-  }
-  
-  .notification-icon {
+.icon:hover {
     color: #f39c12;
-  }
-  
-  .user-icon {
-    color: #3498db;
-  }
-  
-  .logout-icon {
-    color: #e74c3c;
-  }
-  
-  /* Estilos para el modal de perfil */
-  .profile-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .profile-modal-content {
-    background-color: white;
-    width: 400px;
-    max-width: 80%;
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  
-  .profile-modal-header {
-    padding: 10px 20px;
-    background-color: #333;
+}
+
+.notification-icon-container {
+    position: relative;
+    display: inline-block;
+}
+
+.notification-count {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: red;
     color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
+}
+
+/* Estilos para el menú desplegable de pedidos */
+.orders-menu {
+    position: absolute;
+    top: 80px; /* Ajusta esto para que el menú aparezca debajo del encabezado */
+    right: 20px;
+    width: 300px;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1001;
+    max-height: 400px; /* Limita la altura del menú */
+    overflow-y: auto; /* Agrega desplazamiento vertical si es necesario */
+    display: flex;
+    flex-direction: column;
+}
+
+.orders-menu-content {
+    padding: 10px;
+}
+
+.orders-menu-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-  
-  .profile-modal-header h2 {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+.orders-menu-header h2 {
     margin: 0;
-  }
-  
-  .close-modal {
+}
+
+.close-menu {
     background-color: transparent;
     border: none;
-    color: white;
-    font-size: 1.5rem;
+    font-size: 1.5em;
     cursor: pointer;
-  }
-  
-  .close-modal:hover {
-    color: #ccc;
-  }
-  
-  .profile-modal-body {
-    padding: 20px;
-  }
-  
-  .profile-picture {
-    text-align: center;
-  }
-  
-  .profile-picture img {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-  }
-  
-  .profile-details {
-    margin-top: 20px;
-    text-align: center;
-  }
-  
-  .profile-details h2 {
-    margin-bottom: 5px;
-  }
-  
-  .profile-details p {
-    margin-bottom: 5px;
-  }
-  
+    color: #333;
+}
+
+.close-menu:hover {
+    color: #ff5722; /* Color del encabezado */
+}
+
+.orders-menu-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.order-item {
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+    cursor: pointer;
+}
+
+.order-item:last-child {
+    border-bottom: none;
+}
+
+.order-item:hover {
+    background-color: #f9f9f9;
+}
+
+.order-item h3 {
+    margin: 0;
+    font-size: 1.1em;
+}
+
+.order-item p {
+    margin: 5px 0;
+}

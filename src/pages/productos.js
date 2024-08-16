@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './Productos.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEdit, faTrash, faSearch, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faEdit, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import SearchBox from './SearchBox'; // Importa el componente SearchBox
 
 const Productos = () => {
   const [productos, setProductos] = useState([]);
@@ -18,9 +19,10 @@ const Productos = () => {
     price_medium: '',
     price_large: '',
     cheese_crust_price: '',
-    tamaño: '',
+    tamano: '',
     image: null,
   });
+  const [searchTerm, setSearchTerm] = useState(''); // Estado para el término de búsqueda
 
   useEffect(() => {
     fetchProductos();
@@ -59,7 +61,7 @@ const Productos = () => {
       price_medium: '',
       price_large: '',
       cheese_crust_price: '',
-      tamaño: '',
+      tamano: '',
       image: null,
     });
   };
@@ -81,7 +83,7 @@ const Productos = () => {
       formData.append('cheese_crust_price', newProduct.cheese_crust_price);
     } else if (tipoProducto === 'Refrescos') {
       formData.append('precio', newProduct.precio);
-      formData.append('tamaño', newProduct.tamaño);
+      formData.append('tamaño', newProduct.tamano);
     } else if (tipoProducto === 'Antojitos') {
       formData.append('precio', newProduct.precio);
     }
@@ -131,7 +133,7 @@ const Productos = () => {
       price_medium: product.price_medium,
       price_large: product.price_large,
       cheese_crust_price: product.cheese_crust_price,
-      tamaño: product.tamaño || '',
+      tamano: product.tamano,
       image: null,
     });
     setShowModal(true);
@@ -143,6 +145,11 @@ const Productos = () => {
     setShowModal(true);
     setEditMode(false);
   };
+
+  // Filtrar productos según el término de búsqueda
+  const filteredProductos = productos.filter((producto) =>
+    producto.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="productos-container">
@@ -158,12 +165,7 @@ const Productos = () => {
         <FontAwesomeIcon icon={faPlus} /> Agregar
       </button>
 
-      <div className="search-box">
-        <input type="text" placeholder="Buscar..." />
-        <button>
-          <FontAwesomeIcon icon={faSearch} />
-        </button>
-      </div>
+      <SearchBox searchTerm={searchTerm} setSearchTerm={setSearchTerm} /> {/* Agrega el cuadro de búsqueda */}
 
       <div className="filter-box">
         <label>Tipo de Producto</label>
@@ -189,7 +191,7 @@ const Productos = () => {
               </>
             ) : (
               <>
-                {tipoProducto === 'Refrescos' && <th>Tamaño</th>}
+                {tipoProducto === 'Refrescos' }
                 <th>Precio</th>
               </>
             )}
@@ -197,7 +199,7 @@ const Productos = () => {
           </tr>
         </thead>
         <tbody>
-          {productos.map((producto) => (
+          {filteredProductos.map((producto) => (
             <tr key={producto.id}>
               <td>
                 {producto.url_imagen && (
@@ -215,7 +217,6 @@ const Productos = () => {
                 </>
               ) : (
                 <>
-                  {tipoProducto === 'Refrescos' && <td>{producto.tamaño}</td>}
                   <td>${producto.precio}</td>
                 </>
               )}
@@ -225,9 +226,6 @@ const Productos = () => {
                 </button>
                 <button className="delete-button" onClick={() => handleDeleteProduct(producto.id)}>
                   <FontAwesomeIcon icon={faTrash} />
-                </button>
-                <button className="view-button" onClick={() => handleViewProduct(producto)}>
-                  <FontAwesomeIcon icon={faEye} />
                 </button>
               </td>
             </tr>
@@ -253,7 +251,7 @@ const Productos = () => {
                 name="descripcion"
                 value={newProduct.descripcion}
                 onChange={handleInputChange}
-              ></textarea>
+              />
               {tipoProducto === 'Pizzas' ? (
                 <>
                   <label>Precio Pequeña</label>
@@ -262,7 +260,6 @@ const Productos = () => {
                     name="price_small"
                     value={newProduct.price_small}
                     onChange={handleInputChange}
-                    required
                   />
                   <label>Precio Mediana</label>
                   <input
@@ -270,7 +267,6 @@ const Productos = () => {
                     name="price_medium"
                     value={newProduct.price_medium}
                     onChange={handleInputChange}
-                    required
                   />
                   <label>Precio Grande</label>
                   <input
@@ -278,7 +274,6 @@ const Productos = () => {
                     name="price_large"
                     value={newProduct.price_large}
                     onChange={handleInputChange}
-                    required
                   />
                   <label>Precio Orilla con Queso</label>
                   <input
@@ -286,62 +281,37 @@ const Productos = () => {
                     name="cheese_crust_price"
                     value={newProduct.cheese_crust_price}
                     onChange={handleInputChange}
-                    required
-                  />
-                </>
-              ) : tipoProducto === 'Refrescos' ? (
-                <>
-                  <label>Tamaño</label>
-                  <input
-                    type="text"
-                    name="tamaño"
-                    value={newProduct.tamaño}
-                    onChange={handleInputChange}
-                    required
-                  />
-                  <label>Precio</label>
-                  <input
-                    type="text"
-                    name="precio"
-                    value={newProduct.precio}
-                    onChange={handleInputChange}
-                    required
                   />
                 </>
               ) : (
                 <>
+                  
                   <label>Precio</label>
                   <input
                     type="text"
                     name="precio"
                     value={newProduct.precio}
                     onChange={handleInputChange}
-                    required
                   />
                 </>
               )}
               <label>Imagen</label>
-              <input
-                type="file"
-                name="image"
-                onChange={handleInputChange}
-              />
-              <button
-                type="button"
-                onClick={handleAddOrEditProduct}
-              >
-                {editMode ? 'Guardar Cambios' : 'Agregar Producto'}
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setShowModal(false);
-                  resetNewProduct();
-                  setCurrentProduct(null);
-                }}
-              >
-                Cancelar
-              </button>
+              <input type="file" name="image" onChange={handleInputChange} />
+              <div className="modal-buttons">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowModal(false);
+                    setCurrentProduct(null);
+                    resetNewProduct();
+                  }}
+                >
+                  Cancelar
+                </button>
+                <button type="button" onClick={handleAddOrEditProduct}>
+                  {editMode ? 'Guardar Cambios' : 'Agregar Producto'}
+                </button>
+              </div>
             </form>
           </div>
         </div>

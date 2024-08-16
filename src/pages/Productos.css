@@ -1,9 +1,10 @@
 .productos-container {
   margin: 20px;
+  position: relative; /* Asegúrate de que el contenedor tenga position: relative para que el botón se posicione correctamente dentro de él */
 }
 
 .search-box {
-  margin-bottom: 20px;
+  margin-bottom: 60px; /* Aumenta el margen inferior para dejar más espacio para el botón */
   display: flex;
   align-items: center;
   max-width: 300px;
@@ -19,8 +20,8 @@
 
 .add-button {
   position: absolute;
-  top: 160px;
-  right: 1050px;
+  top: 0; /* Ajusta la distancia desde la parte superior */
+  left: 20px; /* Ajusta la distancia desde la izquierda según sea necesario */
   background-color: orangered;
   color: white;
   border: none;
@@ -32,7 +33,6 @@
   align-items: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  margin-bottom: 20px;
 }
 
 .add-button:hover {
@@ -168,3 +168,4 @@ button {
 button:hover {
   background-color: #45a049;
 }
+

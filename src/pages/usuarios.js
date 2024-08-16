@@ -70,7 +70,7 @@ const Usuarios = () => {
         if (result.isConfirmed) {
             try {
                 // Primero eliminar registros relacionados en pedido_pizza y pedido_pizza_detalle
-                await axios.delete(`http://localhost:3001/pedidos/cliente/${usuarioId}`);
+                await axios.delete(`http://localhost:3001/pedidos/clientes/${usuarioId}`);
 
                 // Luego eliminar el usuario
                 const response = await axios.delete(`http://localhost:3001/clientes/${usuarioId}`);
@@ -138,27 +138,28 @@ const Usuarios = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredUsuarios.map(usuario => (
-              <tr key={usuario.id}>
-                <td>{usuario.nombre_completo}</td>
-                <td>{usuario.telefono}</td>
-                <td>{usuario.email}</td>
-                <td>{usuario.direccion}</td>
-                <td>{usuario.especificaciones_direccion}</td>
-                <td>{usuario.rol_id === 1 ? 'Usuario' : 'Administrador'}</td>
-                <td>
-                  <button className="view-button" onClick={() => handleViewUsuario(usuario)}>
-                    <FontAwesomeIcon icon={faEye} />
-                  </button>
-                  <button className="edit-button" onClick={() => handleEditUsuario(usuario)}>
-                    <FontAwesomeIcon icon={faEdit} />
-                  </button>
-                  <button className="delete-button" onClick={() => handleDeleteUsuario(usuario.id)}>
-                    <FontAwesomeIcon icon={faTrash} />
-                  </button>
-                </td>
-              </tr>
-            ))}
+          {filteredUsuarios.map(usuario => (
+  <tr key={usuario.id}>
+    <td data-label="Nombre Completo">{usuario.nombre_completo}</td>
+    <td data-label="Teléfono">{usuario.telefono}</td>
+    <td data-label="Email">{usuario.email}</td>
+    <td data-label="Dirección">{usuario.direccion}</td>
+    <td data-label="Especificaciones">{usuario.especificaciones_direccion}</td>
+    <td data-label="Rol">{usuario.rol_id === 1 ? 'Usuario' : 'Administrador'}</td>
+    <td data-label="Opciones">
+      <button className="view-button" onClick={() => handleViewUsuario(usuario)}>
+        <FontAwesomeIcon icon={faEye} />
+      </button>
+      <button className="edit-button" onClick={() => handleEditUsuario(usuario)}>
+        <FontAwesomeIcon icon={faEdit} />
+      </button>
+      <button className="delete-button" onClick={() => handleDeleteUsuario(usuario.id)}>
+        <FontAwesomeIcon icon={faTrash} />
+      </button>
+    </td>
+  </tr>
+))}
+
           </tbody>
         </table>
       )}

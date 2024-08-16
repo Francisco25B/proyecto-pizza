@@ -1,9 +1,20 @@
+/* Estilos básicos de la página */
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Estilos del menú */
 .menu {
   position: relative;
   background-image: url('../assets/fondomenu.jpeg');
   background-size: cover;
   background-position: center;
   padding: 40px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .menu::before {
@@ -27,11 +38,13 @@
   font-size: 6rem;
   margin: 80px 0;
   color: rgb(0, 0, 0);
+  text-align: center; /* Centra el texto */
 }
 
 .menu-options {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap; /* Permite que los elementos se envuelvan */
   margin-bottom: 20px;
 }
 
@@ -71,10 +84,12 @@
   margin-top: 0;
   font-size: 2rem;
   color: #333;
+  text-align: center; /* Centra el texto */
 }
 
 .pizza-item {
-  width: 500px;
+  width: 100%;
+  max-width: 500px;
   padding: 20px;
   margin: 20px;
   background-color: #f9f9f9;
@@ -84,7 +99,7 @@
   transition: transform 0.3s, box-shadow 0.3s;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-start;
   position: relative;
 }
 
@@ -120,16 +135,16 @@
 }
 
 .pizza-image-container {
-  width: 150px; /* Ajusta el tamaño según sea necesario */
-  height: 150px; /* Ajusta el tamaño según sea necesario */
+  width: 150px;
+  height: 150px;
   overflow: hidden;
   margin-bottom: 10px;
   border-radius: 50%;
-  border: 5px solid #ffffff; /* Ajusta el borde si es necesario */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Añade una sombra para darle más énfasis */
+  border: 5px solid #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   position: absolute;
-  top: -50px; /* Ajusta la posición vertical */
-  left: -50px; /* Ajusta la posición horizontal */
+  top: -50px;
+  left: -50px;
   z-index: 3;
   display: flex;
   justify-content: center;
@@ -168,4 +183,58 @@
 
 .pizza-details p {
   margin: 5px 0;
+}
+
+/* Media Queries para Responsividad */
+
+/* Pantallas pequeñas (móviles) */
+@media (max-width: 768px) {
+  .menu {
+    padding: 20px;
+  }
+
+  .menu h1 {
+    font-size: 4rem;
+    margin: 40px 0;
+  }
+
+  .menu-options {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .menu-option {
+    margin: 5px 0;
+  }
+
+  .item-list {
+    padding: 10px;
+    margin: 10px 0;
+  }
+
+  .pizza-item {
+    width: calc(100% - 40px);
+    max-width: 100%;
+    margin: 10px;
+  }
+
+  .pizza-image-container {
+    width: 120px;
+    height: 120px;
+    top: -30px;
+    left: -30px;
+  }
+}
+
+/* Pantallas medianas (tabletas) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .menu h1 {
+    font-size: 5rem;
+  }
+
+  .pizza-item {
+    width: calc(50% - 40px);
+    max-width: 500px;
+    margin: 20px;
+  }
 }

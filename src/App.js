@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -8,14 +9,56 @@ import ContactPage from './pages/ContactPage';
 import ImageCarousel from './components/Carousel';
 import LoginModal from './components/LoginModal';
 import RegisterModal from './components/RegisterModal';
-import CartPage from './components/CartPage'; // Asegúrate de que la ruta es correcta
+import CartPage from './components/CartPage';
 import ServiceHours from './components/ServiceHours';
 import AdminInterface from './pages/AdminInterface';
-import ProfileUser from './components/ProfileUser'; // Asegúrate de que la ruta es correcta
+import ProfileUser from './components/ProfileUser';
+import ProgresoPedido from './components/ProgresoPedido';
 import { CartProvider } from './components/CartContext';
 import { AuthProvider, useAuthentication } from './components/authContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
+
+// Hook personalizado para obtener el estado del pedido
+// Hook personalizado para obtener el id y el estado del pedido
+const usePedidoEstado = (pedidoId) => {
+  const [pedido, setPedido] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (pedidoId) {
+      setLoading(true);
+      fetch(`http://localhost:3001/api/pedidos/${pedidoId}`)
+        .then(response => {
+          console.log('Respuesta recibida:', response); // Para depuración
+          if (!response.ok) {
+            throw new Error('Error en la red o en el servidor');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Datos recibidos:', data); // Para depuración
+          if (data && data.id !== undefined && data.estado_pedido !== undefined) {
+            setPedido(data);
+          } else {
+            setPedido({ id: 'No disponible', estado_pedido: 'Estado no disponible' });
+          }
+          setLoading(false);
+        })
+        .catch(err => {
+          console.error('Error al obtener el estado del pedido:', err);
+          setError(err);
+          setLoading(false);
+        });
+    } else {
+      setLoading(false);
+    }
+  }, [pedidoId]);
+
+  return { pedido, loading, error };
+};
+
 
 function App() {
   return (
@@ -32,64 +75,54 @@ function App() {
 function AppContent() {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/administrador');
-  
-  // Estado para controlar la visibilidad de los modales
+
   const [isLoginModalVisible, setLoginModalVisible] = useState(false);
   const [isRegisterModalVisible, setRegisterModalVisible] = useState(false);
 
-  // Hook de autenticación
   const { user, login, logout } = useAuthentication();
+  const id = user ? user.id : null; // Obtén el ID del usuario
 
-  const toggleLoginModal = () => {
-    setLoginModalVisible(!isLoginModalVisible);
-    if (isRegisterModalVisible) {
-      setRegisterModalVisible(false);
-    }
-  };
-
-  const toggleRegisterModal = () => {
-    setRegisterModalVisible(!isRegisterModalVisible);
-    if (isLoginModalVisible) {
-      setLoginModalVisible(false);
-    }
-  };
-
-  const handleSuccessfulLogin = (userData) => {
-    login(userData);
-    setLoginModalVisible(false); // Cierra el modal de inicio de sesión al iniciar sesión exitosamente
-  };
+  const { pedido, loading, error } = usePedidoEstado(id);
 
   return (
     <div className={`App ${isAdminRoute ? 'admin-mode' : ''}`}>
       {!isAdminRoute && (
-        <Header
-          toggleLoginModal={toggleLoginModal}
-          user={user}
-          handleLogout={logout}
-        />
+        <>
+          <Header
+            toggleLoginModal={() => setLoginModalVisible(!isLoginModalVisible)}
+            notifications={[]} // Asegúrate de que las notificaciones se están pasando correctamente
+          />
+        </>
       )}
 
       <main>
         {isLoginModalVisible && (
           <LoginModal
-            toggleLoginModal={toggleLoginModal}
-            openRegisterModal={toggleRegisterModal}
-            onLoginSuccess={handleSuccessfulLogin} // Se asegura de que el login sea exitoso y cierre el modal
+            toggleLoginModal={() => setLoginModalVisible(!isLoginModalVisible)}
+            openRegisterModal={() => setRegisterModalVisible(true)}
+            onLoginSuccess={(userData) => {
+              login(userData);
+              setLoginModalVisible(false);
+            }}
           />
         )}
         {isRegisterModalVisible && (
           <RegisterModal
-            toggleRegisterModal={toggleRegisterModal}
-            toggleLoginModal={toggleLoginModal}
+            toggleRegisterModal={() => setRegisterModalVisible(!isRegisterModalVisible)}
+            toggleLoginModal={() => setLoginModalVisible(true)}
+            onRegisterSuccess={() => {
+              setRegisterModalVisible(false);
+              setLoginModalVisible(true);
+            }}
           />
         )}
 
         <Routes>
           <Route path="/" element={
-            <>
+            <> 
               <section id="home" className="home">
                 <h1>Bienvenidos a Giovannis Pizza</h1>
-                <ImageCarousel /> {/* Carrusel aquí */}
+                <ImageCarousel />
                 <p>¡Las mejores pizzas!</p>
                 <ServiceHours />
               </section>
@@ -99,10 +132,10 @@ function AppContent() {
           <Route path="/about" element={<AboutUsPage />} />
           <Route path="/menu" element={<MenuPage />} />
           <Route path="/contact" element={<ContactPage />} />
-          <Route path="/cart" element={<CartPage toggleLoginModal={toggleLoginModal} />} />
+          <Route path="/cart" element={<CartPage toggleLoginModal={() => setLoginModalVisible(true)} />} />
           <Route path="/profile" element={<ProfileUser />} />
-          <Route path="/administrador/*" element={
-            <ProtectedRoute toggleLoginModal={toggleLoginModal}>
+          <Route path="/administrador" element={
+            <ProtectedRoute toggleLoginModal={() => setLoginModalVisible(true)}>
               <AdminInterface />
             </ProtectedRoute>
           } />
@@ -114,4 +147,7 @@ function AppContent() {
   );
 }
 
+
+
 export default App;
+

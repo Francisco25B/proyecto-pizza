@@ -1,0 +1,29 @@
+.progreso-pedido {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  .etapa {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1rem;
+    color: #aaa;
+  }
+  
+  .etapa.completada {
+    color: #4caf50; /* Color verde para etapas completadas */
+  }
+  
+  .icono {
+    font-size: 2rem;
+  }
+  
+  .etiqueta {
+    margin-top: 0.5rem;
+  }
+  

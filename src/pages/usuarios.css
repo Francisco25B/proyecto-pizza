@@ -1,16 +1,25 @@
 /* Estilos para la tabla de usuarios */
 .usuarios-container {
   margin: 20px;
+  position: relative;
 }
 
 .add-button {
-  background-color: #27ae60;
+  position: absolute;
+  top: 0;
+  left: 20px;
+  background-color: orangered;
   color: white;
   border: none;
-  padding: 10px 20px;
+  width: 150px;
+  height: 50px;
+  border-radius: 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  border-radius: 5px;
-  margin-bottom: 10px;
+  z-index: 1;
 }
 
 .add-button:hover {
@@ -18,13 +27,17 @@
 }
 
 .search-box {
-  margin-bottom: 10px;
+  margin-top: 60px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .search-box input {
   padding: 8px;
-  width: 200px;
-  margin-right: 10px;
+  width: 100%;
+  max-width: 200px;
+  margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
@@ -44,6 +57,8 @@
 .usuarios-table {
   width: 100%;
   border-collapse: collapse;
+  overflow-x: auto;
+  font-size: 1em;
 }
 
 .usuarios-table th,
@@ -51,6 +66,7 @@
   border: 1px solid #ddd;
   padding: 8px;
   text-align: left;
+  word-wrap: break-word;
 }
 
 .usuarios-table th {
@@ -61,7 +77,7 @@
   vertical-align: middle;
 }
 
-.view-button {
+.view-button, .edit-button, .delete-button {
   background-color: #3498db;
   color: white;
   border: none;
@@ -75,29 +91,90 @@
   background-color: #2980b9;
 }
 
-.edit-button {
-  background-color: #e67e22;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  cursor: pointer;
-  border-radius: 3px;
-  margin-right: 5px;
-}
-
 .edit-button:hover {
   background-color: #d35400;
 }
 
 .delete-button {
   background-color: #e74c3c;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  cursor: pointer;
-  border-radius: 3px;
 }
 
 .delete-button:hover {
   background-color: #c0392b;
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 768px) {
+  .add-button {
+    width: 120px;
+    height: 40px;
+    font-size: 0.9em;
+  }
+
+  .search-box input {
+    max-width: 100%;
+  }
+
+  .search-box button {
+    padding: 6px 10px;
+  }
+
+  .usuarios-table {
+    font-size: 0.9em;
+  }
+}
+
+@media (max-width: 5px) {
+  .add-button {
+    width: 100px;
+    height: 35px;
+    font-size: 0.8em;
+  }
+
+  .search-box {
+    flex-direction: column;
+  }
+
+  .search-box input {
+    max-width: 100%;
+    margin-bottom: 3px;
+  }
+
+  .search-box button {
+    padding: 6px 8px;
+  }
+
+  .usuarios-table {
+    font-size: 0.8em;
+  }
+
+  .usuarios-table th, .usuarios-table td {
+    padding: 1px;
+  }
+
+  .usuarios-table td {
+    font-size: 0.8em;
+  }
+
+  .usuarios-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .usuarios-table th, .usuarios-table td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .usuarios-table th, .usuarios-table td:before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+  }
+
+  .usuarios-table td {
+    text-align: right;
+  }
 }

@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../pages/MenuPage.css';
 import PizzaModal from '../components/PizzaModal';
+import BeverageModal from '../components/BeverageModal';
+import SnackModal from '../components/SnackModal';
 import axios from 'axios';
 import fondoMenu from '../assets/fondomenu.jpeg';
 
 function MenuPage() {
-  const [selectedPizza, setSelectedPizza] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [modalType, setModalType] = useState(null);
   const [pizzas, setPizzas] = useState([]);
   const [refrescos, setRefrescos] = useState([]);
   const [antojitos, setAntojitos] = useState([]);
@@ -36,12 +39,14 @@ function MenuPage() {
     }
   };
 
-  const openModal = (item) => {
-    setSelectedPizza(item);
+  const openModal = (item, type) => {
+    setSelectedItem(item);
+    setModalType(type);
   };
 
   const closeModal = () => {
-    setSelectedPizza(null);
+    setSelectedItem(null);
+    setModalType(null);
   };
 
   // Función para hacer scroll a una sección
@@ -87,10 +92,10 @@ function MenuPage() {
       <div className="item-list" ref={pizzasRef}>
         <h2>Pizzas</h2>
         {pizzas.map((pizza) => (
-          <div className="pizza-item" key={pizza.id} onClick={() => openModal(pizza)}>
+          <div className="pizza-item" key={pizza.id} onClick={() => openModal(pizza, 'pizza')}>
             <div className="pizza-image-container">
               {pizza.url_imagen ? (
-                <img src={pizza.url_imagen} alt={pizza.name} className="pizza-image" />
+                <img src={pizza.url_imagen} alt={pizza.nombre} className="pizza-image" />
               ) : (
                 <div className="pizza-image-placeholder">
                   <i className="fas fa-image"></i>
@@ -98,8 +103,8 @@ function MenuPage() {
               )}
             </div>
             <div className="pizza-details">
-              <h3>{pizza.name}</h3>
-              <p>{pizza.description}</p>
+              <h3>{pizza.nombre}</h3>
+              <p>{pizza.descripcion}</p>
               <p>Pequeña: ${pizza.price_small}</p>
               <p>Mediana: ${pizza.price_medium}</p>
               <p>Grande: ${pizza.price_large}</p>
@@ -111,10 +116,10 @@ function MenuPage() {
       <div className="item-list" ref={refrescosRef}>
         <h2>Refrescos</h2>
         {refrescos.map((refresco) => (
-          <div className="pizza-item" key={refresco.id} onClick={() => openModal(refresco)}>
+          <div className="pizza-item" key={refresco.id} onClick={() => openModal(refresco, 'beverage')}>
             <div className="pizza-image-container">
               {refresco.url_imagen ? (
-                <img src={refresco.url_imagen} alt={refresco.name} className="pizza-image" />
+                <img src={refresco.url_imagen} alt={refresco.nombre} className="pizza-image" />
               ) : (
                 <div className="pizza-image-placeholder">
                   <i className="fas fa-image"></i>
@@ -122,9 +127,9 @@ function MenuPage() {
               )}
             </div>
             <div className="pizza-details">
-              <h3>{refresco.name}</h3>
-              <p>{refresco.description}</p>
-              <p>Precio: ${refresco.price}</p>
+              <h3>{refresco.nombre}</h3>
+              <p>{refresco.descripcion}</p>
+              <p>Precio: ${refresco.precio}</p>
             </div>
           </div>
         ))}
@@ -132,10 +137,10 @@ function MenuPage() {
       <div className="item-list" ref={antojitosRef}>
         <h2>Antojitos</h2>
         {antojitos.map((antojito) => (
-          <div className="pizza-item" key={antojito.id} onClick={() => openModal(antojito)}>
+          <div className="pizza-item" key={antojito.id} onClick={() => openModal(antojito, 'antojito')}>
             <div className="pizza-image-container">
               {antojito.url_imagen ? (
-                <img src={antojito.url_imagen} alt={antojito.name} className="pizza-image" />
+                <img src={antojito.url_imagen} alt={antojito.nombre} className="pizza-image" />
               ) : (
                 <div className="pizza-image-placeholder">
                   <i className="fas fa-image"></i>
@@ -143,14 +148,16 @@ function MenuPage() {
               )}
             </div>
             <div className="pizza-details">
-              <h3>{antojito.name}</h3>
-              <p>{antojito.description}</p>
-              <p>Precio: ${antojito.price}</p>
+              <h3>{antojito.nombre}</h3>
+              <p>{antojito.descripcion}</p>
+              <p>Precio: ${antojito.precio}</p>
             </div>
           </div>
         ))}
       </div>
-      {selectedPizza && <PizzaModal pizza={selectedPizza} closeModal={closeModal} />}
+      {selectedItem && modalType === 'pizza' && <PizzaModal pizza={selectedItem} closeModal={closeModal} />}
+      {selectedItem && modalType === 'beverage' && <BeverageModal beverage={selectedItem} closeModal={closeModal} />}
+      {selectedItem && modalType === 'antojito' && <SnackModal antojito={selectedItem} closeModal={closeModal} />}
     </div>
   );
 }

@@ -30,13 +30,22 @@ const RegisterUserModal = ({ toggleRegisterModal, refreshUsers }) => {
       refreshUsers();
       toggleRegisterModal();
     } catch (error) {
-      console.error('Error al registrar usuario:', error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Error del servidor',
-        text: 'Hubo un error al registrar el usuario.',
-      });
-    }
+      if (error.response && error.response.status === 409) {
+          Swal.fire({
+              icon: 'error',
+              title: 'Número de teléfono en uso',
+              text: 'El número de teléfono que intentas registrar ya está en uso. Por favor, ingresa un número diferente.',
+          });
+      } else {
+          Swal.fire({
+              icon: 'error',
+              title: 'Error al registrar usuario',
+              text: 'Ocurrió un error al intentar registrar el usuario. Por favor, intenta nuevamente más tarde.',
+          });
+          console.error('Error al registrar usuario:', error);
+      }
+  }
+
   };
 
   return (

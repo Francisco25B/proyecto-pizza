@@ -59,3 +59,7 @@
 .remove-button:hover {
     background-color: #c82333;
 }
+.notifications-menu .dropdown-menu {
+    display: block; /* Asegúrate de que las notificaciones sean visibles */
+  }
+  

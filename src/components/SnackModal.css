@@ -1,0 +1,63 @@
+.snack-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .snack-modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 80%;
+    max-width: 600px;
+    text-align: center;
+    position: relative;
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: red;
+  }
+  
+  .snack-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .snack-image img {
+    max-width: 200px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .snack-info {
+    text-align: left;
+  }
+  
+  .order-button {
+    background-color: orange;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  .order-button:hover {
+    background-color: #ff9900;
+  }
+  

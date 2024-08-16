@@ -112,7 +112,7 @@ function LoginModal({ toggleLoginModal, openRegisterModal, onLoginSuccess }) {
                 name="number"
                 value={number}
                 onChange={handleTelefonoChange}
-                placeholder="1234567890"
+                placeholder="+52"
                 required
               />
             </div>

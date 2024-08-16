@@ -16,8 +16,6 @@ function RegisterModal({ toggleRegisterModal, onRegisterSuccess, toggleLoginModa
   const [direccion, setDireccion] = useState('');
   const [especificaciones_direccion, setEspecificacionesDireccion] = useState('');
 
-  const telefonoPattern = /^(\+52\s?)?\d{10}$/;
-
   const obtenerUbicacion = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -69,21 +67,25 @@ function RegisterModal({ toggleRegisterModal, onRegisterSuccess, toggleLoginModa
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!telefonoPattern.test(telefono) || !isValidPhoneNumber(telefono)) {
+    // Remover cualquier formato especial y obtener solo los números
+    const cleanTelefono = telefono.replace(/\D/g, '');
+
+    if (!isValidPhoneNumber(cleanTelefono)) {
       Swal.fire({
         icon: 'error',
         title: 'Número de teléfono inválido',
-        text: 'El número de teléfono debe contener exactamente 10 dígitos numéricos, opcionalmente precedidos por el código de país (+52).',
+        text: 'El número de teléfono debe contener exactamente 10 dígitos numéricos.',
       });
       return;
     }
 
     const newUser = {
       nombre_completo,
-      telefono,
+      telefono: cleanTelefono, // Enviar el número limpio
       email,
       direccion,
-      especificaciones_direccion
+      especificaciones_direccion,
+      rol_id: 1 // Asignar el rol de "Usuario" automáticamente
     };
 
     try {
@@ -111,11 +113,19 @@ function RegisterModal({ toggleRegisterModal, onRegisterSuccess, toggleLoginModa
         console.error('Error en el registro:', response.data);
       }
     } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error al registrar',
-        text: 'Hubo un problema al crear tu cuenta. Por favor, inténtalo de nuevo.',
-      });
+      if (error.response && error.response.status === 409) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al registrar',
+          text: 'El número de teléfono ya está en uso.',
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al registrar',
+          text: 'Hubo un problema al crear tu cuenta. Por favor, inténtalo de nuevo.',
+        });
+      }
     }
   };
 
@@ -157,7 +167,7 @@ function RegisterModal({ toggleRegisterModal, onRegisterSuccess, toggleLoginModa
               <input
                 type="text"
                 id="telefono"
-                value={formatTelefono(telefono)}
+                value={telefono} // Mostrar valor sin formato
                 onChange={handleTelefonoChange}
                 placeholder="+52 1234567890"
                 title="El número debe contener exactamente 10 dígitos numéricos, opcionalmente precedidos por el código de país (+52)."
@@ -165,15 +175,15 @@ function RegisterModal({ toggleRegisterModal, onRegisterSuccess, toggleLoginModa
               />
             </div>
             <div className="form-group">
-              <label htmlFor="email">Correo Electrónico:</label>
-              <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
+    <label htmlFor="email">Correo Electrónico:</label>
+    <input
+      type="email"
+      id="email"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+      required
+    />
+  </div>
             <div className="form-group">
               <label htmlFor="direccion">Dirección:</label>
               <input
