@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3001';
+// Actualiza esta URL con la URL de tu backend en Render
+const API_URL = 'https://backend-pizza-p9w9.onrender.com';
 
 export const getUsuarios = async () => {
   try {

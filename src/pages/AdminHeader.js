@@ -1,106 +1,127 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignOutAlt, faBell, faSearch } from '@fortawesome/free-solid-svg-icons';
-import './AdminHeader.css'; // Importa el archivo de estilos
-import axios from 'axios'; // Importa axios
+import { faUser, faEnvelope, faPhone, faLock, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import './UserProfile.css';
 
-// Componente funcional para el encabezado del administrador
-export function AdminHeader({ setSelectedSection }) {
-  const [orderCount, setOrderCount] = useState(0); // Número de pedidos pendientes
-  const [showOrdersMenu, setShowOrdersMenu] = useState(false);
-  const [orders, setOrders] = useState([]); // Estado para almacenar pedidos
+const UserProfile = () => {
+    const [userData, setUserData] = useState(null);
+    const [error, setError] = useState(null);
+    const [showPassword, setShowPassword] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [formData, setFormData] = useState({
+        nombre_completo: '',
+        telefono: '',
+        email: '',
+        password: ''
+    });
 
-  // Función para manejar el clic en el icono de campanita (notificaciones)
-  const handleNotifications = async () => {
-    try {
-      const response = await axios.get('http://localhost:3001/pedidos'); // Asegúrate de que esta URL sea correcta
-      setOrders(response.data);
-      setShowOrdersMenu(!showOrdersMenu); // Alterna el menú desplegable
-    } catch (error) {
-      console.error('Error al obtener los pedidos:', error);
-    }
-  };
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    throw new Error('No token found');
+                }
+                const response = await axios.get('https://backend-pizza-p9w9.onrender.com/api/user/profile', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                setUserData(response.data);
+                setFormData({
+                    nombre_completo: response.data.nombre_completo,
+                    telefono: response.data.telefono,
+                    email: response.data.email,
+                    password: ''
+                });
+            } catch (err) {
+                setError('Error fetching user data');
+            }
+        };
 
-  // Función para cambiar la sección a 'pedidos' y restablecer el contador de notificaciones
-  const handleViewOrder = () => {
-    setSelectedSection('pedidos'); // Cambia la sección activa a 'pedidos'
-    setShowOrdersMenu(false); // Cierra el menú después de cambiar la sección
-    setOrderCount(0); // Restablece el contador de notificaciones a 0
-  };
+        fetchUserData();
+    }, []);
 
-  const handleLogout = () => {
-    if (window.confirm('¿Cerrar sesión?')) {
-      // Aquí deberías manejar la lógica para cerrar sesión
-      window.location.href = '/'; // Redirige a la página de inicio
-    }
-  };
-
-  useEffect(() => {
-    // Obtén el número inicial de pedidos pendientes al montar el componente
-    const fetchOrderCount = async () => {
-      try {
-        const response = await axios.get('http://localhost:3001/pedidos'); // Asegúrate de que esta URL es correcta
-        setOrderCount(response.data.length);
-      } catch (error) {
-        console.error('Error fetching orders count:', error);
-      }
+    const handleTogglePassword = () => {
+        setShowPassword(!showPassword);
     };
 
-    fetchOrderCount();
+    const handleEditClick = () => {
+        setIsEditing(true);
+    };
 
-    // Configura una actualización periódica (cada 30 segundos)
-    const intervalId = setInterval(fetchOrderCount, 30000);
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value
+        });
+    };
 
-    // Limpia el intervalo cuando el componente se desmonte
-    return () => clearInterval(intervalId);
-  }, []);
+    const handleSave = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            await axios.put('https://backend-pizza-p9w9.onrender.com/api/user/profile', {
+                nombre_completo: formData.nombre_completo,
+                telefono: formData.telefono,
+                email: formData.email,
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            setUserData(formData);
+            setIsEditing(false);
+        } catch (err) {
+            setError('Error updating user data');
+        }
+    };
+    
 
-  return (
-    <header className="admin-header">
-      <div className="header-content">
-        <div className="header-left">
-          <h1>Bienvenido Administrador</h1>
-        </div>
-        <div className="header-icons">
-          <div className="notification-icon-container" onClick={handleNotifications}>
-            <FontAwesomeIcon icon={faBell} className="icon notification-icon" />
-            {orderCount > 0 && (
-              <span className="notification-count">{orderCount}</span>
-            )}
-          </div>
-          <FontAwesomeIcon icon={faSignOutAlt} className="icon logout-icon" onClick={handleLogout} />
-        </div>
-      </div>
+    if (error) return <div className="error">{error}</div>;
+    if (!userData) return <div>Loading...</div>;
 
-      {/* Menú desplegable para mostrar los pedidos */}
-      {showOrdersMenu && (
-        <div className="orders-menu">
-          <div className="orders-menu-content">
-            <div className="orders-menu-header">
-              <h2>Pedidos</h2>
-              <button className="close-menu" onClick={() => setShowOrdersMenu(false)}>
-                &times;
-              </button>
+    return (
+        <div className="user-profile">
+            <div className="profile-header">
+                <div className="profile-picture">
+                    <div className="avatar">
+                        <FontAwesomeIcon icon={faUser} />
+                    </div>
+                </div>
+                <div className="profile-details">
+                    <h2>{userData.nombre_completo}</h2>
+                    <p>{userData.email}</p>
+                </div>
             </div>
-            <div className="orders-menu-body">
-              {orders.length === 0 ? (
-                <p>No hay pedidos pendientes.</p>
-              ) : (
-                <ul>
-                  {orders.map((order) => (
-                    <li key={order.id} className="order-item" onClick={handleViewOrder}>
-                      <h3>Pedido de {order.nombre_completo}</h3>
-                      <p><strong>Producto:</strong> {order.nombre_producto}</p>
-                      <p><strong>Cantidad:</strong> {order.cantidad}</p>
-                      <p><strong>Precio:</strong> ${order.precio}</p>
-                    </li>
-                  ))}
-                </ul>
-              )}
+            <div className="profile-info">
+                <h3 className="profile-subtitle">Información Personal</h3>
+                <div className="info-item">
+                    <FontAwesomeIcon icon={faUser} />
+                    <span>Nombre: {isEditing ? <input type="text" name="nombre_completo" value={formData.nombre_completo} onChange={handleChange} /> : userData.nombre_completo}</span>
+                </div>
+                <div className="info-item">
+                    <FontAwesomeIcon icon={faPhone} />
+                    <span>Teléfono: {isEditing ? <input type="text" name="telefono" value={formData.telefono} onChange={handleChange} /> : userData.telefono}</span>
+                </div>
+                <div className="info-item">
+                    <FontAwesomeIcon icon={faEnvelope} />
+                    <span>Correo: {isEditing ? <input type="email" name="email" value={formData.email} onChange={handleChange} /> : userData.email}</span>
+                </div>
             </div>
-          </div>
+            <div className="profile-actions">
+                {isEditing ? (
+                    <>
+                        <button className="save-button" onClick={handleSave}>Guardar</button>
+                        <button className="cancel-button" onClick={() => setIsEditing(false)}>Cancelar</button>
+                    </>
+                ) : (
+                    <button className="edit-button" onClick={handleEditClick}>Editar Datos</button>
+                )}
+            </div>
         </div>
-      )}
-    </header>
-  );
-}
+    );
+};
+
+export default UserProfile;

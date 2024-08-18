@@ -30,7 +30,7 @@ const Productos = () => {
 
   const fetchProductos = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/${tipoProducto.toLowerCase()}`);
+      const response = await axios.get(`https://backend-pizza-p9w9.onrender.com/${tipoProducto.toLowerCase()}`);
       setProductos(response.data);
     } catch (error) {
       console.error(`Error fetching ${tipoProducto.toLowerCase()}:`, error);
@@ -93,13 +93,13 @@ const Productos = () => {
 
     try {
       if (editMode && currentProduct) {
-        await axios.put(`http://localhost:3001/${tipoProducto.toLowerCase()}/${currentProduct.id}`, formData, {
+        await axios.put(`https://backend-pizza-p9w9.onrender.com/${tipoProducto.toLowerCase()}/${currentProduct.id}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
       } else {
-        await axios.post(`http://localhost:3001/${tipoProducto.toLowerCase()}`, formData, {
+        await axios.post(`https://backend-pizza-p9w9.onrender.com/${tipoProducto.toLowerCase()}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -116,7 +116,7 @@ const Productos = () => {
 
   const handleDeleteProduct = async (id) => {
     try {
-      await axios.delete(`http://localhost:3001/${tipoProducto.toLowerCase()}/${id}`);
+      await axios.delete(`https://backend-pizza-p9w9.onrender.com/${tipoProducto.toLowerCase()}/${id}`);
       fetchProductos();
     } catch (error) {
       console.error(`Error deleting ${tipoProducto.toLowerCase()}:`, error);
@@ -203,7 +203,7 @@ const Productos = () => {
             <tr key={producto.id}>
               <td>
                 {producto.url_imagen && (
-                  <img src={`http://localhost:3001/${producto.url_imagen}`} alt={producto.nombre} width="100" />
+                  <img src={`https://backend-pizza-p9w9.onrender.com/${producto.url_imagen}`} alt={producto.nombre} width="100" />
                 )}
               </td>
               <td>{producto.nombre}</td>
@@ -283,9 +283,25 @@ const Productos = () => {
                     onChange={handleInputChange}
                   />
                 </>
-              ) : (
+              ) : tipoProducto === 'Refrescos' ? (
                 <>
-                  
+                  <label>Precio</label>
+                  <input
+                    type="text"
+                    name="precio"
+                    value={newProduct.precio}
+                    onChange={handleInputChange}
+                  />
+                  <label>Tamaño</label>
+                  <input
+                    type="text"
+                    name="tamano"
+                    value={newProduct.tamano}
+                    onChange={handleInputChange}
+                  />
+                </>
+              ) : tipoProducto === 'Antojitos' ? (
+                <>
                   <label>Precio</label>
                   <input
                     type="text"
@@ -294,24 +310,30 @@ const Productos = () => {
                     onChange={handleInputChange}
                   />
                 </>
-              )}
-              <label>Imagen</label>
-              <input type="file" name="image" onChange={handleInputChange} />
-              <div className="modal-buttons">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowModal(false);
-                    setCurrentProduct(null);
-                    resetNewProduct();
-                  }}
-                >
-                  Cancelar
-                </button>
-                <button type="button" onClick={handleAddOrEditProduct}>
-                  {editMode ? 'Guardar Cambios' : 'Agregar Producto'}
-                </button>
-              </div>
+              ) : null}
+              <label>Imagen (opcional)</label>
+              <input
+                type="file"
+                name="image"
+                accept="image/*"
+                onChange={handleInputChange}
+              />
+              <button
+                type="button"
+                onClick={handleAddOrEditProduct}
+              >
+                {editMode ? 'Actualizar' : 'Agregar'}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowModal(false);
+                  resetNewProduct();
+                  setCurrentProduct(null);
+                }}
+              >
+                Cancelar
+              </button>
             </form>
           </div>
         </div>

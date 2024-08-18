@@ -89,7 +89,8 @@ function RegisterModal({ toggleRegisterModal, onRegisterSuccess, toggleLoginModa
     };
 
     try {
-      const response = await axios.post('http://localhost:3001/register_user', newUser);
+      // Actualiza la URL para que apunte a tu backend en Render
+      const response = await axios.post('https://backend-pizza-p9w9.onrender.com/register_user', newUser);
       if (response.status === 200) {
         Swal.fire({
           icon: 'success',
@@ -175,15 +176,15 @@ function RegisterModal({ toggleRegisterModal, onRegisterSuccess, toggleLoginModa
               />
             </div>
             <div className="form-group">
-    <label htmlFor="email">Correo Electrónico:</label>
-    <input
-      type="email"
-      id="email"
-      value={email}
-      onChange={(e) => setEmail(e.target.value)}
-      required
-    />
-  </div>
+              <label htmlFor="email">Correo Electrónico:</label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
             <div className="form-group">
               <label htmlFor="direccion">Dirección:</label>
               <input

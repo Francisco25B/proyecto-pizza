@@ -71,8 +71,7 @@ function CartPage({ toggleLoginModal }) {
         <div id="bank-transfer-info" style="display: none;">
           <p>Datos Bancarios de la Pizzería:</p>
           <p>Banco: Banco Ejemplo</p>
-          <p>Cuenta: 1234567890</p>
-          <p>IBAN: ES1234567890123456789012</p>
+          <p>Cuenta: 4027 6657 3590 0707</p>
           <input id="transfer-reference" class="swal2-input" placeholder="Número de referencia de la transferencia">
         </div>
       `,
@@ -192,7 +191,7 @@ function CartPage({ toggleLoginModal }) {
     }
   
     try {
-      const response = await axios.post('/register_order', {
+      const response = await axios.post('https://backend-pizza-p9w9.onrender.com/register_order', {
         userId: getUserId(),
         items: orderItems,
         paymentMethod: paymentMethod,
@@ -210,11 +209,6 @@ function CartPage({ toggleLoginModal }) {
       Swal.fire('Error', 'Hubo un problema al registrar el pedido.', 'error');
     }
   };
-  
-  
-  
-  
-
   return (
     <div className="cart-container">
       <h1 className="cart-header">Carrito de Compras</h1>
@@ -232,20 +226,16 @@ function CartPage({ toggleLoginModal }) {
                   </div>
                   <div className="item-actions">
                     <p className="item-details">Precio total: ${item.totalPrice.toFixed(2)}</p>
-                    <button className="remove-button" onClick={() => handleRemoveFromCart(index)}>
-                      Eliminar
-                    </button>
+                    <button className="remove-button" onClick={() => handleRemoveFromCart(index)}>Eliminar</button>
                   </div>
                 </div>
               </li>
             ))}
           </ul>
-          <div className="cart-summary">
-            <p>Total: ${calculateTotal().toFixed(2)}</p>
+          <div className="cart-footer">
+            <p className="total-price">Total: ${calculateTotal().toFixed(2)}</p>
+            <button className="order-button" onClick={handleOrder}>Realizar Pedido</button>
           </div>
-          <button className="order-button" onClick={handleOrder}>
-            {isOrderConfirmed ? 'Confirmar Pedido' : 'Ordenar'}
-          </button>
         </>
       )}
     </div>

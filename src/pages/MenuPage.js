@@ -26,9 +26,9 @@ function MenuPage() {
   const fetchMenuItems = async () => {
     try {
       const [pizzasResponse, refrescosResponse, antojitosResponse] = await Promise.all([
-        axios.get('http://localhost:3001/pizzas'),
-        axios.get('http://localhost:3001/refrescos'),
-        axios.get('http://localhost:3001/antojitos')
+        axios.get('https://backend-pizza-p9w9.onrender.com/pizzas'),
+        axios.get('https://backend-pizza-p9w9.onrender.com/refrescos'),
+        axios.get('https://backend-pizza-p9w9.onrender.com/antojitos')
       ]);
 
       setPizzas(pizzasResponse.data);

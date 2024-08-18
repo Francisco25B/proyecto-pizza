@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -29,7 +28,7 @@ const usePedidoEstado = (pedidoId) => {
   useEffect(() => {
     if (pedidoId) {
       setLoading(true);
-      fetch(`http://localhost:3001/api/pedidos/${pedidoId}`)
+      fetch(`https://backend-pizza-p9w9.onrender.com/api/pedidos/${pedidoId}`)
         .then(response => {
           console.log('Respuesta recibida:', response); // Para depuración
           if (!response.ok) {
@@ -58,7 +57,6 @@ const usePedidoEstado = (pedidoId) => {
 
   return { pedido, loading, error };
 };
-
 
 function App() {
   return (
@@ -147,7 +145,4 @@ function AppContent() {
   );
 }
 
-
-
 export default App;
-

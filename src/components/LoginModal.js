@@ -34,7 +34,8 @@ function LoginModal({ toggleLoginModal, openRegisterModal, onLoginSuccess }) {
     };
 
     try {
-      const response = await axios.post('http://localhost:3001/login', userCredentials);
+      // Actualiza la URL aquí
+      const response = await axios.post('https://backend-pizza-p9w9.onrender.com/login', userCredentials);
       const { token, user } = response.data;
 
       localStorage.setItem('token', token); // Guarda el token en localStorage

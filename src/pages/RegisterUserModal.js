@@ -21,7 +21,7 @@ const RegisterUserModal = ({ toggleRegisterModal, refreshUsers }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:3001/register_user', formData);
+      await axios.post('https://backend-pizza-p9w9.onrender.com/register_user', formData);
       Swal.fire({
         icon: 'success',
         title: 'Registro exitoso',

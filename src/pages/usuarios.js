@@ -21,7 +21,7 @@ const Usuarios = () => {
 
   const fetchUsuarios = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/usuarios');
+      const response = await axios.get('https://backend-pizza-p9w9.onrender.com/usuarios');
       setUsuarios(response.data);
     } catch (error) {
       console.error('Error al obtener usuarios:', error);
@@ -70,10 +70,10 @@ const Usuarios = () => {
         if (result.isConfirmed) {
             try {
                 // Primero eliminar registros relacionados en pedido_pizza y pedido_pizza_detalle
-                await axios.delete(`http://localhost:3001/pedidos/clientes/${usuarioId}`);
+                await axios.delete(`https://backend-pizza-p9w9.onrender.com/pedidos/clientes/${usuarioId}`);
 
                 // Luego eliminar el usuario
-                const response = await axios.delete(`http://localhost:3001/clientes/${usuarioId}`);
+                const response = await axios.delete(`https://backend-pizza-p9w9.onrender.com/clientes/${usuarioId}`);
                 if (response.status === 200) {
                     Swal.fire({
                         icon: 'success',
@@ -138,28 +138,27 @@ const Usuarios = () => {
             </tr>
           </thead>
           <tbody>
-          {filteredUsuarios.map(usuario => (
-  <tr key={usuario.id}>
-    <td data-label="Nombre Completo">{usuario.nombre_completo}</td>
-    <td data-label="Teléfono">{usuario.telefono}</td>
-    <td data-label="Email">{usuario.email}</td>
-    <td data-label="Dirección">{usuario.direccion}</td>
-    <td data-label="Especificaciones">{usuario.especificaciones_direccion}</td>
-    <td data-label="Rol">{usuario.rol_id === 1 ? 'Usuario' : 'Administrador'}</td>
-    <td data-label="Opciones">
-      <button className="view-button" onClick={() => handleViewUsuario(usuario)}>
-        <FontAwesomeIcon icon={faEye} />
-      </button>
-      <button className="edit-button" onClick={() => handleEditUsuario(usuario)}>
-        <FontAwesomeIcon icon={faEdit} />
-      </button>
-      <button className="delete-button" onClick={() => handleDeleteUsuario(usuario.id)}>
-        <FontAwesomeIcon icon={faTrash} />
-      </button>
-    </td>
-  </tr>
-))}
-
+            {filteredUsuarios.map(usuario => (
+              <tr key={usuario.id}>
+                <td data-label="Nombre Completo">{usuario.nombre_completo}</td>
+                <td data-label="Teléfono">{usuario.telefono}</td>
+                <td data-label="Email">{usuario.email}</td>
+                <td data-label="Dirección">{usuario.direccion}</td>
+                <td data-label="Especificaciones">{usuario.especificaciones_direccion}</td>
+                <td data-label="Rol">{usuario.rol_id === 1 ? 'Usuario' : 'Administrador'}</td>
+                <td data-label="Opciones">
+                  <button className="view-button" onClick={() => handleViewUsuario(usuario)}>
+                    <FontAwesomeIcon icon={faEye} />
+                  </button>
+                  <button className="edit-button" onClick={() => handleEditUsuario(usuario)}>
+                    <FontAwesomeIcon icon={faEdit} />
+                  </button>
+                  <button className="delete-button" onClick={() => handleDeleteUsuario(usuario.id)}>
+                    <FontAwesomeIcon icon={faTrash} />
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       )}

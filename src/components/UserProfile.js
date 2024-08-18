@@ -23,7 +23,7 @@ const UserProfile = () => {
                 if (!token) {
                     throw new Error('No token found');
                 }
-                const response = await axios.get('http://localhost:3001/api/user/profile', {
+                const response = await axios.get('https://backend-pizza-p9w9.onrender.com/api/user/profile', {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -62,7 +62,7 @@ const UserProfile = () => {
     const handleSave = async () => {
         try {
             const token = localStorage.getItem('token');
-            await axios.put('http://localhost:3001/api/user/profile', {
+            await axios.put('https://backend-pizza-p9w9.onrender.com/api/user/profile', {
                 nombre_completo: formData.nombre_completo,
                 telefono: formData.telefono,
                 email: formData.email,

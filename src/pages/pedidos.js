@@ -5,7 +5,6 @@ import { faSearch, faTrash, faArrowDown, faArrowUp } from '@fortawesome/free-sol
 import Swal from 'sweetalert2';
 import axios from 'axios';
 
-
 const Pedidos = ({ onNewNotification }) => {
   const [pedidos, setPedidos] = useState([]);
   const [editingPedido, setEditingPedido] = useState(null);
@@ -22,7 +21,7 @@ const Pedidos = ({ onNewNotification }) => {
   const [searchTerm, setSearchTerm] = useState(''); // Estado para el término de búsqueda
 
   useEffect(() => {
-    fetch('http://localhost:3001/pedidos')
+    fetch('https://backend-pizza-p9w9.onrender.com/pedidos')
       .then(response => {
         if (!response.ok) {
           throw new Error('Error al obtener los pedidos');
@@ -44,7 +43,7 @@ const Pedidos = ({ onNewNotification }) => {
       confirmButtonText: 'Sí, eliminarlo!'
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`http://localhost:3001/pedidos/${id}`)
+        axios.delete(`https://backend-pizza-p9w9.onrender.com/pedidos/${id}`)
           .then((response) => {
             Swal.fire(
               'Eliminado!',
@@ -65,9 +64,6 @@ const Pedidos = ({ onNewNotification }) => {
       }
     });
   };
-  
-
-  
 
   const handleEdit = (pedido) => {
     setEditingPedido(pedido.id);
@@ -91,7 +87,7 @@ const Pedidos = ({ onNewNotification }) => {
   
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch(`http://localhost:3001/pedidos/${editingPedido}`, {
+    fetch(`https://backend-pizza-p9w9.onrender.com/pedidos/${editingPedido}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
@@ -120,7 +116,7 @@ const Pedidos = ({ onNewNotification }) => {
     if (selectedCliente === cliente_id) {
       setSelectedCliente(null);
     } else {
-      fetch(`http://localhost:3001/pedidos/${cliente_id}`)
+      fetch(`https://backend-pizza-p9w9.onrender.com/pedidos/${cliente_id}`)
         .then(response => {
           if (!response.ok) {
             throw new Error('Error al obtener los pedidos del cliente');
@@ -145,7 +141,7 @@ const Pedidos = ({ onNewNotification }) => {
       title: 'Pedido Aceptado',
       text: 'El pedido ha sido aceptado correctamente.'
     });
-    fetch(`http://localhost:3001/pedidos/${id}`, {
+    fetch(`https://backend-pizza-p9w9.onrender.com/pedidos/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
@@ -170,7 +166,7 @@ const Pedidos = ({ onNewNotification }) => {
       title: 'Rechazado',
       text: 'El pedido ha sido rechazado.'
     });
-    fetch(`http://localhost:3001/pedidos/${id}`, {
+    fetch(`https://backend-pizza-p9w9.onrender.com/pedidos/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
@@ -192,7 +188,7 @@ const Pedidos = ({ onNewNotification }) => {
       title: 'Pedido Entregado',
       text: 'El pedido ha sido marcado como entregado.'
     });
-    fetch(`http://localhost:3001/pedidos/${id}`, {
+    fetch(`https://backend-pizza-p9w9.onrender.com/pedidos/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
@@ -206,10 +202,8 @@ const Pedidos = ({ onNewNotification }) => {
         ));
       })
       .catch(error => console.error('Error al actualizar el estado del pedido:', error));
-      
   };
   
-
   const groupedPedidos = pedidos.reduce((acc, pedido) => {
     (acc[pedido.cliente_id] = acc[pedido.cliente_id] || []).push(pedido);
     return acc;
@@ -255,60 +249,125 @@ const Pedidos = ({ onNewNotification }) => {
                     onClick={() => handleShowOrders(cliente_id)}
                   >
                     <FontAwesomeIcon icon={selectedCliente === cliente_id ? faArrowUp : faArrowDown} />
+                    {selectedCliente === cliente_id ? 'Ocultar Pedidos' : 'Mostrar Pedidos'}
                   </button>
-                  <strong>Cliente ID: {cliente_id}</strong>
                 </td>
               </tr>
-              {selectedCliente === cliente_id && pedidos.map(pedido => (
-                <tr key={pedido.id}>
-                  <td>{pedido.cliente_id}</td>
-                  <td>{pedido.nombre_completo}</td>
-                  <td>{pedido.direccion}</td>
-                  <td>{new Date(pedido.fecha).toLocaleString()}</td>
-                  <td>{pedido.nombre_producto}</td>
-                  <td>{pedido.tipo_producto}</td>
-                  <td>{pedido.tamano}</td>
-                  <td>{pedido.cantidad}</td>
-                  <td>{pedido.precio}</td>
-                  <td>{pedido.metodo_pago}</td>
-                  <td>
-                  {pedido.estado === 'aceptado' ? (
-  <button
-    className="delivered-button"
-    onClick={() => handleDelivered(pedido.id)}
-  >
-    Pedido Entregado
-  </button>
-) : (
-  <>
-    <button
-      className="delete-button"
-      onClick={() => handleDelete(pedido.id)}
-    >
-      <FontAwesomeIcon icon={faTrash} />
-    </button>
-    <button
-      className="accept-button"
-      onClick={() => handleAccept(pedido.id)}
-    >
-      Aceptar
-    </button>
-    <button
-      className="reject-button"
-      onClick={() => handleReject(pedido.id)}
-    >
-      Rechazar
-    </button>
-  </>
-)}
-
-                  </td>
-                </tr>
-              ))}
+              {selectedCliente === cliente_id && (
+                pedidos.map(pedido => (
+                  <tr key={pedido.id}>
+                    <td>{pedido.cliente_id}</td>
+                    <td>{pedido.nombre_cliente}</td>
+                    <td>{pedido.direccion}</td>
+                    <td>{pedido.fecha}</td>
+                    <td>{pedido.nombre_producto}</td>
+                    <td>{pedido.tipo_producto}</td>
+                    <td>{pedido.tamano}</td>
+                    <td>{pedido.cantidad}</td>
+                    <td>{pedido.precio}</td>
+                    <td>{pedido.metodo_pago}</td>
+                    <td>
+                      {pedido.estado_pedido !== 'entregado' && (
+                        <>
+                          <button onClick={() => handleAccept(pedido.id)}>Aceptar</button>
+                          <button onClick={() => handleReject(pedido.id)}>Rechazar</button>
+                        </>
+                      )}
+                      {pedido.estado_pedido === 'aceptado' && (
+                        <button onClick={() => handleDelivered(pedido.id)}>Marcar como Entregado</button>
+                      )}
+                      <button onClick={() => handleEdit(pedido)}>Editar</button>
+                      <button onClick={() => handleDelete(pedido.id)}>
+                        <FontAwesomeIcon icon={faTrash} />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </React.Fragment>
           ))}
         </tbody>
       </table>
+
+      {editingPedido && (
+        <div className="edit-form">
+          <h3>Editar Pedido</h3>
+          <form onSubmit={handleSubmit}>
+            <label>
+              Nombre del Producto:
+              <input
+                type="text"
+                name="nombre_producto"
+                value={editForm.nombre_producto}
+                onChange={handleChange}
+                required
+              />
+            </label>
+            <label>
+              Tipo de Producto:
+              <input
+                type="text"
+                name="tipo_producto"
+                value={editForm.tipo_producto}
+                onChange={handleChange}
+                required
+              />
+            </label>
+            <label>
+              Tamaño:
+              <input
+                type="text"
+                name="tamano"
+                value={editForm.tamano}
+                onChange={handleChange}
+                required
+              />
+            </label>
+            <label>
+              Cantidad:
+              <input
+                type="number"
+                name="cantidad"
+                value={editForm.cantidad}
+                onChange={handleChange}
+                required
+              />
+            </label>
+            <label>
+              Precio:
+              <input
+                type="number"
+                name="precio"
+                value={editForm.precio}
+                onChange={handleChange}
+                required
+              />
+            </label>
+            <label>
+              Método de Pago:
+              <input
+                type="text"
+                name="metodo_pago"
+                value={editForm.metodo_pago}
+                onChange={handleChange}
+                required
+              />
+            </label>
+            <button type="submit">Actualizar</button>
+            <button onClick={() => setEditingPedido(null)}>Cancelar</button>
+          </form>
+        </div>
+      )}
+
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Buscar pedidos..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <FontAwesomeIcon icon={faSearch} />
+      </div>
     </div>
   );
 };

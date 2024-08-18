@@ -1,6 +1,6 @@
 import React from 'react';
 import './ContactPage.css'; // Importamos los estilos para ContactPage
-import { FaPhone, FaEnvelope, FaFacebook, FaWhatsapp } from 'react-icons/fa'; // Importamos los iconos de react-icons
+import { FaPhone, FaFacebook, FaWhatsapp } from 'react-icons/fa'; // Importamos los iconos de react-icons
 import backgroundImage from '../assets/fondocontacto.jpeg'; // Importa la imagen desde la carpeta assets
 
 function ContactPage() {
@@ -11,19 +11,15 @@ function ContactPage() {
         <div className="contact-info">
           <div className="contact-item">
             <FaPhone className="icon" />
-            <span>Teléfono: (123) 456-7890</span>
-          </div>
-          <div className="contact-item">
-            <FaEnvelope className="icon" />
-            <span>Correo Electrónico: info@giovannispizza.com</span>
+            <span>Teléfono: (774) 742-1418</span>
           </div>
           <div className="contact-item">
             <FaFacebook className="icon" />
-            <span>Facebook: GiovannisPizza</span>
+            <span>Facebook: Giovanni's Pizzas</span>
           </div>
           <div className="contact-item">
             <FaWhatsapp className="icon" />
-            <span>WhatsApp: +1234567890</span>
+            <span>WhatsApp: +52 7712172139</span>
           </div>
         </div>
       </div>

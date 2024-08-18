@@ -36,7 +36,7 @@ const EditUserModal = ({ toggleEditModal, refreshUsers, usuario }) => {
 
     try {
         console.log('Enviando solicitud a servidor...');
-        const response = await axios.put(`http://localhost:3001/clientes/${usuario.id}`, formData);
+        const response = await axios.put(`https://backend-pizza-p9w9.onrender.com/clientes/${usuario.id}`, formData);
         console.log('Respuesta recibida del servidor:', response);
 
         if (response.status === 200) {
